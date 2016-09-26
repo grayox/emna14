@@ -1,6 +1,17 @@
 VERSION HISTORY
 
+v08
+
 v07
+1. Installed app-drawer-layout
+2. Installed major component pieces including responsive styling, layout and animation
+3. Reinstalled data connection
+4. v08 TODO:
+   a. Begin cleaning up some cruft in files and directories
+	 b. Begin building toward a "MasterBlaster" (rapid network assembly app)
+	 c. Increment styling improvements. Especially on app-drawer-panel and paper-dialog action buttons
+	 d. Install app routing in app-drawer panel to navigate between pages to make full-featured app
+Note: Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBackup.sh
 
 v06
 1. Improved on basic CRUD.
