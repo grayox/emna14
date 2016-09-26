@@ -16,7 +16,7 @@
 <link rel="import" href="moment-js.html">
 
 <!-- Edit -->
-<!---->
+<!--- ->
 <link rel="import" href="custom/my-drawer-panel.html">
 <!---->
 <link rel="import" href="items-list.html">
@@ -87,20 +87,7 @@
 				width: 100%;
 			}
 		</style>
-		<style include="shared-styles">
-			/* Edit */
-			/*
-			 * Attempt to fix paper-fab appearing behind app-header
-			 * per http://stackoverflow.com/a/39523007/1640892
-			 *
-			 */
-			paper-fab {
-				z-index: 99;
-			}
-			app-header-layout ::content #contentContainer {
-				z-index: 2!important;
-			}
-			/* endEdit */
+		<style>
       app-header {
 				color: white;
 				background-color: var(--dark-primary-color);
@@ -159,7 +146,7 @@
 				background: transparent\9; 
 				/** /
 		  }
-			/**/
+			/** /
 		</style>
 		
 		<!--- ->
@@ -173,69 +160,10 @@
 		<iron-media-query query="(min-width:  900px) AND (max-width: 1124px)" query-matches="{{queryMatches.medium}}" full></iron-media-query>
 		<iron-media-query query="(min-width: 1125px)"                         query-matches="{{queryMatches.large}}"      ></iron-media-query>
 		
-		<!-- Edit -->
-    <firebase-document id="document"
-											 app-name="app"
-											 xpath="[[editableItemId]]"
-											 data="{{editableItem}}"
-											 >
-    </firebase-document>
-		<!---->
-    <firebase-query id="query"
-										app-name="app"
-									  path="users/[[user.uid]]/items"
-									  data="{{items}}"
-										>
-    </firebase-query>
-    <!-- endEdit -->
-
-    <!--- ->
-    <vaadin-pouchdb id="db" dbname="{{dbLocal}}" remote="{{dbRemote}}" data="{{items}}" status="{{status}}"></vaadin-pouchdb>
-    <!---->
-    <app-location route="{{route}}"
-									use-hash-as-path
-									>
-		</app-location>
-    <app-route route="{{route}}"
-							 pattern="/:dbId"
-               data="{{routeData}}"
-							 tail="{{subroute}}"
-							 >
-		</app-route>
-		<!--- ->
-    * The above <app-route> element uses the correct pattern ("/:dbId") necessary to delete records from the database.
-    * Replacing that pattern with the "/:page" pattern below results in a malfunction of the delete() method.
-    * The malfunction behaves by appearing to delete the record from the client side table.
-    * But the server-side data remains unaffected. The "/:page" pattern might be useful for routing page views?
-		<!--- ->
-		<app-route route="{{route}}"
-							 pattern="/:page"
-							 data="{{routeData}}"
-							 tail="{{subroute}}"
-							 >
-		</app-route>
-		<!--- ->
-    <iron-ajax id="ajax" handle-as="json" on-response="_handleBackendResponse" on-error="_handleBackendError"></iron-ajax>
-    <!---->
-    <info-dialog id="info"></info-dialog>
-    <paper-toast id="toast"></paper-toast>
-    <iron-localstorage name="item-manager-db-id"
-											 value="{{dbId}}"
-											 >
-		</iron-localstorage>
-    <item-editor id="itemEditor"
-								 xmerchants="[[merchants]]"
-								 db="[[_db]]"
-								 route="{{subroute}}"
-								 xitem="{{editableItem}}"
-								 >
-		</item-editor>
-		
 		<app-drawer-layout fullbleed force-narrow>
 			<app-drawer transition-duration="450">
-				<!--- ->
 				drawer content
-				<!---->
+				<!--- ->
 				<my-drawer-panel></my-drawer-panel>
 				<!---->
 			</app-drawer>

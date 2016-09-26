@@ -16,17 +16,13 @@
 <link rel="import" href="moment-js.html">
 
 <!-- Edit -->
-<!---->
+<!--- ->
 <link rel="import" href="custom/my-drawer-panel.html">
 <!---->
-<link rel="import" href="items-list.html">
-<link rel="import" href="history-panel.html">
-
 <link rel="import" href="custom/toolbar-panel.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/app-layout/app-box/app-box.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-layout/app-layout.html">
@@ -42,76 +38,22 @@
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-
-<link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
-<!--- ->
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<!---->
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
-<link rel="import" href="shared-styles.html">
-
 <!-- endEdit -->
 
 <dom-module id="overview-page">
-	<template>
-		<style is="custom-style">
-			.flex-vertical {
-				@apply(--layout-vertical);
-        height: calc(100vh - 64px);
-  		}
-			.flex-horizontal {
-				@apply(--layout-horizontal);
-			}
-			.flexchild {
-				@apply(--layout-flex);
-			}
-			.item {
-				/** /
-				border-style: solid;
-				border-width: 1px;
-				border-color: #dddddd;
-				/** /
-				background-size: cover;
-				background-position: center center;
-				/**/
-				position: relative;
-				background-color: white;
-				margin: 0;
-				padding: 0;
-			}
-			.item-horizontal {
-				height: 100vh;
-			}
-			.item-vertical {
-				width: 100%;
-			}
-		</style>
-		<style include="shared-styles">
-			/* Edit */
-			/*
-			 * Attempt to fix paper-fab appearing behind app-header
-			 * per http://stackoverflow.com/a/39523007/1640892
-			 *
-			 */
-			paper-fab {
-				z-index: 99;
-			}
-			app-header-layout ::content #contentContainer {
-				z-index: 2!important;
-			}
-			/* endEdit */
-      app-header {
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+			app-header {
 				color: white;
-				background-color: var(--dark-primary-color);
-				/** /
-				background-color: red;
-				/**/
+				background-color: var(--dark-primary-color); /*red;*/
 			}
 			app-toolbar {
 			  --app-toolbar-font-size: 16px;
 				color: var(--icon-color, white);
-				xcursor: pointer;
+				cursor: pointer;
 				-moz-transition:    .5s;
 				-webkit-transition: .5s;
 				-o-transition:      .5s;
@@ -120,58 +62,54 @@
 			app-toolbar div[main-title] {
 			  font-size: 24px;
         font-weight: 300;
-				xcursor: pointer;
+				cursor: pointer;
 			}
 			.drawer-menu-button {
 				/** /
 				color: var(--icon-color, --paper-orange-500); Removed default because icons might handle change of background
 				/**/
 				color: var(--icon-color, white);
-				xcursor: pointer;
-				--paper-icon-button: {
-					border-radius: 50%;
-				}
-				--paper-icon-button-hover: {
-					/** /
-				  background-color: rgba(0, 0, 0, 0.3);
-					/**/
-				  background-color: rgba(255, 255, 255, 0.3);
-					opacity: 0.67;
-				  /**/
-				}
+				cursor: pointer;
 				-moz-transition:    .5s;
 				-webkit-transition: .5s;
 				-o-transition:      .5s;
 				transition:         .5s;
 			}
-			/** /
-			.drawer-menu-button:hover {
-				background-color: rgba(0,0,0,0.3);
-				opacity: 0.75;
-				/** /
-				background-color: fadeout(hsla(90, 90%, 50%, 0.5), 10%);
-				color: fadeout(hsla(90, 90%, 50%, 0.5), 10%);
-				color: rgba(255, 255, 255, .5);
-				background-color: rgba(255, 0, 0, .5);
-				background-color: var(--paper-grey-700);
-				color: var(--paper-grey-200);
-				color: var(--icon-color-hover, --paper-grey-500);
-				background: transparent\9; 
-				/** /
-		  }
 			/**/
+			.drawer-menu-button:hover {
+				color: var(--icon-color-hover, --paper-grey-500);
+			}
+			
+			/** /
+      .content {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+      }
+			/**/
+			
+      #content-panel {
+        flex: 1;
+      }
+			/**/
+			
+      @media (min-width: 900px) {
+        .content {
+          /* Make room for filters panel on the left. */
+          padding-left: 308px;
+          padding-right: 298px;
+        }
+      }
+      @media (max-width: 1124px) {
+        .content {
+          padding-right: 0;
+        }
+      }
 		</style>
-		
-		<!--- ->
-		Common breakpoints: 480, 600(xs/s), 840, 960(s/m), 1280(m/l), 1440, and 1600dp
-		https://material.google.com/layout/responsive-ui.html#responsive-ui-breakpoints
-    https://developer.android.com/guide/practices/screens_support.html
-		http://stackoverflow.com/a/16727073/1640892
-		<!---->
-		<iron-media-query query=                        "(max-width:  699px)" query-matches="{{queryMatches.xsmall}}"     ></iron-media-query>
-		<iron-media-query query="(min-width:  700px) AND (max-width:  899px)" query-matches="{{queryMatches.small}}"  full></iron-media-query>
-		<iron-media-query query="(min-width:  900px) AND (max-width: 1124px)" query-matches="{{queryMatches.medium}}" full></iron-media-query>
-		<iron-media-query query="(min-width: 1125px)"                         query-matches="{{queryMatches.large}}"      ></iron-media-query>
 		
 		<!-- Edit -->
     <firebase-document id="document"
@@ -203,10 +141,10 @@
 							 >
 		</app-route>
 		<!--- ->
-    * The above <app-route> element uses the correct pattern ("/:dbId") necessary to delete records from the database.
-    * Replacing that pattern with the "/:page" pattern below results in a malfunction of the delete() method.
-    * The malfunction behaves by appearing to delete the record from the client side table.
-    * But the server-side data remains unaffected. The "/:page" pattern might be useful for routing page views?
+    The above <app-route> element uses the correct pattern ("/:dbId") necessary to delete records from the database.
+    Replacing that pattern with the "/:page" pattern below results in a malfunction of the delete() method.
+    The malfunction behaves by appearing to delete the record from the client side table.
+    But the server-side data remains unaffected. The "/:page" pattern might be useful for routing page views?
 		<!--- ->
 		<app-route route="{{route}}"
 							 pattern="/:page"
@@ -232,15 +170,14 @@
 		</item-editor>
 		
 		<app-drawer-layout fullbleed force-narrow>
-			<app-drawer transition-duration="450">
-				<!--- ->
+			<app-drawer transition-duration="400">
 				drawer content
-				<!---->
+				<!--- ->
 				<my-drawer-panel></my-drawer-panel>
 				<!---->
 			</app-drawer>
 			<app-header-layout>
-				<app-header condenses xreveals xeffects="waterfall">
+				<app-header>
 					<app-toolbar>
 						<paper-icon-button icon="menu"
 															 class="drawer-menu-button"
@@ -248,15 +185,12 @@
 															 xspacer
 															 >
 						</paper-icon-button>
-						<div id="main-title"
-								 main-title
-								 xspacer$="[[!queryMatches.xsmall]]"
-								 xspacer$="[[!_computedSmall]]"
-								 spacer$="[[queryMatches.large]]"
+						<div main-title
+								 spacer
 								 class="drawer-menu-button"
 								 >
 							SportsBall
-							<img src="../images/app-icon-32.png" />
+						  <img src="../images/app-icon-32.png" />
 						</div>
 						<!--- ->
 						<iron-icon id="sync" icon="notification:sync" hidden$="[[_hideSyncIcon(status)]]" title="Syncing…"></iron-icon>
@@ -277,139 +211,27 @@
 						<!-- endEdit -->
 					</app-toolbar>
 				</app-header>
-
-				<template is="dom-if" if="{{_computedSmall}}">
- 					<div class="container flex-vertical">
-						<div class="item item-vertical">
-							<!--- ->
-							one
-							<!---->
-							<filters-toolbar id="filters-toolbar"
-													     media-width="[[mediaWidth]]"
-															 total-owed="[[totalOwed]]"
-															 merchants="[[merchants]]"
-															 filters="{{filters}}"
-															 items="[[items]]"
-															 >
-							</filters-toolbar>
-							<!---->
-						</div>
-						<div class="item item-vertical flexchild">
-							<!--- ->
-							two
-							<!---->
-							<items-list id="list"
-													media-width="[[mediaWidth]]"
-													items="[[items]]"
-													filters="[[filters]]"
-													>
-							</items-list>
-							<!---->
-						</div>
-						<div class="item">
-							<!--- ->
-							three
-							<!---->
-							<history-panel id="history-panel"
-													   media-width="[[mediaWidth]]"
-														 total-owed="[[totalOwed]]"
-														 items="[[items]]"
-														 >
-							</history-panel>
-							<!---->
-						</div>
-					</div>
-				</template>
-				<template is="dom-if" if="{{queryMatches.medium}}">
-					<div class="container flex-horizontal">
-						<div class="item item-horizontal">
-							<!--- ->
-							one
-							<!---->
-							<filters-toolbar id="filters-toolbar"
-													     media-width="[[mediaWidth]]"
-															 total-owed="[[totalOwed]]"
-															 merchants="[[merchants]]"
-															 filters="{{filters}}"
-															 items="[[items]]"
-															 >
-							</filters-toolbar>
-							<!---->
-						</div>
-						<div class="flexchild container flex-vertical">
-							<div class="item flexchild">
-								<!--- ->
-								two
-								<!---->
-								<items-list id="list"
-														media-width="[[mediaWidth]]"
-														items="[[items]]"
-														filters="[[filters]]"
-														>
-								</items-list>
-								<!---->
-							</div>
-							<div class="item">
-								<!--- ->
-								three
-								<!---->
-								<history-panel id="history-panel"
-															 media-width="[[mediaWidth]]"
-															 total-owed="[[totalOwed]]"
-															 items="[[items]]"
-															 >
-								</history-panel>
-								<!---->
-							</div>
-						</div>
-					</div>
-        </template>
-				<template is="dom-if" if="{{queryMatches.large}}">
-					<div class="container flex-horizontal">
-						<div class="item item-horizontal">
-							<!--- ->
-							one
-							<!---->
-							<filters-toolbar id="filters-toolbar"
-															 media-width="[[mediaWidth]]"
-															 total-owed="[[totalOwed]]"
-															 merchants="[[merchants]]"
-															 filters="{{filters}}"
-															 items="[[items]]"
-															 >
-							</filters-toolbar>
-							<!---->
-						</div>
-						<div class="item flexchild">
-							<!--- ->
-							two
-							<!---->
-							<items-list id="list"
-													media-width="[[mediaWidth]]"
-													items="[[items]]"
-													filters="[[filters]]"
-													>
-							</items-list>
-							<!---->
-						</div>
-						<div class="item item-horizontal">
-							<!--- ->
-							three
-							<!---->
-							<history-panel id="history-panel"
-													   media-width="[[mediaWidth]]"
-														 total-owed="[[totalOwed]]"
-														 items="[[items]]"
-														 >
-							</history-panel>
-							<!---->
-						</div>
-					</div>
-        </template>
+				<!-- Main Content -->
+				<div class="content">
+					<filters-toolbar id="filters-toolbar"
+													 total-owed="[[totalOwed]]"
+													 merchants="[[merchants]]"
+													 filters="{{filters}}"
+													 items="[[items]]"
+													 >
+					</filters-toolbar>
+					<content-panel id="content-panel"
+												 filters="{{filters}}"
+												 total-owed="[[totalOwed]]"
+												 items="[[items]]"
+												 >
+					</content-panel>
+				</div>
+				<!-- End Main Content -->
 			</app-header-layout>
 		</app-drawer-layout>
 
-	</template>
+  </template>
 
   <script>
     (function() {
@@ -447,14 +269,6 @@
             notify: true
           },
 					// Edit
-					mediaWidth: String,
-					queryMatches: {
-						type: Object,
-						notify: true,
-						value: function() {
-							return {}
-						},
-					},
 					user: {
             type: Object,
             notify: true,
@@ -475,9 +289,6 @@
           '_getUniqueMerchants(items.*)',
           '_calculateTotal(items.*)',
           '_route(route)',
-					// Edit
-					'_queryMatchesChanged(queryMatches.*)',
-					// endEdit
         ],
 
         ready: function() {
@@ -600,28 +411,6 @@
         },
 
 			  // Edit
-				_queryMatchesChanged: function() {
-					this._setMediaWidth();
-					this._computeSmall();
-					/** /
-					if (this.buttons) {
-						this._setButtonsVisibility();
-					}
-					/**/
-				},
-				_setMediaWidth: function() {
-					var ob = this.queryMatches;
-					for (x in ob) {
-						if (ob.hasOwnProperty(x) && ob[x]) {
-							this.set ('mediaWidth', x);
-							return;
-						}
-					}
-				},
-				_computeSmall: function() {
-					this.set( '_computedSmall' , this.queryMatches.small
-									                  || this.queryMatches.xsmall );
-				},
 				get itemsPath() {
           return [ 'users' , this.user.uid , 'items' ].join('/');
         },

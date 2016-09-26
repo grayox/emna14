@@ -1,0 +1,262 @@
+<!---->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+
+<!-- Edit -->
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../../bower_components/iron-media-query/iron-media-query.html">
+<!-- endEdit -->
+
+<dom-module id="toolbar-panel">
+	<style is="custom-style">
+    :host {
+    }
+		/* button * /
+		/* http://www.w3schools.com/css/css3_animations.asp * /
+		@-webkit-keyframes slide-right { /* Chrome, Safari, Opera * /
+			  0% { right: 200px; opacity: 0; -webkit-transform: rotateY( 90deg); }
+			100% { right:   0  ; opacity: 1; -webkit-transform: rotateY(  0deg); }
+		}
+		@keyframes slide-right { /* Standard syntax * /
+			  0% { right: 200px; opacity: 0;         transform: rotateY( 90deg); }
+			100% { right:   0  ; opacity: 1;         transform: rotateY(  0deg); }
+		}
+		/** /
+		#b01 { animation-delay: 1.24s; }
+		#b02 { animation-delay: 1.20s; }
+		#b03 { animation-delay: 1.12s; }
+		#b04 { animation-delay: 0.96s; }
+		#b05 { animation-delay: 0.64s; }
+		/**/
+		.light {
+			opacity: 0.6;
+			font-weight: 100;
+		}
+		paper-icon-button {
+			/** /
+			color: var(--icon-color, --paper-orange-500); Removed default because icons might handle change of background
+			/**/
+			color: var(--icon-color, white);
+			cursor: pointer;
+			border-radius: 50%;
+			/** /
+			padding: 1em;
+			height: 4em;
+			width: 4em;
+			/* animations * /
+			position: relative;
+			animation-delay: 1s;
+			animation-name: slide-right;
+			-webkit-animation-name: slide-right; /* Chrome, Safari, Opera * /
+			animation-duration: .8s;
+			-webkit-animation-duration: .8s; /* Chrome, Safari, Opera * /
+			animation-timing-function: ease-in; /* none linear ease ease-in ease-out ease-in-out * /
+			animation-fill-mode: both;
+			/* transitions */
+			-moz-transition:    .5s;
+			-webkit-transition: .5s;
+			-o-transition:      .5s;
+			transition:         .5s;
+		}
+		paper-icon-button[selected=true] { /*Don't use :hover because :hover condition remains true after clicking followed by page reload*/
+			/** /
+			color: var(--icon-color-hover, --paper-grey-500);
+			/**/
+			opacity: 0.67;
+			/** /
+			background-color: rgba(0,0,0,0.3);
+			/**/
+			background-color: rgba(255,255,255,0.3);
+			/**/
+		}
+	</style>
+	<template>
+		<!--- ->
+		Common breakpoints: 480, 600(xs/s), 840, 960(s/m), 1280(m/l), 1440, and 1600dp
+		https://material.google.com/layout/responsive-ui.html#responsive-ui-breakpoints
+    https://developer.android.com/guide/practices/screens_support.html
+		http://stackoverflow.com/a/16727073/1640892
+		<iron-media-query query=                       "(max-width: 599px)" query-matches="{{queryMatches.xsmall}}"     ></iron-media-query>
+		<iron-media-query query="(min-width: 600px) AND (max-width: 839px)" query-matches="{{queryMatches.small}}"  full></iron-media-query>
+		<iron-media-query query="(min-width: 840px) AND (max-width: 959px)" query-matches="{{queryMatches.medium}}" full></iron-media-query>
+		<iron-media-query query="(min-width: 960px)"                        query-matches="{{queryMatches.large}}"      ></iron-media-query>
+		<!---->
+		<iron-media-query query=                       "(max-width: 574px)" query-matches="{{queryMatches.xsmall}}"     ></iron-media-query>
+		<iron-media-query query="(min-width: 575px) AND (max-width: 699px)" query-matches="{{queryMatches.small}}"  full></iron-media-query>
+		<iron-media-query query="(min-width: 700px) AND (max-width: 839px)" query-matches="{{queryMatches.medium}}" full></iron-media-query>
+		<iron-media-query query="(min-width: 840px)"                        query-matches="{{queryMatches.large}}"      ></iron-media-query>
+
+		<div xclass="layout horizontal row wrap center-justified flex-center-align">
+			<template is="dom-repeat" items="[[buttons]]">
+			  <span>
+					<paper-icon-button id$="[[item.id]]"
+														 icon="[[item.icon]]"
+														 on-tap="action"
+														 on-mouseover="_handleIn"
+														 on-mouseout="_handleOut"
+														 hidden$="[[item.hidden]]"
+														 >
+					</paper-icon-button>
+					<paper-tooltip>[[item.name]]</paper-tooltip>
+			  </span>
+			</template>
+			<span on-tap="show">
+			  <span class="light" hidden$="[[queryMatches.xsmall]]" >[[user.displayName]]</span>
+			  <span class="light" hidden$="[[!queryMatches.xsmall]]">[[trunc]]</span>
+				<paper-tooltip>[[user.email]]</paper-tooltip>
+			</span>
+		</div>
+	</template>
+	
+				<!-- Edit -- >
+				<span>
+        	<paper-icon-button icon="power-settings-new" on-tap="_logout"></paper-icon-button>
+					<paper-tooltip>logout</paper-tooltip>
+				</span>
+				<span>
+				  <paper-icon-button icon="info-outline" on-tap="_openInfoWindow"></paper-icon-button>
+					<paper-tooltip>info</paper-tooltip>
+				</span>
+				<span>
+				  <paper-icon-button icon="settings" on-tap="_openInfoWindow"></paper-icon-button>
+					<paper-tooltip>settings</paper-tooltip>
+				</span>
+				<span>
+        	<paper-icon-button icon="account-circle" on-tap="_openInfoWindow"></paper-icon-button>
+					<paper-tooltip>account</paper-tooltip>
+				</span>
+				<!-- endEdit -->
+
+  <script>
+    (function() {
+      //'use strict';
+      Polymer({
+				
+        is: 'toolbar-panel',
+				//
+				properties: {
+					mediaWidth: String,
+					queryMatches: {
+						type: Object,
+						notify: true,
+						value: function() {
+							return {}
+						},
+					},
+					user: {
+            type: Object,
+            notify: true,
+          },
+					buttons: {
+						type: Array,
+            notify: true,
+						value: function() {
+							return [
+								{ hidden: false , id: 'b01' , name: 'logout'   , icon: 'power-settings-new' , } ,
+								{ hidden: true  , id: 'b02' , name: 'info'     , icon: 'info-outline'       , } ,
+								{ hidden: true  , id: 'b03' , name: 'settings' , icon: 'settings'           , } ,
+								{ hidden: true  , id: 'b04' , name: 'account'  , icon: 'account-circle'     , } ,
+							];
+						},
+					},
+				},
+				/**/
+				observers: [
+					'_queryMatchesChanged(queryMatches.*)',
+				],
+				attached: function() {
+					this.async(function() {
+						if(this.user && this.user.displayName) {
+							this.set('trunc', this.user.displayName.slice(0, 2) + '...');
+						} else {
+							this.set('trunc', '');
+						}
+          }/*.bind(this)*/, 100);
+				},
+				_queryMatchesChanged: function() {
+					this._setMediaWidth();
+					if (this.buttons) {
+						this._setButtonsVisibility();
+					}
+				},
+				_setMediaWidth: function() {
+					var ob = this.queryMatches;
+					for (x in ob) {
+						if (ob.hasOwnProperty(x) && ob[x]) {
+							this.set ('mediaWidth', x);
+							return;
+						}
+					}
+				},
+				_setButtonsVisibility: function() {
+					//console.log('media', this.mediaWidth);
+					var m = this.mediaWidth;
+					/** /
+					var ar = this.buttons;
+					var i = ar.length;
+					while(i---1) {
+						this.set('buttons[i]["hidden"]', true);
+						//var r = this.get(['buttons', i]);
+						//r.hidden = true;
+						//console.log('r', r.hidden);
+					}
+					/**/
+          switch(m) {
+						case 'xsmall':
+					    this.set( 'buttons.1.hidden' , true  );
+					    this.set( 'buttons.2.hidden' , true  );
+					    this.set( 'buttons.3.hidden' , true  );
+							break;
+						case 'small':
+					    this.set( 'buttons.1.hidden' , false );
+					    this.set( 'buttons.2.hidden' , true  );
+					    this.set( 'buttons.3.hidden' , true  );
+							break;
+						case 'medium':
+					    this.set( 'buttons.1.hidden' , false );
+					    this.set( 'buttons.2.hidden' , false );
+					    this.set( 'buttons.3.hidden' , true  );
+							break;
+						case 'large':
+							this.set( 'buttons.1.hidden' , false );
+					    this.set( 'buttons.2.hidden' , false );
+					    this.set( 'buttons.3.hidden' , false );
+							break;
+						/** /
+						default:
+						  default code block;
+						/**/
+					}
+					//console.log('buttons', this.buttons);
+			  },
+				_handleIn: function(e) {
+					var r = e.model.item;
+				  var s = this.$$('#' + r.id);
+					s.setAttribute('selected', true);
+				},
+				/**/
+				_handleOut: function(e) {
+					var r = e.model.item;
+				  var s = this.$$('#' + r.id);
+					s.setAttribute('selected', false);
+				},
+				/**/
+				action: function(e) {
+					var r = e.model.item; // console.log('r', r);//Polymer.dom(e).rootTarget.getAttribute('data-provider');
+					this.fire(r.name, r);
+					//console.log('user', this.user);
+				},
+				/**/
+				show: function() {
+					console.log('user', this.user);
+				},
+				/**/
+      });
+    })();
+  </script>
+</dom-module>

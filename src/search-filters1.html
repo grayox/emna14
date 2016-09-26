@@ -5,16 +5,14 @@
 <link rel="import" href="../bower_components/vaadin-date-picker/vaadin-date-picker.html">
 <link rel="import" href="moment-js.html">
 
-<link rel="import" href="shared-styles.html">
-
 <dom-module id="search-filters">
   <template>
-    <style include="shared-styles">
-			
+    <style>
       :host {
         display: block;
-      }
-			
+				padding: 0 16px;
+		  }
+
       .col {
         width: 100%;
         box-sizing: border-box;
@@ -53,12 +51,8 @@
       }
 
       .filters {
-				background: #f8f9f9;
-        padding: 0 24px 16px;
-				        box-shadow: inset -4px 0 16px -9px rgba(0, 0, 0, 0.5); /* right border side shadow  */
-				   -moz-box-shadow: inset -4px 0 16px -9px rgba(0, 0, 0, 0.5);
-				-webkit-box-shadow: inset -4px 0 16px -9px rgba(0, 0, 0, 0.5);
-		  }
+        padding-bottom: 16px;
+      }
 
       .status .caption {
         display: block;
@@ -72,137 +66,64 @@
         margin-left: 8px;
       }
 
-      .checkboxes > paper-checkbox {
+      .checkboxes> paper-checkbox {
         margin-right: 8px;
       }
 
-			/** /
       .title {
         display: none;
       }
-			/**/
-			/* Edit */
-      .media-width-xsmall .filters ,
-			.media-width-small  .filters {
-				/** /
-				margin: 0 64px;
-				/**/
-			}
-			.media-width-medium {
-			}
-			.media-width-medium .title ,
-			.media-width-large  .title {
-				display: block;
-				padding: 0;
-				@apply(--section-title);
-			}
-			.media-width-medium .checkboxes ,
-			.media-width-large  .checkboxes {
-				display: block;
-			}
-		  .media-width-medium .checkboxes > paper-checkbox ,
-			.media-width-large  .checkboxes > paper-checkbox {
-				display: block;
-				margin-bottom: 16px;
-      }
-      .media-width-medium .filters ,
-			.media-width-large  .filters {
-				position: absolute;
-				width: 260px;
-				height: calc(100vh - 64px);
-			}
-			.button-clear {
-				text-transform: none;
-				color: var(--primary-color);
-				margin-right: -8px;
-			}
-			.xtitle {
-				margin-bottom: -8px;
-				padding: 4px 0 0;
-			}
-	
-	  </style>
-		<style is="custom-style">
-			.flex-horizontal {
-				@apply(--layout-horizontal);
-			}
-			.flexchild {
-				@apply(--layout-flex);
-			}
-			.flex-center-align {
-				@apply(--layout-center);
-			}
-		</style>
-		<!-- endEdit -->
 
-    <div id="content"
-				 class$="media-width-[[mediaWidth]]"
-				 >
+      @media (min-width: 900px) {
+        .title {
+          display: block;
+          padding: 14px 0;
+          @apply(--section-title);
+        }
+        .checkboxes,
+        .checkboxes> paper-checkbox {
+          display: block;
+        }
+        .checkboxes> paper-checkbox {
+          margin-bottom: 16px;
+        }
+        .filters {
+          padding: 0 24px;
+          position: absolute;
+		      left: -308px;
+		      width: 260px;
+          background: #f8f9f9;
+          height: calc(100vh - 64px);
+          box-shadow: inset -4px 0 16px -9px rgba(0, 0, 0, 0.5);
+        }
+      }
+    </style>
+
+    <div id="content">
       <div class="filters">
-				<!--- ->
-				<div class="title">Filter Items</div>
-				<!---->
-				<div class="title" hidden$="[[_computedSmall]]">
-					<div class="container flex-horizontal flex-center-align">
-						<!---->
-						<div>Filter Items</div>
-						<div class="flexchild"></div>
-						<div>
-							<paper-button class="button-clear"
-														on-tap="_clearFilters"
-														>Clear Filters</paper-button>
-						</div>
-					</div>
-				</div>
-				<!---->
-				
+        <div class="title">Filter Items</div>
+
         <div class="row">
-          <div class="col date">
-            <vaadin-date-picker id="from"
-																auto-validate
-																label="From"
-																value="{{filters.start}}"
-																>
-						</vaadin-date-picker>
+          <div class="date col">
+            <vaadin-date-picker id="from" auto-validate label="From" value="{{filters.start}}"></vaadin-date-picker>
             <span>–</span>
-            <vaadin-date-picker id="to"
-																auto-validate
-																label="To"
-																value="{{filters.end}}"
-																>
-						</vaadin-date-picker>
+            <vaadin-date-picker id="to" auto-validate label="To" value="{{filters.end}}"></vaadin-date-picker>
           </div>
         </div>
 
         <div class="row">
-          <div class="col total">
-            <paper-input label="Min"
-												 value="{{filters.min}}"
-												 type="number"
-												 required
-												 step="any"
-												 >
+          <div class="total col">
+            <paper-input label="Min" value="{{filters.min}}" type="number" required step="any">
               <div prefix>$</div>
             </paper-input>
             <span>–</span>
-            <paper-input label="Max"
-												 value="{{filters.max}}"
-												 type="number"
-												 required
-												 step="any"
-												 >
-						</paper-input>
+            <paper-input label="Max" value="{{filters.max}}" type="number" required step="any"></paper-input>
           </div>
         </div>
 
         <div class="row">
           <div class="merchants col">
-            <vaadin-combo-box label="Merchant"
-															items="{{merchants}}"
-															value="{{filters.merchant}}"
-															id="merchantsSelect"
-															>
-						</vaadin-combo-box>
+            <vaadin-combo-box label="Merchant" items="{{merchants}}" value="{{filters.merchant}}" id="merchantsSelect"></vaadin-combo-box>
           </div>
         </div>
 
@@ -211,10 +132,7 @@
             <span class="caption">Status</span>
             <div class="checkboxes">
               <template is="dom-repeat" items="[[statusOptions]]">
-                <paper-checkbox on-change="_updateStatus"
-																checked="[[_filtersContain(item.name, filters.*)]]"
-																name$="[[item.name]]"
-																>[[item.label]]</paper-checkbox>
+                <paper-checkbox on-change="_updateStatus" checked="[[_filtersContain(item.name, filters.*)]]" name$="[[item.name]]">[[item.label]]</paper-checkbox>
               </template>
             </div>
           </div>
@@ -243,15 +161,7 @@
             type: Array,
             observer: '_merchantsChanged'
           },
-          statusOptions: Array,
-					// Edit
-					mediaWidth: { // xsmall, small, medium, large
-						type: String,
-						update: true,
-						reflectToAttribute: true,
-						observer: '_mediaWidthChanged'
-					},
-					// endEdit
+          statusOptions: Array
         },
 
         ready: function() {
@@ -325,31 +235,7 @@
 
         _filtersContain: function(name, filters) {
           return filters && filters.base.status && filters.base.status.indexOf(name) >= 0;
-        },
-				
-				// Edit
-				
-				attached: function() {
-					this._computeSmall();
-				},
-
-				_mediaWidthChanged: function() {
-					//this._setStyles();
-					this._computeSmall();
-					this.set( '$.collapse.opened' , !!!this._computedSmall );
-				},
-
-				_computeSmall: function() {
-					this.set( '_computedSmall' , this.mediaWidth ===  'small'
-																		|| this.mediaWidth === 'xsmall' );
-				},
-				
-				_clearFilters: function() {
-					this.fire('clear-filters');
-				},
-				
-				// endEdit
-				
+        }
       });
     })();
   </script>

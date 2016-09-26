@@ -4,8 +4,6 @@
 
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-badge/paper-badge.html">
-<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="filters-toolbar">
@@ -16,18 +14,15 @@
 				display: block;
         background: #f8f9f9;
 				/** /
-        background: var(--paper-grey-200), #f8f9f9;
-				/**/
-				        box-shadow: inset -4px 0 16px -9px rgba(0, 0, 0, 0.5); /* right border side shadow */
-				   -moz-box-shadow: inset -4px 0 16px -9px rgba(0, 0, 0, 0.5);
-				-webkit-box-shadow: inset -4px 0 16px -9px rgba(0, 0, 0, 0.5);
+				        box-shadow: rgba(0, 0, 0, 0.2) 0px -10px 6px -10px ;
+           -moz-box-shadow: rgba(0, 0, 0, 0.2) 0px -10px 6px -10px ;
+        -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px -10px 6px -10px ;
 				/**/
 			}
-			/** /
 			.shadow {
 				/** /
 				http://stackoverflow.com/a/2402560/1640892
-				/** /
+				/**/
 				position : absolute ;
 				left     : 0px      ;
 				top      : 0px      ;
@@ -38,7 +33,6 @@
         -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px -10px 6px -10px inset;
 				pointer-events: none;
 			}
-			/**/
 			search-filters.media-width-xsmall ,
 			search-filters.media-width-small  {
 			}
@@ -64,11 +58,10 @@
 			  --iron-collapse-transition-duration: 450ms;
 			}
 			.collapse-content {
-				/** /
 				padding-bottom: 32px;
-				border: 1px solid #dedede;
-				border-bottom: 1px solid;
+				/** /
 				padding: 15px;
+				border: 1px solid #dedede;
 				/**/
 			}
 
@@ -76,7 +69,7 @@
 			}
 			
 			#toolbar {
-				padding: 8px 16px;
+				padding: 4px 16px;
 			}
 			
       #total {
@@ -89,11 +82,7 @@
       #total > .sum {
         font-size: 140%;
       }
-			
-			#filters, #toolbar {
-				box-shadow: rgba(0, 0, 0, 0.2) 0px -10px 6px -10px inset;
-      }
-			
+
       #filters-toggle {
         color: var(--primary-color);
 				cursor: pointer;
@@ -102,14 +91,6 @@
 			#filters-toggle paper-icon-button {
 				border-radius: 50%;
 				--paper-icon-button-ink-color: var(--primary-color);
-				/** /
-				background-color: rgba(255, 255, 255, 0.3);
-				opacity: 0.67;
-				/**/
-				-moz-transition:    .5s;
-				-webkit-transition: .5s;
-				-o-transition:      .5s;
-				transition:         .5s;
 			}
 			
 			#filters-toggle paper-icon-button:hover {
@@ -126,14 +107,13 @@
 				transition:         .5s;
 			}
 			
-			/** /
       #filters-toggle .count {
 				/** /
         position: absolute;
         top: 6px;
         right: 0;
         z-index: 1;
-				/** /
+				/**/
         width: 16px;
         height: 16px;
         line-height: 16px;
@@ -150,13 +130,9 @@
       #filters-toggle .count[has-filters] {
         transform: scale(1);
       }
-			/**/
-			paper-badge {
-				z-index: 1;
-			}
 
       .buttons-bottom {
-      	padding: 0 24px 32px 8px;
+      	padding: 8px 24px;
       }
 				
 			.button-done {
@@ -185,15 +161,15 @@
 		</template>
 		<!--- ->
 		<div class="shadow"></div>
-		<!--- ->
+		<!---->
 		<div id="header"
 				 hidden$="[[_computedSmall]]"
 			   >
-			<!--- ->
+			<!---->
 			<div class="container flex-horizontal">
 			  <!--- ->
 		  	<div class="shadow"></div>
-			  <!--- ->
+			  <!---->
 				<div class="title">Filter Items</div>
 				<div class="flexchild"></div>
 				<div>
@@ -202,9 +178,8 @@
 												>Clear Filters</paper-button>
 				</div>
 			</div>
-			<!--- ->
+			<!---->
 		</div>
-		<!---->
 					
 		<div id="toolbar"
 				 class="container flex-horizontal"
@@ -220,18 +195,8 @@
 			</div>
 			<div class="flexchild"></div>
 			<div id="filters-toggle" on-tap="toggle">
-				<span id="filters-label">Filters</span>
-				<paper-badge id="badge"
-										 label="[[appliedFilters]]"
-										 for="filters-label"
-										 hidden
-										 entry-animation="scale-up-animation"
-										 exit-animation="scale-down-animation"
-										 >
-				</paper-badge>
-				<!---- >
+				<span>Filters</span>
 				<span class="count" has-filters$="[[_hasFilters(appliedFilters)]]">[[appliedFilters]]</span>
-				<!---->
 				<paper-icon-button icon="filter-list"></paper-icon-button>
 			</div>
 		</div>
@@ -243,7 +208,6 @@
 												merchants="[[merchants]]"
 												media-width="[[mediaWidth]]"
 												class$="media-width-[[mediaWidth]]"
-												on-clear-filters="_clearFilters"
 												>
 				 	<!---->
 					<div id="bottom-buttons"
@@ -253,7 +217,7 @@
 						<div>
 				 	    <paper-button id="done-button"
 														class="button-clear"
-														on-tap="_resetFilters">Clear Filters</paper-button>
+														on-tap="_clearFilters">Clear Filters</paper-button>
 						</div>
 						<div class="flexchild"></div>
 						<div>
@@ -273,68 +237,16 @@
   <script>
     Polymer({
       is: 'filters-toolbar',
-			// Edit
-			behaviors: [
-				Polymer.NeonAnimationRunnerBehavior,
-			],
       properties: {
-				/**/
-				animationConfig: {
-					value: function() {
-						return {
-							'entry': {
-								name: 'scale-up-animation',
-								node: this.$.badge,
-								timing: {
-									duration: 750,
-								},
-							},
-							'exit': {
-								name: 'scale-down-animation',//'fade-out-animation',
-								node: this.$.badge,
-								timing: {
-									duration: 750,
-								},
-							},
-							'rotateUp': {
-								name: 'transform-animation',
-								node: this.$.badge,
-								transformTo: 'rotate(360deg)',
-								timing: {
-									duration: 750,
-								},
-							},
-							'rotateDown': {
-								name: 'transform-animation',
-								node: this.$.badge,
-								transformTo: 'rotate(-360deg)',
-								timing: {
-									duration: 750,
-								},
-							},
-						}
-					}
-				},
-				/** /
-				entryAnimation: {
-					value: 'scale-up-animation'
-				},
-				exitAnimation: {
-					value: 'scale-down-animation'//'fade-out-animation'
-				},
-				/**/
-			// endEdit
         filters: Object,
         items: Array,
         totalOwed: Number,
         merchants: Array,
-				/** /
         expanded: {
           type: Boolean,
           value: false,
           reflectToAttribute: true
         },
-				/**/
         appliedFilters: Number,
         _statusOptions: {
           type: Array,
@@ -362,40 +274,11 @@
       observers: [
         '_calculateNumFilters(filters.*)',
       ],
-			
-			// Edit
-			listeners: {
-				'neon-animation-finish': '_onNeonAnimationFinish'
-			},
-			
-			_onNeonAnimationFinish: function() {
-				var count = this.appliedFilters;
-				this.set( '$.badge.hidden' , ( count === 0 || count == '' ) );
-			},
-			
-			_computeAnimation: function(ctOld, ctNew) {
-				if ( ctNew === 0 || ctNew === '' ) {
-					this.playAnimation('exit');
-				} else if ( ( ctOld === 0 || ctOld === '' )
-					            && 
-					          ( ctNew === 1 ) 
-				          ) {
-					this.set( '$.badge.hidden' , false );
-					this.playAnimation('entry');
-				} else if ( ctNew > ctOld ) {
-					this.playAnimation('rotateUp');
-				} else if ( ctNew < ctOld ) {
-					this.playAnimation('rotateDown');
-				}
-			},
-			// endEdit
 
-			/** /
       _hasFilters: function(appliedFilters) {
-				return appliedFilters > 0;
+        return appliedFilters > 0;
       },
-			/**/
-			
+
       _calculateNumFilters: function() {
         var numFilters = 0;
         for (var f in this.filters) {
@@ -410,9 +293,6 @@
             }
           }
         }
-				// Edit
-				this._computeAnimation(this.appliedFilters, numFilters);
-				// endEdit
         this.appliedFilters = numFilters ? numFilters : '';
       },
 
@@ -438,7 +318,7 @@
         }
 			  /**/
       },
-			
+
       _clearFilters: function() {
         this.set('filters.start', '');
         this.set('filters.end', '');
@@ -448,12 +328,8 @@
         this.set('filters.status', this._statusOptions.map(function(option) {
           return option.name;
         }));
-		  },
-			
-			_resetFilters: function() {
-				this._clearFilters();
-				this.toggle();//this._hideFilters();
-			},
+        this.toggle();//this._hideFilters();
+      },
 			
 			// Edit
 			

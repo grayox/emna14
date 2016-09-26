@@ -1,3 +1,69 @@
+VERSION HISTORY
+
+v07
+
+v06
+1. Improved on basic CRUD.
+2. Improved item-editor by switching views based on Create or Update mode.
+3. Added basic app-drawer-layout but reverted to paper-toolbar in favor of implementing
+   app-drawer-layout in v07.
+4. v07 TODO:
+   a. Implement app-drawer-layout
+	 b. Rename views and variables
+	 c. Refactor file structure; move 'specific/' to 'custom/specific/'
+
+v05
+1. Checkout (`git clone` + `bower install`) Vaadin/expense-manager-demo.
+2. Incrementally & surgically add polymerfire elements to achieve minimum threshhold functionality.
+3. Iterate improvements incrementally.
+4. bower.json append:
+	  "paper-tooltip": "PolymerElements/paper-tooltip#^1.1.2",
+    "polymerfire": "firebase/polymerfire#^0.9.5",
+    "app-storage": "PolymerElements/app-storage#^0.9.4"
+		To add:
+			PolymerElements/paper-dropdown-menu
+			PolymerElements/paper-listbox
+			PolymerElements/paper-item
+			Saulis/iron-data-table
+			PolymerElements/paper-tooltip
+			PolymerElements/paper-menu
+			PolymerElements/iron-flex-layout
+			PolymerElements/neon-animation/animations/scale-up-animation
+5. Achieved basic CRUD functionality!
+6. v06 TODO:
+   a. Add local storage
+	 b. Remove/replace Vaadin charts
+	 c. Add multiple views: main (shared, collective) lists, private (individual) lists
+	 d. Reflect those lists in object store data structure models/nodes
+
+v04
+1. Cloned v02.
+2. Attempts to incrementally improve v02.
+
+v03
+1. Cloned v01.
+2. Attempts to incrementally improve v01.
+
+v02
+1. Cloned Note App Demo.
+   a. $ git clone https://github.com/firebase/polymerfire.git
+   b. $ cd polymerfire
+   c. $ bower install
+   d. $ polymer serve
+   e. $ open http://localhost:8080/components/polymerfire/demo/
+2. Integrates (wholesale) Vaadin Expense Manager Demo into Polymerfire Note App Demo shell
+
+v01
+1. Cloned Expense Manager.
+   a. $ git clone https://github.com/vaadin/expense-manager-demo.git
+   b. $ cd expense-manager-demo
+   c. $ bower install
+   d. $ polymer serve
+   e. $ open http://localhost:8080/
+2. Integrates (piecemeal) PolymerFire Note App Demo components into Vaadin Expense Manager shell
+
+
+
 # Progressive Web App with full offline capabilities
 
 This is an example project for how you can build a [Progressive Web Application](https://infrequently.org/2015/06/progressive-apps-escaping-tabs-without-losing-our-soul/) with [Polymer](https://www.polymer-project.org/1.0/), [PouchDB](https://pouchdb.com/) and [Vaadin Elements](https://vaadin.com/elements).

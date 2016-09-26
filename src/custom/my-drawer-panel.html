@@ -1,0 +1,142 @@
+<!---- >
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+<!---->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
+
+<!---- >
+<link rel="import" href="../styles/app-theme.html">
+<link rel="import" href="../styles/app.css">
+<!---->
+
+<dom-module id="my-drawer-panel">	
+		
+	<template>
+		
+		<style is="custom-style" include="app-theme">
+		
+			paper-menu iron-icon {
+				margin-right: 33px;
+				opacity: 0.54;
+			}
+
+			paper-menu a {
+				text-decoration: none;
+				border-bottom: 1px solid var(--paper-grey-600, #757575);
+				/** /
+				color: var(--menu-link-color);
+				/**/
+				color: white;
+				display: -ms-flexbox;
+				display: -webkit-flex;
+				display: flex;
+				-ms-flex-direction: row;
+				-webkit-flex-direction: row;
+				flex-direction: row;
+				-ms-flex-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+				font-family: 'Roboto', 'Noto', sans-serif;
+				-webkit-font-smoothing: antialiased;
+				text-rendering: optimizeLegibility;
+				font-size: 14px;
+				font-weight: 400;
+				line-height: 24px;
+				min-height: 48px;
+				padding: 0 16px;
+				transition         : .5s;
+				-o-transition      : .5s;
+				-ms-transition     : .5s;
+				-moz-transition    : .5s;
+				-webkit-transition : .5s;
+			}
+
+			paper-menu a:first-child {
+				margin-top: -8px;
+				border-top: 1px solid var(--paper-grey-600, #757575);
+			}
+
+			paper-menu a:hover {
+				font-weight: bold;
+				color: white;
+				background: var(--primary-color);
+				/** /
+				color: black;
+				background: white;
+				/**/
+			}
+					
+			paper-menu .active-menu-item {
+				font-weight: bold;
+				background: var(--primary-color);
+				color: white;
+				/** /
+				color: black;
+				background: white;
+				background: var(--accent-color);
+				/**/
+			}
+			
+		</style>
+		
+		<paper-menu selected="{{route}}" attr-for-selected="data-route" 
+								on-iron-select="_selectItem" selected-class="active-menu-item">
+			<!-- Drawer Content -->
+			<a data-route="page01"><iron-icon icon="dashboard"          ></iron-icon><span>Dashboard    </span></a>
+			<a data-route="page02"><iron-icon icon="settings"           ></iron-icon><span>Settings     </span></a>
+			<a data-route="page03"><iron-icon icon="extension"          ></iron-icon><span>Programs     </span></a>
+			<a data-route="page04"><iron-icon icon="note-add"           ></iron-icon><span>Approvals    </span></a>
+			<a data-route="page05"><iron-icon icon="add-shopping-cart"  ></iron-icon><span>Buy          </span></a>
+			<a data-route="page06"><iron-icon icon="shop-two"           ></iron-icon><span>Sell         </span></a>
+			<a data-route="page07"><iron-icon icon="account-balance"    ></iron-icon><span>Settlements  </span></a>
+			<!--- ->
+			<a data-route="page03"><iron-icon icon="build"              ></iron-icon><span>Programs     </span></a>
+			<a data-route="page08"><iron-icon icon="star"               ></iron-icon><span>Landing      </span></a>
+			<a data-route="page01"><iron-icon icon="description"        ></iron-icon><span>Approvals  </span></a>
+			<a data-route="page01"><iron-icon icon="create"             ></iron-icon><span>Approvals  </span></a>
+			<a data-route="page02"><iron-icon icon="extension"          ></iron-icon><span>Programs   </span></a>
+			<a data-route="page02"><iron-icon icon="history"            ></iron-icon><span>History    </span></a>
+			<a data-route="page03"><iron-icon icon="error-outline"      ></iron-icon><span>Issues     </span></a>
+			<a data-route="page05"><iron-icon icon="image:grid-on"      ></iron-icon><span>Table      </span></a>
+			<a data-route="page06"><iron-icon icon="maps:map"           ></iron-icon><span>Map        </span></a>
+			<a data-route="page07"><iron-icon icon="description"        ></iron-icon><span>Attributes </span></a>
+			<a data-route="page08"><iron-icon icon="book"               ></iron-icon><span>Facts      </span></a>
+			<a data-route="page09"><iron-icon icon="star"               ></iron-icon><span>Upgrade    </span></a>
+			<a data-route="page10"><iron-icon icon="social:share"       ></iron-icon><span>Export     </span></a>
+			<a data-route="page11"><iron-icon icon="view-module"        ></iron-icon><span>Batch      </span></a>
+			<a data-route="page12"><iron-icon icon="view-column"        ></iron-icon><span>Comps      </span></a>
+			<a data-route="page13"><iron-icon icon="account-balance"    ></iron-icon><span>Financing  </span></a>
+			<!---->
+		</paper-menu>
+	
+	</template>
+
+	<script>
+		(function(){
+			'use strict';
+			Polymer({
+				is: 'my-drawer-panel',
+				properties: {
+					route: {
+						type: String,
+						notify: true,
+						value: 'page01'
+					}
+				},
+				_selectItem: function() {
+					this.fire('select-item');
+				}
+			});
+		})();
+	</script>
+	
+</dom-module>
