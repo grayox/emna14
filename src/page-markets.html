@@ -16,101 +16,113 @@
 <link rel="import" href="moment-js.html">
 
 <!-- Edit -->
-<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<!---->
+<link rel="import" href="custom/my-drawer-panel.html">
+<!---->
+<link rel="import" href="items-list.html">
+<link rel="import" href="history-panel.html">
+
 <link rel="import" href="custom/toolbar-panel.html">
-<!-- endEdit -->
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/app-layout/app-box/app-box.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-layout/app-layout.html">
 
-<dom-module id="overview-page">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
+<!--- ->
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<!---->
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 
-      paper-toolbar {
-        background: var(--dark-primary-color);
-        --paper-toolbar-content: {
-          padding: 0 24px;
-        }
-      }
+<link rel="import" href="shared-styles.html">
 
-      paper-toolbar h1 {
-        font-weight: 300;
-        font-size: 24px;
-      }
-
-      paper-toolbar .logo {
-        color: var(--default-primary-color);
-        margin-left: 16px;
-      }
-
-      .flex {
-        flex: 1;
-      }
-
-      .content {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        display: flex;
-        flex-direction: column;
-      }
-
-      @media (min-width: 900px) {
-        .content {
-          /* Make room for filters panel on the left. */
-          padding-left: 308px;
-          padding-right: 298px;
-        }
-      }
-
-      @media (max-width: 1124px) {
-        .content {
-          padding-right: 0;
-        }
-      }
-
-      #content-panel {
-        flex: 1;
-      }
-
-      #sync {
-        margin-left: 8px;
-        animation: spin 0.8s linear infinite;
-      }
-
-      #sync[hidden] {
-        display: none;
-        animation: none;
-      }
-
-      @keyframes spin {
-        100% {
-          transform: rotate(-360deg);
-        }
-      }
-
-      .logout-button,
-      .about-button {
-        font-size: 14px;
-        color: var(--primary-color);
-      }
-
-      @media (max-width: 600px) {
-        paper-toolbar {
-          --paper-toolbar-content: {
-            padding: 0 6px 0 16px;
-          }
-        }
-        paper-toolbar h1 {
-          font-size: 20px;
-        }
-      }
-    </style>
+<dom-module id="page-markets">
+	<template>
+		<!--- ->
+		<style>
+			:host {
+				height: 100vh;
+				color: yellow;
+				background-color: red;
+			}
+		</style>
+		<!---->
+		<style is="custom-style">
+			.flex-vertical {
+				@apply(--layout-vertical);
+        height: calc(100vh - 64px);
+  		}
+			.flex-horizontal {
+				@apply(--layout-horizontal);
+			}
+			.flexchild {
+				@apply(--layout-flex);
+			}
+			.item {
+				/** /
+				border-style: solid;
+				border-width: 1px;
+				border-color: #dddddd;
+				/** /
+				background-size: cover;
+				background-position: center center;
+				/**/
+				position: relative;
+				background-color: white;
+				margin: 0;
+				padding: 0;
+			}
+			.item-horizontal {
+				height: 100vh;
+			}
+			.item-vertical {
+				width: 100%;
+			}
+		</style>
+		<!---->
 		
-		<!-- Edit -->
+    <!--- ->
+    <vaadin-pouchdb id="db" dbname="{{dbLocal}}" remote="{{dbRemote}}" data="{{items}}" status="{{status}}"></vaadin-pouchdb>
+    <!---->
+    <app-location route="{{route}}"
+									use-hash-as-path
+									>
+		</app-location>
+    <app-route route="{{route}}"
+							 pattern="/:dbId"
+               data="{{routeData}}"
+							 tail="{{subroute}}"
+							 >
+		</app-route>
+		<!--- ->
+    * The above <app-route> element uses the correct pattern ("/:dbId") necessary to delete records from the database.
+    * Replacing that pattern with the "/:page" pattern below results in a malfunction of the delete() method.
+    * The malfunction behaves by appearing to delete the record from the client side table.
+    * But the server-side data remains unaffected. The "/:page" pattern might be useful for routing page views?
+		<!--- ->
+		<app-route route="{{route}}"
+							 pattern="/:page"
+							 data="{{routeData}}"
+							 tail="{{subroute}}"
+							 >
+		</app-route>
+		<!--- ->
+    <iron-ajax id="ajax" handle-as="json" on-response="_handleBackendResponse" on-error="_handleBackendError"></iron-ajax>
+    <!---->
+		
     <firebase-document id="document"
 											 app-name="app"
 											 xpath="[[editableItemId]]"
@@ -124,66 +136,13 @@
 									  data="{{items}}"
 										>
     </firebase-query>
-    <!-- endEdit -->
-
-    <!--- ->
-    <vaadin-pouchdb id="db" dbname="{{dbLocal}}" remote="{{dbRemote}}" data="{{items}}" status="{{status}}"></vaadin-pouchdb>
-    <!---->
-    <app-location route="{{route}}"
-									use-hash-as-path
-									>
-		</app-location>
-    <app-route route="{{route}}"
-							 pattern="/:dbId"
-							 data="{{routeData}}"
-							 tail="{{subroute}}"
-							 >
-		</app-route>
-    <!--- ->
-    <iron-ajax id="ajax" handle-as="json" on-response="_handleBackendResponse" on-error="_handleBackendError"></iron-ajax>
-    <!---->
-
-    <paper-header-panel>
-      <paper-toolbar>
-        <h1>SportsBall</h1>        
-       	<!--- ->
-				<iron-icon id="sync" icon="notification:sync" hidden$="[[_hideSyncIcon(status)]]" title="Syncing…"></iron-icon>
-       	<!---->
-        <span class="flex"></span>
-       	<!--- ->
-        <paper-button on-tap="_openInfoWindow" class="about-button">Info</paper-button>
-        <paper-button on-tap="_logout" class="logout-button">Logout</paper-button>
-				<!---->
-				<!-- Edit -->
-				<toolbar-panel user="[[user]]"
-											 on-logout="_logout"
-											 on-info="_openInfoWindow"
-											 on-account="_openInfoWindow"
-											 on-settings="_openInfoWindow"
+    
+		<paper-toast id="toast"></paper-toast>
+    
+		<iron-localstorage name="item-manager-db-id"
+											 value="{{dbId}}"
 											 >
-				</toolbar-panel>
-				<!-- endEdit -->
-				
-      </paper-toolbar>
-
-      <div class="content">
-        <filters-toolbar id="filters-toolbar"
-												 total-owed="[[totalOwed]]"
-												 merchants="[[merchants]]"
-												 filters="{{filters}}"
-												 items="[[items]]"
-												 >
-				</filters-toolbar>
-        <content-panel id="content-panel"
-											 filters="{{filters}}"
-											 total-owed="[[totalOwed]]"
-											 items="[[items]]"
-											 >
-				</content-panel>
-      </div>
-
-    </paper-header-panel>
-
+		</iron-localstorage>
     <item-editor id="itemEditor"
 								 xmerchants="[[merchants]]"
 								 db="[[_db]]"
@@ -191,18 +150,148 @@
 								 xitem="{{editableItem}}"
 								 >
 		</item-editor>
-    <paper-toast id="toast"></paper-toast>
-    <info-dialog id="info"></info-dialog>
-    <iron-localstorage name="item-manager-db-id" value="{{dbId}}"></iron-localstorage>
-  </template>
+		
+		<template is="dom-if" if="{{_computedSmall}}">
+			<div class="container flex-vertical">
+				<div class="item item-vertical">
+					<!--- ->
+					one
+					<!---->
+					<filters-toolbar id="filters-toolbar"
+													 media-width="[[mediaWidth]]"
+													 total-owed="[[totalOwed]]"
+													 merchants="[[merchants]]"
+													 filters="{{filters}}"
+													 items="[[items]]"
+													 >
+					</filters-toolbar>
+					<!---->
+				</div>
+				<div class="item item-vertical flexchild">
+					<!--- ->
+					two
+					<!---->
+					<items-list id="list"
+											media-width="[[mediaWidth]]"
+											items="[[items]]"
+											filters="[[filters]]"
+											>
+					</items-list>
+					<!---->
+				</div>
+				<div class="item">
+					<!--- ->
+					three
+					<!---->
+					<history-panel id="history-panel"
+												 media-width="[[mediaWidth]]"
+												 total-owed="[[totalOwed]]"
+												 items="[[items]]"
+												 >
+					</history-panel>
+					<!---->
+				</div>
+			</div>
+		</template>
+		<template is="dom-if" if="{{queryMatches.medium}}">
+			<div class="container flex-horizontal">
+				<div class="item item-horizontal">
+					<!--- ->
+					one
+					<!---->
+					<filters-toolbar id="filters-toolbar"
+													 media-width="[[mediaWidth]]"
+													 total-owed="[[totalOwed]]"
+													 merchants="[[merchants]]"
+													 filters="{{filters}}"
+													 items="[[items]]"
+													 >
+					</filters-toolbar>
+					<!---->
+				</div>
+				<div class="flexchild container flex-vertical">
+					<div class="item flexchild">
+						<!--- ->
+						two
+						<!---->
+						<items-list id="list"
+												media-width="[[mediaWidth]]"
+												items="[[items]]"
+												filters="[[filters]]"
+												>
+						</items-list>
+						<!---->
+					</div>
+					<div class="item">
+						<!--- ->
+						three
+						<!---->
+						<history-panel id="history-panel"
+													 media-width="[[mediaWidth]]"
+													 total-owed="[[totalOwed]]"
+													 items="[[items]]"
+													 >
+						</history-panel>
+						<!---->
+					</div>
+				</div>
+			</div>
+		</template>
+		<template is="dom-if" if="{{queryMatches.large}}">
+			<div class="container flex-horizontal">
+				<div class="item item-horizontal">
+					<!--- ->
+					one
+					<!---->
+					<filters-toolbar id="filters-toolbar"
+													 media-width="[[mediaWidth]]"
+													 total-owed="[[totalOwed]]"
+													 merchants="[[merchants]]"
+													 filters="{{filters}}"
+													 items="[[items]]"
+													 >
+					</filters-toolbar>
+					<!---->
+				</div>
+				<div class="item flexchild">
+					<!--- ->
+					two
+					<!---->
+					<items-list id="list"
+											media-width="[[mediaWidth]]"
+											items="[[items]]"
+											filters="[[filters]]"
+											>
+					</items-list>
+					<!---->
+				</div>
+				<div class="item item-horizontal">
+					<!--- ->
+					three
+					<!---->
+					<history-panel id="history-panel"
+												 media-width="[[mediaWidth]]"
+												 total-owed="[[totalOwed]]"
+												 items="[[items]]"
+												 >
+					</history-panel>
+					<!---->
+				</div>
+			</div>
+		</template>
+		<!---->
+		
+	</template>
 
   <script>
     (function() {
       'use strict';
       Polymer({
-        is: 'overview-page',
-
-        properties: {
+        is: 'page-markets',
+				behaviors: [
+					Polymer.NeonAnimationRunnerBehavior,
+				],
+				properties: {
           _db: Object,
           route: Object,
           routeData: Object,
@@ -213,7 +302,7 @@
           loggedIn: {
             type: Boolean,
             notify: true,
-            observer: '_loginStateChanged'
+            observer: '_loginStateChanged',
           },
           status: String,
           items: Array,
@@ -226,21 +315,31 @@
               return {
                 start: '',
                 end: '',
-                merchant: ''
+                merchant: '',
               };
             },
             notify: true
           },
 					// Edit
+					mediaWidth: String,
+					queryMatches: {
+						type: Object,
+						notify: true,
+						reflectToAttribute: true,
+          	value: function() {
+							return {}
+						},
+					},
 					user: {
             type: Object,
             notify: true,
+						reflectToAttribute: true,
           },
 					editableItem: Object,
         	// endEdit
-        },
-
-        listeners: {
+				},
+				
+				listeners: {
           'item-edit'   : '_itemEdit'   ,
           'item-update' : '_itemUpdate' ,
           'item-save'   : '_itemSave'   ,
@@ -252,6 +351,9 @@
           '_getUniqueMerchants(items.*)',
           '_calculateTotal(items.*)',
           '_route(route)',
+					// Edit
+					'_queryMatchesChanged(queryMatches.*)',
+					// endEdit
         ],
 
         ready: function() {
@@ -374,6 +476,28 @@
         },
 
 			  // Edit
+				_queryMatchesChanged: function() {
+					this._setMediaWidth();
+					this._computeSmall();
+					/** /
+					if (this.buttons) {
+						this._setButtonsVisibility();
+					}
+					/**/
+				},
+				_setMediaWidth: function() {
+					var ob = this.queryMatches;
+					for (x in ob) {
+						if (ob.hasOwnProperty(x) && ob[x]) {
+							this.set ('mediaWidth', x);
+							return;
+						}
+					}
+				},
+				_computeSmall: function() {
+					this.set( '_computedSmall' , this.queryMatches.small
+									                  || this.queryMatches.xsmall );
+				},
 				get itemsPath() {
           return [ 'users' , this.user.uid , 'items' ].join('/');
         },
@@ -395,6 +519,11 @@
 						this.set('editableItemId', null);
 					}
 				},
+				/** /
+				toggleLeft: function() {
+					this.$.startDrawer.toggle();
+				},
+				/**/
 				// endEdit
 				
         _itemSave: function(e) {
@@ -451,34 +580,25 @@
           this.$.saveNotification.show();
         },
 				/**/
+				
 				// Edit
+				
         _itemUpdate: function(e) {
           this.$.itemEditor.close();
 					var toast = this.$.toast;
 					toast.text = [ 'Item was ' , e.detail.reason , 'd' ].join('');
 					toast.show();
         },
-				// endEdit
 				
-        _logout: function() {
-          this.loggedIn = false;
-        },
-
-        _loginStateChanged: function() {
-          if (!this.loggedIn) {
-            //this._teardownDB();
-						// Execute function when user logs out
-          }
-        },
-
         _route: function() {
           var id = this.route.path.replace(/^\//, '');
           if (id && id !== this.dbId) {
             this.loggedIn = false;
             this.loggedIn = true;
           }
-        }
+				},
+				
       });
-    })();
+		})();
   </script>
 </dom-module>

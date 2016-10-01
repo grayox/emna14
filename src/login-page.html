@@ -95,14 +95,22 @@
 			--icon-color: white;
 			--icon-color-hover: var(--paper-grey-500); /*var(--primary-color);*/
 		}
+		.header > h1 > img {
+			height: 28px;
+		}
 	</style>
 	<!-- endEdit -->
 
   <template>
     <iron-a11y-keys keys="enter" on-keys-pressed="_logIn"></iron-a11y-keys>
     <div id="header" class="header">
-      <h1>SportsBall</h1>
-    </div>
+      <h1>
+				<!--- ->
+				MasterBlaster
+				<!---->
+				<img src="../../images/MasterBlasterLogo.png" />
+			</h1>
+	  </div>
 		<!-- Edit -->
     <login-panel></login-panel>
 	  <!-- endEdit -->

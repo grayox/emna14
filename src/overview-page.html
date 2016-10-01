@@ -37,8 +37,6 @@
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/app-route/app-location.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
@@ -88,19 +86,17 @@
 			}
 		</style>
 		<style include="shared-styles">
-			/* Edit */
 			/*
 			 * Attempt to fix paper-fab appearing behind app-header
 			 * per http://stackoverflow.com/a/39523007/1640892
 			 *
-			 */
 			paper-fab {
 				z-index: 99;
 			}
 			app-header-layout ::content #contentContainer {
 				z-index: 2!important;
 			}
-			/* endEdit */
+			 */
       app-header {
 				color: white;
 				background-color: var(--dark-primary-color);
@@ -119,9 +115,20 @@
 			}
 			app-toolbar div[main-title] {
 			  font-size: 24px;
-        font-weight: 300;
+				/** /
 				xcursor: pointer;
+				color: var(--primary-color);
+				-webkit-text-stroke-width: 0;
+				/**/
+				font-family: 'Impact', 'Roboto', sans-serif;/**/
+				font-style: italic;
+        font-weight: 100;
 			}
+			
+			app-toolbar img {
+				height: 22px;
+			}
+			
 			.drawer-menu-button {
 				/** /
 				color: var(--icon-color, --paper-orange-500); Removed default because icons might handle change of background
@@ -160,8 +167,14 @@
 				/** /
 		  }
 			/**/
+			app-drawer-layout > app-drawer {
+				--app-drawer-content-container: {
+					background-color: black;
+				}
+			}
 		</style>
 		
+		<!-- Edit -->
 		<!--- ->
 		Common breakpoints: 480, 600(xs/s), 840, 960(s/m), 1280(m/l), 1440, and 1600dp
 		https://material.google.com/layout/responsive-ui.html#responsive-ui-breakpoints
@@ -173,7 +186,6 @@
 		<iron-media-query query="(min-width:  900px) AND (max-width: 1124px)" query-matches="{{queryMatches.medium}}" full></iron-media-query>
 		<iron-media-query query="(min-width: 1125px)"                         query-matches="{{queryMatches.large}}"      ></iron-media-query>
 		
-		<!-- Edit -->
     <firebase-document id="document"
 											 app-name="app"
 											 xpath="[[editableItemId]]"
@@ -236,7 +248,7 @@
 				<!--- ->
 				drawer content
 				<!---->
-				<my-drawer-panel></my-drawer-panel>
+				<my-drawer-panel route="{{page}}" xon-select-item="_handleSelectedPage"></my-drawer-panel>
 				<!---->
 			</app-drawer>
 			<app-header-layout>
@@ -255,8 +267,11 @@
 								 spacer$="[[queryMatches.large]]"
 								 class="drawer-menu-button"
 								 >
-							SportsBall
+							<!---- >
+							MasterBlaster
 							<img src="../images/app-icon-32.png" />
+							<!---->
+							<img src="../images/MasterBlasterLogo.png" />
 						</div>
 						<!--- ->
 						<iron-icon id="sync" icon="notification:sync" hidden$="[[_hideSyncIcon(status)]]" title="Syncing…"></iron-icon>
@@ -406,6 +421,19 @@
 						</div>
 					</div>
         </template>
+				
+				<!-- Edit: Imported from Shop Demo App /shop-app.html -- >
+				
+				<iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible">
+					<shop-home name="home" categories="[[categories]]"></shop-home>
+					<shop-list name="list" route="[[subroute]]" offline="[[offline]]"></shop-list>
+					<shop-detail name="detail" route="[[subroute]]" offline="[[offline]]"></shop-detail>
+					<shop-cart name="cart" cart="[[cart]]" total="[[total]]"></shop-cart>
+					<shop-checkout name="checkout" cart="[[cart]]" total="[[total]]" route="{{subroute}}"></shop-checkout>
+				</iron-pages>
+				
+				<!-- endEdit: Imported from Shop Demo App /shop-app.html -->
+				
 			</app-header-layout>
 		</app-drawer-layout>
 
@@ -461,6 +489,15 @@
           },
 					editableItem: Object,
         	// endEdit
+					
+					// Edit: Imported from Shop Demo App /shop-app.html
+					page: {
+						type: String,
+						reflectToAttribute: true,
+						//observer: '_pageChanged',
+					},
+					// endEdit: Imported from Shop Demo App /shop-app.html
+					
         },
 
         listeners: {
@@ -704,13 +741,22 @@
           this.$.saveNotification.show();
         },
 				/**/
+				
 				// Edit
+				
         _itemUpdate: function(e) {
           this.$.itemEditor.close();
 					var toast = this.$.toast;
 					toast.text = [ 'Item was ' , e.detail.reason , 'd' ].join('');
 					toast.show();
         },
+				
+				/** /
+				_handleSelectedPage: function(e) {
+					console.log('selected page', e.detail);
+				},
+				/**/
+				
 				// endEdit
 				
         _logout: function() {

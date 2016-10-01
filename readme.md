@@ -1,12 +1,24 @@
 VERSION HISTORY
 
+v09
+
 v08
+1. MasterBlaster - rapid network assembler for doing deals
+2. Added MasterBlaster branding and logo to login-page and app-header
+3. [?] Added app-theme.html for themed colors and styles
+4. Added neon-animated-pages animated page transitions
+5. Replaced single overview-page with multiple app pages
+6. Added page routing controlled by neon-animated-pages via app-drawer-panel menu
+7. v09 TODO:
+   a. Switchover content from SportsBall to MasterBlaster
+   b. Continue buildout of MasterBlaster logic and feature set
 
 v07
-1. Installed app-drawer-layout
-2. Installed major component pieces including responsive styling, layout and animation
-3. Reinstalled data connection
-4. v08 TODO:
+1. SportsBall - futures marketplace for sporting events
+2. Installed app-drawer-layout
+3. Installed major component pieces including responsive styling, layout and animation
+4. Reinstalled data connection
+5. v08 TODO:
    a. Begin cleaning up some cruft in files and directories
 	 b. Begin building toward a "MasterBlaster" (rapid network assembly app)
 	 c. Increment styling improvements. Especially on app-drawer-panel and paper-dialog action buttons

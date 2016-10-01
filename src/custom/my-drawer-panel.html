@@ -13,28 +13,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
 
+<!--- ->
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<!---->
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<!---->
+
+
 <!---- >
 <link rel="import" href="../styles/app-theme.html">
 <link rel="import" href="../styles/app.css">
 <!---->
+<link rel="import" href="shared-styles.html">
 
 <dom-module id="my-drawer-panel">	
 		
 	<template>
 		
-		<style is="custom-style" include="app-theme">
+		<style is="custom-style" xinclude="app-theme">
+			
+			:host {}
+			
+			paper-menu {
+				--paper-menu-background-color: black;
+				/** /
+				--paper-menu-background-color: var(--paper-grey-800, #212121);
+				--paper-menu: {
+				}
+				/**/
+			}
 		
 			paper-menu iron-icon {
-				margin-right: 33px;
+				margin-left: 12px;
+				margin-right: 32px;
 				opacity: 0.54;
 			}
 
 			paper-menu a {
 				text-decoration: none;
-				border-bottom: 1px solid var(--paper-grey-600, #757575);
 				/** /
+				border-bottom: 1px solid var(--paper-grey-600, #757575);
 				color: var(--menu-link-color);
 				/**/
+				cursor: pointer;
 				color: white;
 				display: -ms-flexbox;
 				display: -webkit-flex;
@@ -62,7 +83,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 			paper-menu a:first-child {
 				margin-top: -8px;
+				/** /
 				border-top: 1px solid var(--paper-grey-600, #757575);
+				/**/
 			}
 
 			paper-menu a:hover {
@@ -86,11 +109,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				/**/
 			}
 			
+			h1 {
+				font-style: italic;
+				font-family: 'Impact', sans-serif;
+				text-align: center;
+				/** /
+				background-color: black;
+				/**/
+			}
+			
+			h1 > img {
+				/** /
+				width: 75%;
+				/**/
+				height: 20px;
+			}
+			
 		</style>
 		
-		<paper-menu selected="{{route}}" attr-for-selected="data-route" 
-								on-iron-select="_selectItem" selected-class="active-menu-item">
+		<h1>
+			<!--- ->
+			MasterBlaster
+			<!---->
+			<img src="../../images/MasterBlasterLogo.png" />
+		</h1>
+		<paper-menu id="menu"
+								selected="{{route}}"
+								xattr-for-selected="data-route"
+								on-iron-select="_onIronSelect"
+								selected-class="active-menu-item"
+								>
+			<!--- ->
+      Eliminating attr-for-selected eliminates need to use data-route
+      attribute for page definition. Defaults to page index.
+      Just need to verify physical array of iron-pages on controller page
+      (i.e., loggedin-page) matches sequence of pages here in paper-menu.
+			<!---->
 			<!-- Drawer Content -->
+			<a data-route="page02"><iron-icon icon="settings"           ></iron-icon><span>Markets     </span></a>
+			<a data-route="page01"><iron-icon icon="dashboard"          ></iron-icon><span>Contacts    </span></a>
+			<a data-route="page03"><iron-icon icon="extension"          ></iron-icon><span>Deals       </span></a>
+			<!--- ->
 			<a data-route="page01"><iron-icon icon="dashboard"          ></iron-icon><span>Dashboard    </span></a>
 			<a data-route="page02"><iron-icon icon="settings"           ></iron-icon><span>Settings     </span></a>
 			<a data-route="page03"><iron-icon icon="extension"          ></iron-icon><span>Programs     </span></a>
@@ -98,7 +157,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			<a data-route="page05"><iron-icon icon="add-shopping-cart"  ></iron-icon><span>Buy          </span></a>
 			<a data-route="page06"><iron-icon icon="shop-two"           ></iron-icon><span>Sell         </span></a>
 			<a data-route="page07"><iron-icon icon="account-balance"    ></iron-icon><span>Settlements  </span></a>
-			<!--- ->
 			<a data-route="page03"><iron-icon icon="build"              ></iron-icon><span>Programs     </span></a>
 			<a data-route="page08"><iron-icon icon="star"               ></iron-icon><span>Landing      </span></a>
 			<a data-route="page01"><iron-icon icon="description"        ></iron-icon><span>Approvals  </span></a>
@@ -129,12 +187,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 					route: {
 						type: String,
 						notify: true,
-						value: 'page01'
+						reflectToAttribute: true,
+						//value: 'page01', // Eliminating attr-for-selected eliminates need to use data-route attribute for page definition. Defaults to page index.
+						// Just need to verify physical array of iron-pages on controller page matches sequence of pages here in paper-menu.
+						value: 0, // Selects first page on app load
 					}
 				},
-				_selectItem: function() {
-					this.fire('select-item');
-				}
+				/**/
+				_onIronSelect: function() {
+					var s = this.$.menu.selected;
+					//console.log('s', s);
+					this.fire('select-item', s);
+				},
+				/**/
 			});
 		})();
 	</script>

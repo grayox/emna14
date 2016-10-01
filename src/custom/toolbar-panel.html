@@ -102,13 +102,13 @@
 														 hidden$="[[item.hidden]]"
 														 >
 					</paper-icon-button>
-					<paper-tooltip>[[item.name]]</paper-tooltip>
+					<paper-tooltip position="left">[[item.name]]</paper-tooltip>
 			  </span>
 			</template>
 			<span on-tap="show">
 			  <span class="light" hidden$="[[queryMatches.xsmall]]" >[[user.displayName]]</span>
 			  <span class="light" hidden$="[[!queryMatches.xsmall]]">[[trunc]]</span>
-				<paper-tooltip>[[user.email]]</paper-tooltip>
+				<paper-tooltip position="left">[[user.email]]</paper-tooltip>
 			</span>
 		</div>
 	</template>
@@ -116,19 +116,19 @@
 				<!-- Edit -- >
 				<span>
         	<paper-icon-button icon="power-settings-new" on-tap="_logout"></paper-icon-button>
-					<paper-tooltip>logout</paper-tooltip>
+					<paper-tooltip position="left">logout</paper-tooltip>
 				</span>
 				<span>
 				  <paper-icon-button icon="info-outline" on-tap="_openInfoWindow"></paper-icon-button>
-					<paper-tooltip>info</paper-tooltip>
+					<paper-tooltip position="left">info</paper-tooltip>
 				</span>
 				<span>
 				  <paper-icon-button icon="settings" on-tap="_openInfoWindow"></paper-icon-button>
-					<paper-tooltip>settings</paper-tooltip>
+					<paper-tooltip position="left">settings</paper-tooltip>
 				</span>
 				<span>
         	<paper-icon-button icon="account-circle" on-tap="_openInfoWindow"></paper-icon-button>
-					<paper-tooltip>account</paper-tooltip>
+					<paper-tooltip position="left">account</paper-tooltip>
 				</span>
 				<!-- endEdit -->
 
