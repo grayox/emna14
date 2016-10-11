@@ -1,21 +1,21 @@
 <!-- Uses <iron-data-table> -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
 <!--- ->
 Replaced <vaadin-grid> (https://github.com/vaadin/vaadin-grid)
 with <iron-data-table> (https://github.com/Saulis/iron-data-table)
-<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/vaadin-grid.html">
 <!---->
-<link rel="import" href="../bower_components/iron-data-table/iron-data-table.html">
-<link rel="import" href="../bower_components/iron-data-table/default-styles.html">
-<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="moment-js.html">
+<link rel="import" href="../../../bower_components/iron-data-table/iron-data-table.html">
+<link rel="import" href="../../../bower_components/iron-data-table/default-styles.html">
+<link rel="import" href="../../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../custom-libraries/moment-js.html">
 
-<link rel="import" href="custom/row-detail.html">
+<link rel="import" href="../../custom-elements/row-detail.html">
 
 <!-- Edit -->
-<link rel="import" href="custom/styles/grid-1.html">
+<link rel="import" href="grid-styles.html">
 <!-- endEdit -->
 
 <!--- ->
@@ -34,7 +34,7 @@ Examples: http://jsbin.com/xxxxxxxxxx/1/edit?html,output
 
 <dom-module id="items-list">
   <template>
-		<style include="grid-1"></style><!-- Alternate styling based on: https://saulis.github.io/iron-data-table/demo/styling.html -->
+		<style include="grid-styles"></style><!-- Alternate styling based on: https://saulis.github.io/iron-data-table/demo/styling.html -->
     <style>
       :host {
         position: relative;
@@ -47,7 +47,7 @@ Examples: http://jsbin.com/xxxxxxxxxx/1/edit?html,output
         position: absolute;
         right: 32px;
         bottom: 32px;
-        z-index: 99;
+        z-index: 1;
       }
 
       @media (max-width: 1124px) {
@@ -94,7 +94,8 @@ Examples: http://jsbin.com/xxxxxxxxxx/1/edit?html,output
     </style>
 
 
-		<iron-data-table id="grid1"
+		<iron-data-table xid="grid"
+										 id="grid-no-style"
 										 items="[[items]]"
 										 xdetails-enabled
 										 selection-enabled
@@ -112,25 +113,41 @@ Examples: http://jsbin.com/xxxxxxxxxx/1/edit?html,output
 			</template>
 			<!---->
 			
-			<data-table-column name="Date"
-												 xwidth="50px"
+			<data-table-column name="Title"
+												 filter-by="title"
+												 sort-by="title"
+												 width="10em"
 												 xflex="0"
-												 filter-by="date"
-												 sort-by="date"
 												 >
-				<template>[[item.date]]</template>
+				<template>[[item.title]]</template>
 			</data-table-column>
-			<data-table-column name="Away"
-												 filter-by="away"
-												 sort-by="away"
+			<data-table-column name="Rate"
+												 filter-by="rate"
+												 sort-by="rate"
+												 width="3em"
 												 >
-				<template>[[item.away]]</template>
+				<template>[[item.rate]]</template>
 			</data-table-column>
-			<data-table-column name="Home"
-												 filter-by="home"
-												 sort-by="home"
+			<data-table-column name="LTV"
+												 filter-by="ltv"
+												 sort-by="ltv"
+												 width="3em"
 												 >
-				<template>[[item.home]]</template>
+				<template>[[item.ltv]]</template>
+			</data-table-column>
+			<data-table-column name="Amount"
+												 filter-by="amount"
+												 sort-by="amount"
+												 width="4em"
+												 >
+				<template>[[item.amount]]</template>
+			</data-table-column>
+			<data-table-column name="Tenor"
+												 filter-by="tenor"
+												 sort-by="tenor"
+												 width="4em"
+												 >
+				<template>[[item.tenor]]</template>
 			</data-table-column>
 		</iron-data-table>
 		<!---->
@@ -164,6 +181,12 @@ Examples: http://jsbin.com/xxxxxxxxxx/1/edit?html,output
 						reflectToAttribute: true,
 					},
 					// endEdit
+				},
+				
+				attached: function() {
+					this.async(function() {
+						//this.$$('#grid-no-style').render();
+					}.bind(this), 500);
 				},
 				
 				/**/

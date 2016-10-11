@@ -9,22 +9,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <!---->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/notification-icons.html">
 
-<!--- ->
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<!---->
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<!---->
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
+<link rel="stylesheet" href="../custom-libraries/font-awesome.min.css">
 
 <!---- >
-<link rel="import" href="../styles/app-theme.html">
-<link rel="import" href="../styles/app.css">
+<link rel="import" href="../custom-styles/app-theme.html">
+<link rel="import" href="../custom-styles/app.css">
 <!---->
-<link rel="import" href="shared-styles.html">
+<link rel="import" href="../custom-styles/shared-styles.html">
 
 <dom-module id="my-drawer-panel">	
 		
@@ -46,7 +47,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			paper-menu iron-icon {
 				margin-left: 12px;
 				margin-right: 32px;
+				opacity: 0.67;
+				/** /
 				opacity: 0.54;
+				/**/
 			}
 
 			paper-menu a {
@@ -146,13 +150,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       (i.e., loggedin-page) matches sequence of pages here in paper-menu.
 			<!---->
 			<!-- Drawer Content -->
-			<a data-route="page02"><iron-icon icon="settings"           ></iron-icon><span>Markets     </span></a>
-			<a data-route="page01"><iron-icon icon="dashboard"          ></iron-icon><span>Contacts    </span></a>
-			<a data-route="page03"><iron-icon icon="extension"          ></iron-icon><span>Deals       </span></a>
 			<!--- ->
+			<a data-route="page01"><span class="fa fa-tachometer" aria-hidden="true"></span><span>Dashboard    </span></a>
+			<a data-route="page01"><iron-icon icon="social:poll"        ></iron-icon><span>Dashboard    </span></a>
+			<a data-route="page01"><iron-icon icon="dashboard"          ></iron-icon><span>Dashboard    </span></a>
+			<!---->
+			<a data-route="page01"><iron-icon icon="notification:network-check" ></iron-icon><span>Dashboard    </span></a>
+			<a data-route="page02"><iron-icon icon="social:public"              ></iron-icon><span>Deals        </span></a>
+			<a data-route="page03"><iron-icon icon="social:share"               ></iron-icon><span>Share        </span></a>
+			<a data-route="page04"><iron-icon icon="account-balance"            ></iron-icon><span>Settle       </span></a>
+			<!--- ->
+			<a data-route="page01"><iron-icon icon="hardware:device-hub"    ></iron-icon><span>Deals    </span></a>
+			<a data-route="page02"><iron-icon icon="communication:contacts" ></iron-icon><span>Contacts </span></a>
 			<a data-route="page01"><iron-icon icon="dashboard"          ></iron-icon><span>Dashboard    </span></a>
 			<a data-route="page02"><iron-icon icon="settings"           ></iron-icon><span>Settings     </span></a>
 			<a data-route="page03"><iron-icon icon="extension"          ></iron-icon><span>Programs     </span></a>
+			<!--- ->
 			<a data-route="page04"><iron-icon icon="note-add"           ></iron-icon><span>Approvals    </span></a>
 			<a data-route="page05"><iron-icon icon="add-shopping-cart"  ></iron-icon><span>Buy          </span></a>
 			<a data-route="page06"><iron-icon icon="shop-two"           ></iron-icon><span>Sell         </span></a>

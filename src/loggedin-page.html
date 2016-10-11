@@ -1,8 +1,9 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
-<link rel="import" href="page-markets.html">
-<link rel="import" href="page-contacts.html">
-<link rel="import" href="page-deals.html">
+<link rel="import" href="custom-pages/page-dashboard/page-dashboard.html">
+<link rel="import" href="custom-pages/page-deals/page-deals.html">
+<link rel="import" href="custom-pages/page-share/page-share.html">
+<link rel="import" href="custom-pages/page-settle/page-settle.html">
 
 <!-- endEdit -->
 
@@ -173,26 +174,34 @@
 													 selected-attribute="visible"
 													 xon-iron-select="_onIronSelect"
 													 >
+				<page-dashboard xentry-animation="slide-from-right-animation"
+									      exit-animation="slide-left-animation"
+												query-matches="[[queryMatches]]"
+												user="[[user]]"
+												>
+				</page-dashboard>
 				<!---->
-				<page-markets entry-animation="slide-from-bottom-animation"
-											exit-animation="slide-up-animation"
-											query-matches="[[queryMatches]]"
-											user="[[user]]"
-											>
-				</page-markets>
-				<!---->
-				<page-contacts entry-animation="slide-from-bottom-animation"
-											 exit-animation="slide-up-animation"
-											 query-matches="[[queryMatches]]"
-											 user="[[user]]"
-											 >
-				</page-contacts>
-				<page-deals entry-animation="slide-from-bottom-animation"
-										exit-animation="slide-up-animation"
-										query-matches="[[queryMatches]]"
-										user="[[user]]"
-										>
+				<page-deals entry-animation="slide-from-right-animation"
+									  exit-animation="slide-left-animation"
+									  query-matches="[[queryMatches]]"
+									  user="[[user]]"
+									  >
 				</page-deals>
+				<!---->
+				<page-share entry-animation="slide-from-right-animation"
+									  exit-animation="slide-left-animation"
+									  query-matches="[[queryMatches]]"
+										user="[[user]]"
+									  >
+				</page-share>
+				<!---->
+				<page-settle entry-animation="slide-from-right-animation"
+										 exit-animation="slide-left-animation"
+										 query-matches="[[queryMatches]]"
+										 user="[[user]]"
+										 >
+				</page-settle>
+				<!---->
 			</neon-animated-pages>
 			<!---->
 

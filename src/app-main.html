@@ -1,12 +1,13 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="login-page.html">
+<link rel="import" href="loggedin-page.html">
 
 <!-- Edit -->
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <!-- endEdit -->
 
-<dom-module id="x-app">
+<dom-module id="app-main">
   <template>
     <style>
       :host {
@@ -14,7 +15,7 @@
       }
 
       #pages,
-      #pages> * {
+      #pages > * {
         position: absolute;
         top: 0;
         right: 0;
@@ -96,11 +97,11 @@
 									logged-in="{{loggedIn}}"
 									>
 			</login-page>
-      <overview-page id="overview"
+      <loggedin-page id="loggedin"
 										 user="{{user}}"
 										 logged-in="{{loggedIn}}"
 										 >
-			</overview-page>
+			</loggedin-page>
     </iron-pages>
 		<!---->
 
@@ -111,7 +112,7 @@
       'use strict';
 
       Polymer({
-        is: 'x-app',
+        is: 'app-main',
         properties: {
           loggedIn: {
             type: Boolean,
@@ -132,9 +133,9 @@
         },
 
         ready: function() {
-          // Start downloading and initializing the overview page once the login page has rendered
+          // Start downloading and initializing the loggedin-page once the login page has rendered
           Polymer.RenderStatus.afterNextRender(this.$.login, function() {
-            this.importHref(this.resolveUrl('overview-page.html'),
+            this.importHref(this.resolveUrl('loggedin-page.html'),
               null, null, true);
           }.bind(this));
         },

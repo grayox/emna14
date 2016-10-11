@@ -1,54 +1,62 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-form/iron-form.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/vaadin-date-picker/vaadin-date-picker.html">
-<link rel="import" href="../bower_components/vaadin-combo-box/vaadin-combo-box.html">
-<link rel="import" href="../bower_components/vaadin-upload/vaadin-upload.html">
-<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+<link rel="import" href="../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
+<link rel="import" href="../../../bower_components/vaadin-upload/vaadin-upload.html">
+<link rel="import" href="../../../bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="../../../bower_components/app-route/app-route.html">
 
-<!--- ->
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<!---->
-<link rel="import" href="../bower_components/iron-flex-layout-classes/iron-flex-layout-classes.html">
-<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
-<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
-<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
-<link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
-<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
 
-<link rel="import" href="specific/teamslist-paper-menu.html">
-<link rel="import" href="moment-js.html">
+<link rel="import" href="../../custom-elements/number-string.html">
+
+<link rel="import" href="../../custom-libraries/moment-js.html">
 <!---->
 <!---->
 
 <dom-module id="item-editor">
   <template>
 		<!---->
-    <style>
+    <style include="iron-flex">
+			
+			:host {
+				--dialog-border-color: var(--accent-color);
+				/** /
+				--dialog-border-color: var(--primary-color);
+				/**/
+			}
+			
       #dialog {
         display: block;
         padding: 0 8px;
-        border-top: 3px solid var(--accent-color);
-        margin: 0;
+        border-top    : 3px solid var(--dialog-border-color);
+        border-bottom : 3px solid var(--dialog-border-color);
+				margin: 0;
         width: 60vw;
         background: var(--primary-background-color);
-        max-height: 100vh;
+        xmax-height: 80vh; /* Breaks paper-dialog-scrollable https://github.com/PolymerElements/paper-dialog-scrollable/issues/55 | https://github.com/PolymerElements/paper-dialog/issues/130 */
         /* Keep overflow visible so vaadin-date-picker dropdown won't clip */
-        overflow: visible;
+        overflow: visible; /* not 'scrollable' (or anything else) */ /* Keep overflow visible so vaadin-date-picker dropdown won't clip */
       }
 
+			/** /
       .main-layout {
         display: flex;
         flex-direction: row;
@@ -61,20 +69,18 @@
       .form {
         flex: 2;
       }
+			/** /
 
-      #form> * {
+      #form > * {
         margin-bottom: 8px;
       }
 
-      .buttons-layout {
-				/** /
-        display: flex;
-        flex-direction: row;
-				/**/
+      .buttons {
         margin-top: 16px;
       }
+			/**/
 
-      .buttons-layout paper-button {
+      .buttons paper-button {
         width: 150px;
       }
 
@@ -92,6 +98,7 @@
         font-weight: 300 !important;
       }
 
+			/** /
       .receipt {
         flex: 3;
         margin-left: 24px;
@@ -114,13 +121,18 @@
       .receipt img[hidden] {
         display: none;
       }
+			/**/
 
       paper-button[hidden] {
         display: none;
       }
 
       div[prefix] {
-        margin-right: 6px;
+        margin-right: 0.25em;
+      }
+
+      div[suffix] {
+        margin-left: 0.25em;
       }
 
       #error {
@@ -144,13 +156,15 @@
       }
 
       form::content label {
-        font-weight: bold !important;
-        color: #999 !important;
+        font-weight: bold;
+        color: #999;
       }
 
+			/**/
       .wrapper {
         display: flex;
       }
+			/**/
 
       @media (min-width: 900px) {
         #dialog {
@@ -190,35 +204,80 @@
 		<!-- Edit -->
 		
     <style>
+			
 			vaadin-date-picker {
-				width: 9em;
+				width: 13em;
 			}
+			
+			/** /
 			teamslist-paper-menu {
 				margin: 1em;
 			}
-			.light {
+			/**/
+			
+			.light, div[prefix], div[suffix] {
 				color: #888888; /*var(--paper-grey-500), #AAAAAA;*/
 				--iron-icon-fill-color: #AAAAAA;
 			}
+			
 			.italic {
 				font-style: italic;
 			}
+			
 			paper-input {
 				--paper-input-container: {
 					display: inline-block;
-					width: 4em;
+					width: 13em;
+					/** /
 					margin-left: 1em;
+					/**/
 				}
 				--paper-input-container-input: {
 					display: inline-block;
-					text-align: right;
+					text-align: left;
 				}
+			}
+			
+			paper-input.align-right {
+				--paper-input-container-input: {
+					text-align: right;
+				}			
+			}
+			
+			.wide paper-input {
+				--paper-input-container: {
+					width: 100%;
+				}
+			}
+			
+			#scrollable	{
+				--paper-dialog-scrollable: {
+					padding: 0;
+					margin: 0;
+					/** /
+					Needs height property to render
+					Can be provided by "flex" class
+					height: 100%;
+					height: 120px;
+					max-height: 200px;
+					/**/
+				}
+			}
+			
+			.horizontal > div.wide {
+				width: 100%;
+				padding-left: 1em;
 			}
     	.horizontal {
 				@apply(--layout-horizontal);
+				/** /
 				@apply(--layout-center-justified);
 				@apply(--layout-center);
-				xheight: 120px;
+				height: 120px;
+				/**/
+			}
+	  	.vertical {
+				@apply(--layout-vertical);
 			}
 		</style>
 		<style>
@@ -274,14 +333,14 @@
 
     <iron-media-query query="(min-height: 900px)" query-matches="{{tallWindow}}"></iron-media-query>
     <paper-dialog id="dialog"
-									modal xautofocus
-									xalways-on-top
-									xno-cancel-on-esc-key
+								  modal xautofocus
+								  xalways-on-top
+								  xno-cancel-on-esc-key
 									opened="{{_showDialog(route.path)}}"
 									entry-animation="scale-up-animation"
 									exit-animation="fade-out-animation"
 									>
-      <div class="main-layout">
+      <div class="main-layout layout horizontal">
         <h2 id="header">
 					{{caption}}
 					<iron-icon id="info"
@@ -292,8 +351,8 @@
 				</h2>
 				<paper-tooltip id="rulesTextHeader"
 											 for="header"
-											 position="right"
-											 fit-to-visible-bounds
+											 xposition="right"
+											 xfit-to-visible-bounds
 											 >
 				</paper-tooltip>
         <span class="flex"></span>
@@ -329,92 +388,149 @@
         </div>
       </div>
 			<!---->
-			<template is="dom-if" if="{{isNew}}">
+			<template is="dom-if" if="{{isNew}}" on-dom-change="_onDomChange">
 				<div class="form">
 					<form is="iron-form" id="formCreate">
 						<iron-a11y-keys keys="enter" on-keys-pressed="_save"></iron-a11y-keys>
-						<div id="create"
-								 class="horizontal"
-								 >
-							<vaadin-date-picker id="date"
-																	name="date"
-																	label="Game date"
-																	value="{{item.date}}"
-																	required
+						<div id="create" class="layout horizontal">
+							<div class="layout vertical">
+								<vaadin-date-picker id="origination"
+																		name="origination"
+																		label="Origination Date"
+																		value="{{item.origination}}"
+																		xrequired
+																		>
+								</vaadin-date-picker>
+								<vaadin-date-picker id="maturity"
+																		name="maturity"
+																		label="Maturity Date"
+																		value="{{item.maturity}}"
+																		xrequired
+																		>
+								</vaadin-date-picker>
+								<div class="layout horizontal">
+									<span class="light">Tenor&nbsp;</span>[[tenor]]
+								</div>
+								<number-string string="{{amount}}"
+															 number="{{item.amount}}"
+															 format="0,0"
+															 abbreviation="{{amtAbbr}}"
+															 >
+								</number-string>
+								<paper-input id="amount"
+														 name="amount"
+														 class="align-right"
+														 label="Original Principal"
+														 value="{{amount}}"
+														 xtype="number"
+														 type="string"
+														 xmin="1000"
+														 xmax="99"
+														 step="1000"
+														 xlength="55"
+														 xrequired
+														 xmaxlength="2"
+														 xtype="text"
+														 xpattern="\d*"
+														 xdisabled
+														 >
+									<!---->
+									<div prefix>$</div>
+									<!---->
+									<div suffix>USD</div>
+									<!---->
+								</paper-input>
+								<span class="light">[[amtAbbr]]</span>
+								<number-string string="{{collateral}}"
+															 number="{{item.collateral}}"
+															 format="0,0"
+															 >
+								</number-string>
+								<paper-input id="collateral"
+														 name="collateral"
+														 class="align-right"
+														 label="Collateral Value"
+														 value="{{collateral}}"
+														 xtype="number"
+														 type="string"
+														 xmin="1000"
+														 xmax="99"
+														 step="1000"
+														 xlength="55"
+														 xrequired
+														 xmaxlength="2"
+														 xtype="text"
+														 xpattern="\d*"
+														 xdisabled
+														 >
+									<!---->
+									<div prefix>$</div>
+									<!---->
+									<div suffix>USD</div>
+									<!---->
+								</paper-input>
+								<div class="layout horizontal">
+									<span class="light">LTV&nbsp;</span>[[ltv]]
+								</div>
+								<paper-input id="rate"
+														 name="rate"
+														 class="align-right"
+														 label="Interest Rate"
+														 value="{{item.rate}}"
+														 type="number"
+														 min="0"
+														 max="99"
+														 step=".1"
+														 xlength="55"
+														 xrequired
+														 xmaxlength="2"
+														 xtype="text"
+														 xpattern="\d*"
+														 xdisabled
+														 >
+									<!--- ->
+									<div prefix>USD$</div>
+									<!---->
+									<div suffix>%</div>
+								</paper-input>
+							</div>
+							<div class="layout vertical wide">
+								<paper-input id="title"
+														 name="title"
+													   xclass="align-right"
+													   label="Title"
+													   value="{{item.title}}"
+												  	 type="text"
+														 char-counter
+														 maxlength="25"
+												  	 required
+												  	 >
+									<!--- ->
+									<div prefix>USD$</div>
+									<!--- ->
+									<div suffix>%</div>
+									<!---->
+								</paper-input>
+								<paper-dialog-scrollable id="scrollable" class="flex">
+									<paper-textarea id="description"
+																	name="description"
+																	label="Description"
+																	value="{{item.description}}"
 																	>
-							</vaadin-date-picker>
-							<!--- ->
-							<paper-dropdown-menu id="away"
-																	 name="away"
-																	 label="Away team"
-																	 value="{{item.away}}"
-																	 selectedItemLabel="{{item.away}}"
-																	 required
-																	 >
-								<paper-listbox class="dropdown-content"
-															 selected="{{item.away}}"
-															 attr-for-selected="data-item"
-															 >
-									<paper-item data-item="DAL">DAL</paper-item>
-									<paper-item data-item="DEN">DEN</paper-item>
-									<paper-item data-item="SEA">SEA</paper-item>
-									<paper-item data-item="CAR">CAR</paper-item>
-								</paper-listbox>
-							</paper-dropdown-menu>
-							<paper-dropdown-menu id="home"
-																	 name="home"
-																	 label="Home team"
-																	 value="{{item.home}}"
-																	 required
-																	 >
-								<paper-listbox class="dropdown-content"
-															 selected="{{item.home}}"
-															 attr-for-selected="data-item"
-															 >
-									<paper-item data-item="DAL">DAL</paper-item>
-									<paper-item data-item="DEN">DEN</paper-item>
-									<paper-item data-item="SEA">SEA</paper-item>
-									<paper-item data-item="CAR">CAR</paper-item>
-								</paper-listbox>
-							</paper-dropdown-menu>
-							<!---->
-							<teamslist-paper-menu id="away"
-																		name="away"
-																		label="Away team"
-																		selected="{{item.away}}"
-																		required
-																		>
-							</teamslist-paper-menu>
-							<span class="light">@</span>
-							<teamslist-paper-menu id="home"
-																		name="home"
-																		label="Home team"
-																		selected="{{item.home}}"
-																		required
-																		>
-							</teamslist-paper-menu>
-							<!---->
-							<!--- ->
-							<button on-tap="show">Click to show</button>
-							<!---->
-							<!--- ->
-							<label id="label1">My Pick:</label>
-							<paper-radio-group aria-labelledby="label1">
-								<paper-radio-button name="a">{{item.away}}</paper-radio-button>
-								<paper-radio-button name="h">{{item.home}}</paper-radio-button>
-							</paper-radio-group>
-							<!---->
+									</paper-textarea>
+								</paper-dialog-scrollable>
+							</div>
 						</div>
 					</form>
 				</div>
 			</template>
-			<template is="dom-if" if="{{!isNew}}" on-dom-change="_domChanged">
+			<template is="dom-if" if="{{!isNew}}" on-dom-change="_onDomChange">
 				<div class="form">
 					<form is="iron-form" id="formUpdate">
 						<iron-a11y-keys keys="enter" on-keys-pressed="_save"></iron-a11y-keys>
 						<p class="light italic">[[longDate]]</p>
 						<div id="update"
-								 class="horizontal"
+								 class="layout horizontal"
 						     >
 							<paper-menu id="chooseTeam"
 													xmulti
@@ -466,10 +582,21 @@
 					</form>
 				</div>
 			</template>
-		  <div class="buttons-layout horizontal">
-        <paper-button on-tap="_delete" id="delete" class="delete-button">Delete</paper-button>
-        <paper-button on-tap="close" class="cancel-button">Cancel</paper-button>
-        <paper-button raised on-tap="_save" class="save-button">Save</paper-button>
+		  <div class="buttons">
+        <paper-button id="delete"
+											on-tap="_delete"
+											class="delete-button"
+											xdialog-dismiss
+											>Delete</paper-button>
+        <paper-button on-tap="close"
+											class="cancel-button"
+											xdialog-dismiss
+											>Cancel</paper-button>
+        <paper-button raised
+											on-tap="_save"
+											class="save-button"
+											xdialog-confirm
+											>Save</paper-button>
       </div>
       <span id="error" hidden$="[[!errorMessage]]">{{errorText}}</span>
     </paper-dialog>
@@ -527,20 +654,15 @@
         observers: [
 					//'_updateReceiptURL(item._attachments.*)',
 					'itemChanged(item)',
+					'itemSubChanged(item.*)',
 				],
 
-				/** /
-        ready: function() {
-          this.$.upload.set('i18n.dropFiles.one', 'Drop receipt here...');
-          this.$.upload.set('i18n.addFiles.one', 'Select receipt');
-        },
-				/**/
-
-        attached: function() {
+				attached: function() {
           this._boundOnResize = this._onResize.bind(this);
           window.addEventListener('resize', this._boundOnResize);
 					// Edit
 					this.$.rulesTextHeader.innerHTML = this.rulesText;
+					this.set('itemSubBeingChanged' , false);
 					// endEdit
         },
 
@@ -559,9 +681,9 @@
         _getCaption: function(item) {
 					//console.log('isNew', this.isNew);
           if (item.$key/*_id*/) {//(!this.isNew) {// Creates async issue?
-            return 'Pick a winner!'//'Edit Item';
+            return 'Edit your deal'//'Edit Item';
           } else {
-            return 'Create new game'//'Add Item';
+            return 'Create new deal'//'Add Item';
           }
         },
 
@@ -733,6 +855,7 @@
         },
 				
 				// Edit
+				
 				_formInvalid: function() {
 					console.log('Do stuff here when form is invalid.');
 				},
@@ -741,12 +864,51 @@
 					this.set('isNew', !(item.$key));
 				},
 				
-				_domChanged: function() {
+				_onDomChange: function() {
+					if(this.$.scrollable && this.$.dialog) {
+						this.$.scrollable.dialogElement = this.$.dialog;
+					}
+					/**/
+					// Do not use $.rulesTextWager; innerHtml does not render;
 					if(this.$$('#rulesTextWager')) {
 					  this.$$('#rulesTextWager').innerHTML = this.rulesText;
 					}
 				},
+				
+				itemSubChanged: function() {
+					if (!this.itemSubBeingChanged) {
+						this.set('itemSubBeingChanged', true); // prevent recursion
+						// Change stuff
+						if( this.item ) {
+							// LTV
+							if (this.item.amount && this.item.collateral) {
+								this.set( 'ltv' , numeral(this.item.amount / this.item.collateral).format('0.0%'));
+								this.set( 'item.ltv' , this.ltv ); // To save to database
+							} else {
+								this.set( 'ltv' , '...' );
+								this.set( 'item.ltv' , null     ); // To save to database
+							}
+							// Tenor
+							if (this.item.maturity && this.item.origination) {
+								var start = moment(this.item.origination);//moment('2016-10-15');
+								var end   = moment(this.item.maturity   );//moment('2018-10-15');
+								var dif   = end.from(start, true  ); // http://momentjs.com/docs/#/displaying/from/
+								var days  = end.diff(start, 'days'); // http://momentjs.com/docs/#/displaying/difference/
+								this.set( 'tenor'      , dif   );
+								this.set( 'item.tenor' , days  ); // To save (and sort) by days
+							} else {
+								this.set( 'tenor'      , '...' );
+								this.set( 'item.tenor' , null  ); // To save to database
+							}
+						}
+						this.set('itemSubBeingChanged', false);
+					}
+        },
+				
 				/** /
+				get ltv() {
+					return (this.item.amount / this.item.collateral);
+				}
 				resetItem: function() {
 					this.set('item', {});
 				},
@@ -755,7 +917,9 @@
 					console.log('item', this.item);
 				},
 				/**/
+				
 				// endEdit
+				
       });
     })();
   </script>

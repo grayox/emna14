@@ -1,6 +1,11 @@
 VERSION HISTORY
+Note: Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBackup.sh
 
 v09
+1. Installed dashboard with animated control panels
+2. Control panels are their own elements
+3. Moved main table to sub-element
+4. Discovered bug with iron-data-table // http://stackoverflow.com/q/39951146/1640892
 
 v08
 1. MasterBlaster - rapid network assembler for doing deals

@@ -1,0 +1,117 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-styles/shadow.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<link rel="import" href="../../custom-libraries/font-awesome.html">
+
+<dom-module id="dashboard-item">
+	<template>
+		
+		<style>
+			
+			:host {
+				display: block;
+				box-sizing: border-box;
+     	}
+
+			paper-card {
+				--paper-card: {
+					height: 100%;
+					width: 100%;
+				};
+				--paper-card-background-color: #0079D8;
+				--paper-card-header-text: {
+					color: white;
+					font-size: 125%;
+				};
+				--paper-card-actions: {
+					/** /
+					background-color: rgba(0, 0, 0, 0.2);
+					/**/
+					color: white;
+				};
+			}
+			/**/
+			.card-content {
+				color: white;
+				font-weight: 900;
+				font-size: 400%;
+				text-align: center;
+			}
+			paper-icon-button {
+				border-radius: 50%;
+				-moz-transition:    .5s;
+				-webkit-transition: .5s;
+				-o-transition:      .5s;
+				transition:         .5s;
+			}
+			xpaper-icon-button:hover {
+				background-color: rgba(0, 0, 0, 0.2);
+			}
+			paper-icon-button {
+				--paper-icon-button: {
+					opacity: 0.7;
+				}
+				--paper-icon-button-hover: {
+				  background-color: rgba(0, 0, 0, 0.2);
+				}
+			}
+			iron-icon {
+				--iron-icon: {
+					margin-right: 1em;
+					opacity: 0.4;
+				}
+			}
+			
+		</style>
+		
+			<paper-card xheading$="Item [[item]]">
+				<div class="card-content">
+					[[value]]
+				</div>
+				<div class="card-actions layout horizontal center">
+					<iron-icon icon="[[icon]]"></iron-icon>
+					<div>[[label]]</div>
+					<i class="fa fa-camera-retro"></i>
+					<div class="flex"></div>
+					<paper-icon-button icon="arrow-forward"></paper-icon-button>
+				</div>
+			</paper-card>
+
+	</template>
+
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'dashboard-item',
+		
+				properties: {
+					icon: {
+						type: String,
+						value: function() {
+							return 'extension';
+						}
+					},
+					label: {
+						type: String,
+						value: function() {
+							return '';
+						}
+					},
+					value: {
+						type: String,
+						value: function() {
+							return '';
+						}
+					},
+				},
+										
+			});
+		})();
+  </script>
+</dom-module>

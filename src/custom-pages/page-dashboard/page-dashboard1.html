@@ -1,0 +1,286 @@
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation.html">
+
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/paper-styles/shadow.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+
+<!--- ->
+<link rel="import" href="../../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
+<link rel="import" href="../../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<!---->
+<link rel="import" href="../../../bower_components/app-layout/app-grid/app-grid-style.html">
+
+<!-- Edit -->
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="dashboard-item.html">
+<!-- endEdit -->
+
+<dom-module id="page-dashboard">
+	<template>
+		
+		<!--- ->
+		<style>
+			:host {
+				height: 100vh;
+				color: white;
+				background-color: blue;
+			}
+		</style>
+		<!---->
+		
+		<style include="app-grid-style">
+
+			:host {
+				display: block;
+				--app-grid-columns: 4;
+				--app-grid-gutter: 10px;
+				--app-grid-expandible-item-columns: 4;
+				--paper-icon-button-ink-color: white;
+				/* Edit */
+				background-color: white;
+				/* endEdit */
+			}
+
+			/** /
+			app-header {
+				background-color: #0b8043;
+				color: white;
+			}
+			/**/
+
+			ul {
+				padding: 0;
+				list-style: none;
+			}
+
+			.centered-container {
+				/** /
+				margin-top: 40px;
+				max-width: 1000px;
+				margin: 40px auto;
+				padding-top: 40px;
+				padding: 20px auto;
+				/**/
+				/* Edit */
+				background-color: white;
+				/* endEdit */
+			}
+
+			.item {
+				height: 250px;
+				position: relative;
+				background-color: white;
+				background-size: cover;
+				background-position: center center;
+				/* Edit */
+				cursor: pointer;
+				/* endEdit */
+			}
+			
+			/* Edit */
+			paper-card {
+				/** /
+				height: 100%;
+				width: 100%;
+				/**/
+				--paper-card: {
+					height: 100%;
+					width: 100%;
+				};
+				--paper-card-background-color: #0079D8;
+				--paper-card-header-text: {
+					color: white;
+					font-size: 125%;
+				};
+				--paper-card-actions: {
+					/** /
+					background-color: rgba(0, 0, 0, 0.2);
+					/**/
+					color: white;
+				};
+			}
+			/**/
+			.card-content {
+				color: white;
+				font-weight: 900;
+				font-size: 400%;
+				text-align: center;
+			}
+			paper-icon-button {
+				border-radius: 50%;
+				-moz-transition:    .5s;
+				-webkit-transition: .5s;
+				-o-transition:      .5s;
+				transition:         .5s;
+			}
+			paper-icon-button:hover {
+				background-color: rgba(0, 0, 0, 0.2);
+			}
+			/* endEdit */
+
+			.item:nth-child(5n + 1) {
+				height: 30vmax;
+				@apply(--app-grid-expandible-item);
+			}
+
+			.item-title {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background-color: rgba(0, 0, 0, 0.2);
+				color: white;
+				font-weight: 400;
+				padding: 16px;
+			}
+			
+			/* Edit */
+			
+			/* Fails to render as expected * /
+			.item:hover {
+				background-color: red;
+			}
+			
+			/* endEdit */
+			
+			@media(max-width: 799px) {
+
+				.centered-container {
+					/** /
+				  margin: 10px 5px;
+					padding: 10px 5px;
+					/**/
+				}
+
+				:host {
+					--app-grid-columns: 2;
+					--app-grid-gutter: 5px;
+					--app-grid-item-height: 200px;
+				}
+
+			}
+
+		</style>
+		
+		<div class="centered-container">
+			<ul class="app-grid">
+				<template id="items"
+									is="dom-repeat"
+									xitems="[[config]]"
+									items="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]"
+									>
+					<!--- ->
+					<li class="item" style="background-image: url(//lorempixel.com/800/800/nature/?i=[[item]]);">
+					<img src="http://fakeimg.pl/2000x800/0079D8/fff/?text=[[item]]">
+					<!---->
+					<li xclass="item"
+							xstyle="background-image: url(http://fakeimg.pl/800x800/0079D8/fff/?text=[[item]]);"
+							xon-tap="alert"
+							>
+						<!--- ->
+						<div class="item-title">Item [[item]]</div>
+						<!--- ->
+						<paper-card heading="Card Title">
+							<div class="card-content">Some content</div>
+							<div class="card-actions">
+								<paper-button>Some action</paper-button>
+							</div>
+						</paper-card>
+						<!---->
+						<paper-card xclass="item"
+												xheading$="Item [[item]]"
+												ximage="http://placehold.it/350x150/FFC107/000000" alt="Emmental"
+												>
+							<div class="card-content">
+						    <!--- ->
+								Emmentaler or Emmental is a yellow, medium-hard cheese that originated in the area around Emmental, Switzerland. It is one of the cheeses of Switzerland, and is sometimes known as Swiss cheese.
+						    <!---->
+								1,234
+							</div>
+							<div class="card-actions">
+								Item [[item]]
+								<paper-icon-button icon="arrow-forward"></paper-icon-button>
+								<!--- ->
+								<paper-button>Share</paper-button>
+								<paper-button>Explore!</paper-button>
+								<!---->
+							</div>
+						</paper-card>
+						<!---->
+					</li>
+				</template>
+			</ul>
+		</div>
+	</template>
+
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'page-dashboard',
+				
+				behaviors: [
+					Polymer.NeonAnimatableBehavior,
+					Polymer.NeonAnimationRunnerBehavior,
+					Polymer.NeonSharedElementAnimatableBehavior,
+				],
+		
+				properties: {
+					/**/
+					animationConfig: {
+						type: Object,
+						value: function() {
+							return {
+								'entry': [
+									{
+										name: 'slide-from-right-animation',
+										node: this,
+										/** /
+										transformOrigin: <transform-origin>,
+										timing: <animation-timing>,
+										/**/
+									}, {
+										name: 'cascaded-animation',
+										animation: 'scale-up-animation',
+										/** /
+										animation: 'transform-animation',
+										transformFrom: 'translateY(100%)',
+										transformTo: 'none',
+										/**/
+										timing: {
+											delay: 500, // default: 50,
+										},
+									},
+								]
+							}
+						},
+					},
+					
+				},
+										
+				attached: function() {
+					this.async(function() {
+						//var nodeList = Polymer.dom(this.root).querySelectorAll('li.item');
+						var nodeList = Polymer.dom(this.root).querySelectorAll('li > paper-card');
+						this.animationConfig['entry'][1].nodes = Array.prototype.slice.call(nodeList);
+						//console.log(this.animationConfig['entry'][0].nodes);
+						this.playAnimation('entry');
+					}.bind(this), 500); // https://github.com/Polymer/polymer/issues/2500
+				},
+				
+				play: function() {
+					this.playAnimation('entry');
+				},
+				
+				alert: function() {
+					alert('You tapped me.');
+				},
+				
+			});
+		})();
+  </script>
+</dom-module>

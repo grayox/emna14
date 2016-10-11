@@ -1,0 +1,91 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../custom-libraries/numeral-js.html">
+
+<dom-module id="number-string">	
+		
+	<template>
+		<style></style>
+	</template>
+
+	<script>
+		(function(){
+			'use strict';
+			Polymer({
+				
+				is: 'number-string',
+				
+				properties: {
+				
+					number: {
+						type: Number,
+						notify: true,
+						//observer: '_numberChanged',
+						reflectToAttribute: true,
+					},
+					
+					string: {
+						type: String,
+						notify: true,
+						observer: '_stringChanged',
+						reflectToAttribute: true,
+						value: function() {
+							return '';
+						},
+					},
+					
+					format: {
+						type: String,
+						notify: true,
+						reflectToAttribute: true,
+						value: function() {
+							return '0,0'; //'0.0a' // http://numeraljs.com/
+						},
+					},
+					
+					abbreviation: {
+						type: String,
+						notify: true,
+						reflectToAttribute: true,
+						value: function() {
+							return '';
+						},
+					},
+				
+				},
+				
+        attached: function() {
+					this.set('numberBeingChanged' , false);
+					this.set('stringBeingChanged' , false);
+        },
+				
+				_stringChanged: function(s) {
+        	//console.log('s', s);
+					if (!this.stringBeingChanged) {
+						this.set('stringBeingChanged', true); // prevent recursion
+						var n = s.replace(/\D/g,'') // remove non-digits
+						n = parseInt(n);
+						//console.log('n', n);
+						this.set('string', n ? numeral(n).format(this.format) : '');
+						this.set('number', n ? n : null );
+						this.set('abbreviation', n ? this.getWords(n) : '');
+						this.set('stringBeingChanged', false);
+					}
+				},
+					
+				getWords: function(n) {
+					var w = ['', 'k', 'million', 'billion', 'trillion', 'quadrillion'];
+					var out, word, num, i=0;
+					while(n > 1) {
+						word = w[i++];
+						num = (Math.round(n*10)/10).toFixed(1);
+						out = i > 1 ? [num, word].join(' ') : '';
+						n = n / 1000;
+					}
+					return out;					
+				},
+				
+			});
+		})();
+	</script>
+	
+</dom-module>
