@@ -3,6 +3,7 @@
 <link rel="import" href="custom-pages/page-dashboard/page-dashboard.html">
 <link rel="import" href="custom-pages/page-deals/page-deals.html">
 <link rel="import" href="custom-pages/page-share/page-share.html">
+<link rel="import" href="custom-pages/page-trade/page-trade.html">
 <link rel="import" href="custom-pages/page-settle/page-settle.html">
 
 <!-- endEdit -->
@@ -194,6 +195,13 @@
 										user="[[user]]"
 									  >
 				</page-share>
+				<!---->
+				<page-trade entry-animation="slide-from-right-animation"
+										exit-animation="slide-left-animation"
+										query-matches="[[queryMatches]]"
+										user="[[user]]"
+										>
+				</page-trade>
 				<!---->
 				<page-settle entry-animation="slide-from-right-animation"
 										 exit-animation="slide-left-animation"
