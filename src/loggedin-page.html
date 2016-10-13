@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">	
 <link rel="import" href="custom-pages/page-dashboard/page-dashboard.html">
 <link rel="import" href="custom-pages/page-deals/page-deals.html">
 <link rel="import" href="custom-pages/page-share/page-share.html">
@@ -222,7 +223,12 @@
     (function() {
       'use strict';
       Polymer({
+				
         is: 'loggedin-page',
+				
+				behaviors: [
+					Polymer.IronResizableBehavior,
+				],
 
         properties: {
 					// Edit

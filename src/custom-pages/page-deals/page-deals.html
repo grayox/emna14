@@ -39,6 +39,7 @@
 <link rel="import" href="../../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">	
 <link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../../bower_components/app-layout/app-grid/app-grid-style.html">
 
@@ -288,6 +289,7 @@
         is: 'page-deals',
 				behaviors: [
 					Polymer.NeonAnimationRunnerBehavior,
+					Polymer.IronResizableBehavior,
 				],
 				properties: {
           _db: Object,
