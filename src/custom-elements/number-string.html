@@ -19,15 +19,18 @@
 					number: {
 						type: Number,
 						notify: true,
-						//observer: '_numberChanged',
 						reflectToAttribute: true,
+						observer: '_numberChanged',
+						value: function() {
+							return null;
+						},
 					},
 					
 					string: {
 						type: String,
 						notify: true,
-						observer: '_stringChanged',
 						reflectToAttribute: true,
+						observer: '_stringChanged',
 						value: function() {
 							return '';
 						},
@@ -50,39 +53,85 @@
 							return '';
 						},
 					},
-				
+					
+					direction: { // 'number-to-string' | 'number-to-x' | 'string-to-number' | 'string-to-string' | 'string-to-x' // Defines conversion direction
+						type: String,
+						notify: true,
+						reflectToAttribute: true,
+						value: function() {
+							return 'number-to-string';
+						},
+					},
+					
 				},
+				
+				observers: [
+					//'_paramChanged(number, string, direction)',
+				],
 				
         attached: function() {
-					this.set('numberBeingChanged' , false);
-					this.set('stringBeingChanged' , false);
-        },
-				
-				_stringChanged: function(s) {
-        	//console.log('s', s);
-					if (!this.stringBeingChanged) {
-						this.set('stringBeingChanged', true); // prevent recursion
-						var n = s.replace(/\D/g,'') // remove non-digits
-						n = parseInt(n);
-						//console.log('n', n);
-						this.set('string', n ? numeral(n).format(this.format) : '');
-						this.set('number', n ? n : null );
-						this.set('abbreviation', n ? this.getWords(n) : '');
-						this.set('stringBeingChanged', false);
-					}
-				},
+					this.set('_paramsBeingChanged' , false);
+		    },
 					
 				getWords: function(n) {
 					var w = ['', 'k', 'million', 'billion', 'trillion', 'quadrillion'];
-					var out, word, num, i=0;
+					var word, num, out='', i=0;
 					while(n > 1) {
 						word = w[i++];
-						num = (Math.round(n*10)/10).toFixed(1);
+						num = (Math.round(n*10)/10).toFixed(1); // Round to tenths
 						out = i > 1 ? [num, word].join(' ') : '';
 						n = n / 1000;
 					}
 					return out;					
 				},
+				
+				get directionRange() {
+					return [
+						'string-to-x'      ,
+						'number-to-x'      ,
+						'string-to-string' ,
+						'string-to-number' ,
+						'number-to-string' ,
+					];
+				},
+				
+				_validateDirection: function() {
+					if(this.directionRange.indexOf(this.direction) > -1) {
+						return true;
+					} else {
+						console.error('"direction" property undefined: ' , this.direction);
+						return false;
+					}
+				},
+				
+				_stringChanged: function() {
+					if(this._validateDirection() && this.direction.split('-')[0] === 'string') {
+						this._paramChanged(true);
+					}
+				},
+	
+				_numberChanged: function() {
+					if(this._validateDirection() && this.direction.split('-')[0] === 'number') {
+						this._paramChanged(false);
+					}
+				},
+	
+				_paramChanged: function(bool) {
+					if (!this._paramsBeingChanged) {
+						this.set('_paramsBeingChanged', true); // prevent recursion
+						var n = this.number;
+						var s = this.string;
+						if(bool) { // if string changed, not number changed
+							n = s ? s.replace(/\D/g,'') : null; // remove non-digits
+							n = n ? parseInt(n) : null;
+							this.set('number', n ? n : null);
+						}
+						this.set('string', n ? numeral(n).format(this.format) : '');
+						this.set('abbreviation', n ? this.getWords(n) : '');
+						this.set('_paramsBeingChanged', false);
+					}
+				},
+				/**/
 				
 			});
 		})();

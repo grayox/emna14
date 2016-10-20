@@ -18,11 +18,11 @@
 <!-- Edit -->
 <!---->
 <link rel="import" href="../../custom-elements/my-drawer-panel.html">
+<link rel="import" href="../../custom-elements/toolbar-panel.html">
 <!---->
 <link rel="import" href="items-list.html">
 <link rel="import" href="history-panel.html">
 
-<link rel="import" href="../../custom-elements/toolbar-panel.html">
 <link rel="import" href="../../../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
@@ -161,7 +161,7 @@
 													 total-owed="[[totalOwed]]"
 													 merchants="[[merchants]]"
 													 filters="{{filters}}"
-													 items="[[items]]"
+													 items="[[itemsRef]]"
 													 >
 					</filters-toolbar>
 					<!---->
@@ -172,7 +172,7 @@
 					<!---->
 					<items-list id="list"
 											media-width="[[mediaWidth]]"
-											items="[[items]]"
+											items="[[itemsRef]]"
 											filters="[[filters]]"
 											>
 					</items-list>
@@ -336,6 +336,14 @@
 						reflectToAttribute: true,
           },
 					editableItem: Object,
+					/*
+					itemsRef: {
+					  type: Object,
+            notify: true,
+						reflectToAttribute: true,
+          	computed: '_computeItemsRef(items)',	
+					}
+					*/
         	// endEdit
 				},
 				
@@ -363,7 +371,24 @@
           }.bind(this));
           this._db = this.$.db;
 					/**/
-        },
+				},
+				
+				/*
+				_computeItemsRef: function(items) {
+					var out = JSON.parse(JSON.stringify(items));
+					var i = out.length;
+					while(i--) {
+						out[i] = this._formatItems(out[i]);
+					}
+					this.set('itemsRef', out);
+					return out;
+				},
+				
+				_formatItems: function(item) {
+					item.amountString = 1;
+					return item;
+				},
+				*/
 
         _calculateTotal: function() {
           if (this.items) {

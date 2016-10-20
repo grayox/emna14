@@ -26,7 +26,6 @@
 <link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
 
 <link rel="import" href="../../custom-elements/number-string.html">
-
 <link rel="import" href="../../custom-libraries/moment-js.html">
 <!---->
 <!---->
@@ -329,9 +328,16 @@
 		
 		<!-- endEdit -->
 		
-    <app-route route="{{route}}" pattern="/:action" data="{{routeData}}"></app-route>
+    <app-route route="{{route}}"
+							 pattern="/:action"
+							 data="{{routeData}}"
+							 >
+		</app-route>
 
-    <iron-media-query query="(min-height: 900px)" query-matches="{{tallWindow}}"></iron-media-query>
+    <iron-media-query query="(min-height: 900px)"
+											query-matches="{{tallWindow}}"
+											>
+		</iron-media-query>
     <paper-dialog id="dialog"
 								  modal xautofocus
 								  xalways-on-top
@@ -390,7 +396,7 @@
 			<!---->
 			<template is="dom-if" if="{{isNew}}" on-dom-change="_onDomChange">
 				<div class="form">
-					<form is="iron-form" id="formCreate">
+					<form is="iron-form" id="form-create">
 						<iron-a11y-keys keys="enter" on-keys-pressed="_save"></iron-a11y-keys>
 						<div id="create" class="layout horizontal">
 							<div class="layout vertical">
@@ -415,6 +421,7 @@
 															 number="{{item.amount}}"
 															 format="0,0"
 															 abbreviation="{{amtAbbr}}"
+															 direction="string-to-number"
 															 >
 								</number-string>
 								<paper-input id="amount"
@@ -444,6 +451,7 @@
 								<number-string string="{{collateral}}"
 															 number="{{item.collateral}}"
 															 format="0,0"
+															 direction="string-to-number"
 															 >
 								</number-string>
 								<paper-input id="collateral"
@@ -477,14 +485,14 @@
 														 class="align-right"
 														 label="Interest Rate"
 														 value="{{item.rate}}"
+														 xtype="text"
 														 type="number"
 														 min="0"
-														 max="99"
-														 step=".1"
+														 xmax="99"
+														 step="any"
 														 xlength="55"
 														 xrequired
 														 xmaxlength="2"
-														 xtype="text"
 														 xpattern="\d*"
 														 xdisabled
 														 >
@@ -492,6 +500,7 @@
 									<div prefix>USD$</div>
 									<!---->
 									<div suffix>%</div>
+									<!---->
 								</paper-input>
 							</div>
 							<div class="layout vertical wide">
@@ -526,58 +535,139 @@
 			</template>
 			<template is="dom-if" if="{{!isNew}}" on-dom-change="_onDomChange">
 				<div class="form">
-					<form is="iron-form" id="formUpdate">
+					<form is="iron-form" id="form-update">
 						<iron-a11y-keys keys="enter" on-keys-pressed="_save"></iron-a11y-keys>
-						<p class="light italic">[[longDate]]</p>
-						<div id="update"
-								 class="layout horizontal"
-						     >
-							<paper-menu id="chooseTeam"
-													xmulti
-													attr-for-selected="name"
-													selected-values="{{selected}}"
-													required
-													>
-								<!--- ->
-								<template is="dom-repeat" items="[[items]]" xas="item">
-									<paper-item name="[[item]]" label="[[item]]">[[item]]</paper-item>
-								</template>
-								<!---->
-								<paper-item name="[[item.away]]" label="[[item.away]]">[[item.away]]</paper-item>
-								<span class="light">@</span>
-								<paper-item name="[[item.home]]" label="[[item.home]]">[[item.home]]</paper-item>
-							</paper-menu>
-							<paper-tooltip for="chooseTeam"
-														 position="bottom"
-														 fit-to-visible-bounds
-											       >Select winner
-							</paper-tooltip>
-							<paper-input id="wager"
-													 class="inline"
-													 name="wager"
-													 label="Wager"
-													 value="{{item.wager}}"
-													 type="number"
-													 min="1"
-													 max="99"
-													 step="1"
-													 required
-													 xmaxlength="2"
-													 xtype="text"
-													 xpattern="\d*"
-													 >
-								<!--- ->
-								<div prefix>for</div>
-								<div suffix>points</div>
-								<!---->
-							</paper-input>
-							<paper-tooltip id="rulesTextWager"
-														 for="wager"
-														 position="left"
-														 fit-to-visible-bounds
-											 			 >
-							</paper-tooltip>
-							<!---->
+						<div id="create" class="layout horizontal">
+							<div class="layout vertical">
+								<vaadin-date-picker id="origination"
+																		name="origination"
+																		label="Origination Date"
+																		value="{{item.origination}}"
+																		xrequired
+																		>
+								</vaadin-date-picker>
+								<vaadin-date-picker id="maturity"
+																		name="maturity"
+																		label="Maturity Date"
+																		value="{{item.maturity}}"
+																		xrequired
+																		>
+								</vaadin-date-picker>
+								<div class="layout horizontal">
+									<span class="light">Tenor&nbsp;</span>[[tenor]]
+								</div>
+								<number-string string="{{amount}}"
+															 number="{{item.amount}}"
+															 format="0,0"
+															 abbreviation="{{amtAbbr}}"
+															 direction="string-to-number"
+															 >
+								</number-string>
+								<paper-input id="amount"
+														 name="amount"
+														 class="align-right"
+														 label="Original Principal"
+														 value="{{amount}}"
+														 xtype="number"
+														 type="string"
+														 xmin="1000"
+														 xmax="99"
+														 step="1000"
+														 xlength="55"
+														 xrequired
+														 xmaxlength="2"
+														 xtype="text"
+														 xpattern="\d*"
+														 xdisabled
+														 >
+									<!---->
+									<div prefix>$</div>
+									<!---->
+									<div suffix>USD</div>
+									<!---->
+								</paper-input>
+								<span class="light">[[amtAbbr]]</span>
+								<number-string string="{{collateral}}"
+															 number="{{item.collateral}}"
+															 format="0,0"
+															 direction="string-to-number"
+															 >
+								</number-string>
+								<paper-input id="collateral"
+														 name="collateral"
+														 class="align-right"
+														 label="Collateral Value"
+														 value="{{collateral}}"
+														 xtype="number"
+														 type="string"
+														 xmin="1000"
+														 xmax="99"
+														 step="1000"
+														 xlength="55"
+														 xrequired
+														 xmaxlength="2"
+														 xtype="text"
+														 xpattern="\d*"
+														 xdisabled
+														 >
+									<!---->
+									<div prefix>$</div>
+									<!---->
+									<div suffix>USD</div>
+									<!---->
+								</paper-input>
+								<div class="layout horizontal">
+									<span class="light">LTV&nbsp;</span>[[ltv]]
+								</div>
+								<paper-input id="rate"
+														 name="rate"
+														 class="align-right"
+														 label="Interest Rate"
+														 value="{{item.rate}}"
+														 xtype="text"
+														 type="number"
+														 min="0"
+														 xmax="99"
+														 step="any"
+														 xlength="55"
+														 xrequired
+														 xmaxlength="2"
+														 xpattern="\d*"
+														 xdisabled
+														 >
+									<!--- ->
+									<div prefix>USD$</div>
+									<!---->
+									<div suffix>%</div>
+									<!---->
+								</paper-input>
+							</div>
+							<div class="layout vertical wide">
+								<paper-input id="title"
+														 name="title"
+													   xclass="align-right"
+													   label="Title"
+													   value="{{item.title}}"
+												  	 type="text"
+														 char-counter
+														 maxlength="25"
+												  	 required
+												  	 >
+									<!--- ->
+									<div prefix>USD$</div>
+									<!--- ->
+									<div suffix>%</div>
+									<!---->
+								</paper-input>
+								<paper-dialog-scrollable id="scrollable" class="flex">
+									<paper-textarea id="description"
+																	name="description"
+																	label="Description"
+																	value="{{item.description}}"
+																	>
+									</paper-textarea>
+								</paper-dialog-scrollable>
+							</div>
 						</div>
 					</form>
 				</div>
@@ -791,7 +881,7 @@
 
         _save: function() {
           this.$.error.innerText = '';
-          var form = this.isNew ? this.$$('#formCreate') : this.$$('#formUpdate') ; //this.$.form
+          var form = this.isNew ? this.$$('#form-create') : this.$$('#form-update') ; //this.$.form
           if (form.validate()) {
             //this.item.total = parseFloat(this.item.total);
 						//console.log('item', this.item);
@@ -869,9 +959,10 @@
 						this.$.scrollable.dialogElement = this.$.dialog;
 					}
 					/**/
-					// Do not use $.rulesTextWager; innerHtml does not render;
-					if(this.$$('#rulesTextWager')) {
-					  this.$$('#rulesTextWager').innerHTML = this.rulesText;
+					// Do not use $.rules-text-wager; .innerHTML does not render;
+					// Because dynamically created; http://stackoverflow.com/a/24589493
+					if(this.$$('#rules-text-wager')) {
+					  this.$$('#rules-text-wager').innerHTML = this.rulesText;
 					}
 				},
 				
@@ -880,10 +971,14 @@
 						this.set('itemSubBeingChanged', true); // prevent recursion
 						// Change stuff
 						if( this.item ) {
+							// Rate
+							if (this.item.rate) {
+								this.set( 'item.rate' , Math.round(parseFloat(this.item.rate*10000))/10000 ); // covert to number and round
+							}
 							// LTV
 							if (this.item.amount && this.item.collateral) {
-								this.set( 'ltv' , numeral(this.item.amount / this.item.collateral).format('0.0%'));
-								this.set( 'item.ltv' , this.ltv ); // To save to database
+								this.set( 'item.ltv' , Math.round(parseFloat(this.item.amount/this.item.collateral*10000))/10000 ); // To save to database
+								this.set( 'ltv' , numeral(this.item.ltv).format('0.0%'));
 							} else {
 								this.set( 'ltv' , '...' );
 								this.set( 'item.ltv' , null     ); // To save to database
