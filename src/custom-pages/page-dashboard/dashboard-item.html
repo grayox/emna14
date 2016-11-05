@@ -118,21 +118,21 @@
 					animationConfig: {
 						value: function() {
 							return {
-								'entry': {
+								entry: {
 									name: 'scale-up-animation',
 									node: this.$['toggle-button'],
 									timing: {
 										duration: 750,
 									},
 								},
-								'exit': {
+								exit: {
 									name: 'scale-down-animation', //'fade-out-animation',
 									node: this.$['toggle-button'],
 									timing: {
 										duration: 750,
 									},
 								},
-								'rotateOpen': {
+								rotateOpen: {
 									name: 'transform-animation',
 									node: this.$['toggle-button'],
 									transformTo: 'rotate(720deg)',
@@ -140,7 +140,7 @@
 										duration: 1000,
 									},
 								},
-								'rotateClosed': {
+								rotateClosed: {
 									name: 'transform-animation',
 									node: this.$['toggle-button'],
 									transformTo: 'rotate(-720deg)',

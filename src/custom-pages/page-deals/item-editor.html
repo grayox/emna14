@@ -27,306 +27,23 @@
 
 <link rel="import" href="../../custom-elements/number-string.html">
 <link rel="import" href="../../custom-libraries/moment-js.html">
+<link rel="import" href="../../custom-styles/editor-styles.html">
+<link rel="import" href="offer-editor.html">
 <!---->
 <!---->
 
 <dom-module id="item-editor">
   <template>
-		<!---->
-    <style include="iron-flex">
-			
+    <style include="editor-styles" xis="custom-style">
 			:host {
-				--dialog-border-color: var(--accent-color);
-				/** /
-				--dialog-border-color: var(--primary-color);
-				/**/
-			}
-			
-      #dialog {
-        display: block;
-        padding: 0 8px;
-        border-top    : 3px solid var(--dialog-border-color);
-        border-bottom : 3px solid var(--dialog-border-color);
-				margin: 0;
-        width: 60vw;
-        background: var(--primary-background-color);
-        xmax-height: 80vh; /* Breaks paper-dialog-scrollable https://github.com/PolymerElements/paper-dialog-scrollable/issues/55 | https://github.com/PolymerElements/paper-dialog/issues/130 */
-        /* Keep overflow visible so vaadin-date-picker dropdown won't clip */
-        overflow: visible; /* not 'scrollable' (or anything else) */ /* Keep overflow visible so vaadin-date-picker dropdown won't clip */
-      }
-
-			/** /
-      .main-layout {
-        display: flex;
-        flex-direction: row;
-      }
-
-      .flex {
-        flex: 1;
-      }
-
-      .form {
-        flex: 2;
-      }
-			/** /
-
-      #form > * {
-        margin-bottom: 8px;
-      }
-
-      .buttons {
-        margin-top: 16px;
-      }
-			/**/
-
-      .buttons paper-button {
-        width: 150px;
-      }
-
-      .save-button {
-        background: var(--primary-color);
-        color: var(--text-primary-color);
-      }
-
-      .cancel-button {
-        color: var(--primary-color);
-      }
-
-      .main-layout h2 {
-        font-size: 24px !important;
-        font-weight: 300 !important;
-      }
-
-			/** /
-      .receipt {
-        flex: 3;
-        margin-left: 24px;
-        min-height: 64px;
-        max-width: 400px;
-      }
-
-      .receipt .receipt-wrapper {
-        max-width: 100%;
-        display: block;
-        margin: 20px auto;
-        max-height: 50vh;
-        overflow-y: scroll;
-      }
-
-      .receipt-wrapper img {
-        width: 100%;
-      }
-
-      .receipt img[hidden] {
-        display: none;
-      }
-			/**/
-
-      paper-button[hidden] {
-        display: none;
-      }
-
-      div[prefix] {
-        margin-right: 0.25em;
-      }
-
-      div[suffix] {
-        margin-left: 0.25em;
-      }
-
-      #error {
-        color: red;
-      }
-
-      :host > .wrapper {
-        height: 100%;
-        width: 100%;
-        padding: 0;
-      }
-
-      .close-button {
-        color: var(--dark-primary-color);
-      }
-
-      .delete-button {
-        margin-left: auto;
-        color: var(--text-primary-color);
-        background: var(--accent-color);
-      }
-
-      form::content label {
-        font-weight: bold;
-        color: #999;
-      }
-
-			/**/
-      .wrapper {
-        display: flex;
-      }
-			/**/
-
-      @media (min-width: 900px) {
-        #dialog {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .wrapper {
-          flex-direction: row;
-          overflow: auto;
-        }
-      }
-
-      @media (max-width: 900px) {
-        .receipt {
-          margin: 24px 0 0 0;
-        }
-        .wrapper {
-          flex-direction: column;
-        }
-        .receipt {
-          width: 100%;
-          margin: 40px auto;
-        }
-        .receipt .receipt-wrapper {
-          max-height: inherit;
-        }
-        #dialog {
-          width: 100vw;
-          min-height: 100vh;
-          padding: 0 0 60px 0;
-          overflow-y: scroll;
-        }
-      }
-    </style>
-		<!---->
-		<!-- Edit -->
-		
-    <style>
-			
-			vaadin-date-picker {
-				width: 13em;
-			}
-			
-			/** /
-			teamslist-paper-menu {
-				margin: 1em;
-			}
-			/**/
-			
-			.light, div[prefix], div[suffix] {
-				color: #888888; /*var(--paper-grey-500), #AAAAAA;*/
-				--iron-icon-fill-color: #AAAAAA;
-			}
-			
-			.italic {
-				font-style: italic;
-			}
-			
-			paper-input {
-				--paper-input-container: {
-					display: inline-block;
-					width: 13em;
-					/** /
-					margin-left: 1em;
-					/**/
+				paper-input[disabled] {
+					--paper-input-container-input-color: red;
+					--paper-input-container-disabled: {
+						opacity: 1;
+					}
 				}
-				--paper-input-container-input: {
-					display: inline-block;
-					text-align: left;
-				}
-			}
-			
-			paper-input.align-right {
-				--paper-input-container-input: {
-					text-align: right;
-				}			
-			}
-			
-			.wide paper-input {
-				--paper-input-container: {
-					width: 100%;
-				}
-			}
-			
-			#scrollable	{
-				--paper-dialog-scrollable: {
-					padding: 0;
-					margin: 0;
-					/** /
-					Needs height property to render
-					Can be provided by "flex" class
-					height: 100%;
-					height: 120px;
-					max-height: 200px;
-					/**/
-				}
-			}
-			
-			.horizontal > div.wide {
-				width: 100%;
-				padding-left: 1em;
-			}
-    	.horizontal {
-				@apply(--layout-horizontal);
-				/** /
-				@apply(--layout-center-justified);
-				@apply(--layout-center);
-				height: 120px;
-				/**/
-			}
-	  	.vertical {
-				@apply(--layout-vertical);
 			}
 		</style>
-		<style>
-			paper-menu {
-				--paper-menu-background-color: white;
-				--paper-menu-selected-item: {
-        	color: white;
-					opacity: 75%;
-					background-color: #222222; /*var(--paper-grey-700) /*var(--accent-color);*/
-					transition         : .5s ;
-					-o-transition      : .5s ;
-					-ms-transition     : .5s ;
-					-moz-transition    : .5s ;
-					-webkit-transition : .5s ;
-				}
-				--paper-menu-focused-item: {
-					transition         : .5s ;
-					-o-transition      : .5s ;
-					-ms-transition     : .5s ;
-					-moz-transition    : .5s ;
-					-webkit-transition : .5s ;
-				}
-				/** /
-				--paper-menu-focused-item-after: {
-        	color: var(--primary-text-color);
-					background-color: var(--accent-color);
-				}
-				/**/
-			}
-			paper-item {
-				--paper-item: {
-					cursor: pointer;
-					display: inline; /* inline-block; causes vertical-top misalignment */
-					padding: 1em;
-					margin: .25em;
-				};
-			}
-			paper-item:hover {
-				background-color: var(--paper-grey-200);
-				font-weight: bold;
-        xcolor: white;
-				transition         : .5s;
-				-o-transition      : .5s;
-				-ms-transition     : .5s;
-				-moz-transition    : .5s;
-				-webkit-transition : .5s;
-			}
-		</style>
-		
-		<!-- endEdit -->
 		
     <app-route route="{{route}}"
 							 pattern="/:action"
@@ -348,12 +65,14 @@
 									>
       <div class="main-layout layout horizontal">
         <h2 id="header">
-					{{caption}}
+					[[caption]]
+					<!--- ->
 					<iron-icon id="info"
 										 icon="info"
 										 class="light"
 										 >
 					</iron-icon>
+					<!---->
 				</h2>
 				<paper-tooltip id="rulesTextHeader"
 											 for="header"
@@ -394,299 +113,194 @@
         </div>
       </div>
 			<!---->
-			<template is="dom-if" if="{{isNew}}" on-dom-change="_onDomChange">
-				<div class="form">
-					<form is="iron-form" id="form-create">
-						<iron-a11y-keys keys="enter" on-keys-pressed="_save"></iron-a11y-keys>
-						<div id="create" class="layout horizontal">
-							<div class="layout vertical">
-								<vaadin-date-picker id="origination"
-																		name="origination"
-																		label="Origination Date"
-																		value="{{item.origination}}"
-																		xrequired
-																		>
-								</vaadin-date-picker>
-								<vaadin-date-picker id="maturity"
-																		name="maturity"
-																		label="Maturity Date"
-																		value="{{item.maturity}}"
-																		xrequired
-																		>
-								</vaadin-date-picker>
-								<div class="layout horizontal">
-									<span class="light">Tenor&nbsp;</span>[[tenor]]
-								</div>
-								<number-string string="{{amount}}"
-															 number="{{item.amount}}"
-															 format="0,0"
-															 abbreviation="{{amtAbbr}}"
-															 direction="string-to-number"
-															 >
-								</number-string>
-								<paper-input id="amount"
-														 name="amount"
-														 class="align-right"
-														 label="Original Principal"
-														 value="{{amount}}"
-														 xtype="number"
-														 type="string"
-														 xmin="1000"
-														 xmax="99"
-														 step="1000"
-														 xlength="55"
-														 xrequired
-														 xmaxlength="2"
-														 xtype="text"
-														 xpattern="\d*"
-														 xdisabled
-														 >
-									<!---->
-									<div prefix>$</div>
-									<!---->
-									<div suffix>USD</div>
-									<!---->
-								</paper-input>
-								<span class="light">[[amtAbbr]]</span>
-								<number-string string="{{collateral}}"
-															 number="{{item.collateral}}"
-															 format="0,0"
-															 direction="string-to-number"
-															 >
-								</number-string>
-								<paper-input id="collateral"
-														 name="collateral"
-														 class="align-right"
-														 label="Collateral Value"
-														 value="{{collateral}}"
-														 xtype="number"
-														 type="string"
-														 xmin="1000"
-														 xmax="99"
-														 step="1000"
-														 xlength="55"
-														 xrequired
-														 xmaxlength="2"
-														 xtype="text"
-														 xpattern="\d*"
-														 xdisabled
-														 >
-									<!---->
-									<div prefix>$</div>
-									<!---->
-									<div suffix>USD</div>
-									<!---->
-								</paper-input>
-								<div class="layout horizontal">
-									<span class="light">LTV&nbsp;</span>[[ltv]]
-								</div>
-								<paper-input id="rate"
-														 name="rate"
-														 class="align-right"
-														 label="Interest Rate"
-														 value="{{item.rate}}"
-														 xtype="text"
-														 type="number"
-														 min="0"
-														 xmax="99"
-														 step="any"
-														 xlength="55"
-														 xrequired
-														 xmaxlength="2"
-														 xpattern="\d*"
-														 xdisabled
-														 >
-									<!--- ->
-									<div prefix>USD$</div>
-									<!---->
-									<div suffix>%</div>
-									<!---->
-								</paper-input>
-							</div>
-							<div class="layout vertical wide">
-								<paper-input id="title"
-														 name="title"
-													   xclass="align-right"
-													   label="Title"
-													   value="{{item.title}}"
-												  	 type="text"
-														 char-counter
-														 maxlength="25"
-												  	 required
-												  	 >
-									<!--- ->
-									<div prefix>USD$</div>
-									<!--- ->
-									<div suffix>%</div>
-									<!---->
-								</paper-input>
-								<paper-dialog-scrollable id="scrollable" class="flex">
-									<paper-textarea id="description"
-																	name="description"
-																	label="Description"
-																	value="{{item.description}}"
+
+			<!--- ->
+			<button on-tap="show">Show</button>
+			<!---->
+			<div hidden$="[[isNew]]">
+				<offer-editor id="offer-editor" opened="{{offerOpened}}"></offer-editor>
+			</div>
+			<!---->
+			<div class="form">
+				<form is="iron-form" id="form">
+					<iron-a11y-keys keys="enter" on-keys-pressed="_save"></iron-a11y-keys>
+					<div id="create" class="layout horizontal">
+						<div class="layout vertical">
+							<vaadin-date-picker id="create-origination"
+																	name="origination"
+																	label="Target Origination"
+																	value="{{item.origination}}"
+																	disabled$="[[!isNew]]"
+																	xrequired
 																	>
-									</paper-textarea>
-								</paper-dialog-scrollable>
-							</div>
-						</div>
-					</form>
-				</div>
-			</template>
-			<template is="dom-if" if="{{!isNew}}" on-dom-change="_onDomChange">
-				<div class="form">
-					<form is="iron-form" id="form-update">
-						<iron-a11y-keys keys="enter" on-keys-pressed="_save"></iron-a11y-keys>
-						<div id="create" class="layout horizontal">
-							<div class="layout vertical">
-								<vaadin-date-picker id="origination"
-																		name="origination"
-																		label="Origination Date"
-																		value="{{item.origination}}"
-																		xrequired
-																		>
-								</vaadin-date-picker>
-								<vaadin-date-picker id="maturity"
-																		name="maturity"
-																		label="Maturity Date"
-																		value="{{item.maturity}}"
-																		xrequired
-																		>
-								</vaadin-date-picker>
-								<div class="layout horizontal">
-									<span class="light">Tenor&nbsp;</span>[[tenor]]
-								</div>
-								<number-string string="{{amount}}"
-															 number="{{item.amount}}"
-															 format="0,0"
-															 abbreviation="{{amtAbbr}}"
-															 direction="string-to-number"
-															 >
-								</number-string>
-								<paper-input id="amount"
-														 name="amount"
-														 class="align-right"
-														 label="Original Principal"
-														 value="{{amount}}"
-														 xtype="number"
-														 type="string"
-														 xmin="1000"
-														 xmax="99"
-														 step="1000"
-														 xlength="55"
-														 xrequired
-														 xmaxlength="2"
-														 xtype="text"
-														 xpattern="\d*"
-														 xdisabled
-														 >
-									<!---->
-									<div prefix>$</div>
-									<!---->
-									<div suffix>USD</div>
-									<!---->
-								</paper-input>
-								<span class="light">[[amtAbbr]]</span>
-								<number-string string="{{collateral}}"
-															 number="{{item.collateral}}"
-															 format="0,0"
-															 direction="string-to-number"
-															 >
-								</number-string>
-								<paper-input id="collateral"
-														 name="collateral"
-														 class="align-right"
-														 label="Collateral Value"
-														 value="{{collateral}}"
-														 xtype="number"
-														 type="string"
-														 xmin="1000"
-														 xmax="99"
-														 step="1000"
-														 xlength="55"
-														 xrequired
-														 xmaxlength="2"
-														 xtype="text"
-														 xpattern="\d*"
-														 xdisabled
-														 >
-									<!---->
-									<div prefix>$</div>
-									<!---->
-									<div suffix>USD</div>
-									<!---->
-								</paper-input>
-								<div class="layout horizontal">
-									<span class="light">LTV&nbsp;</span>[[ltv]]
-								</div>
-								<paper-input id="rate"
-														 name="rate"
-														 class="align-right"
-														 label="Interest Rate"
-														 value="{{item.rate}}"
-														 xtype="text"
-														 type="number"
-														 min="0"
-														 xmax="99"
-														 step="any"
-														 xlength="55"
-														 xrequired
-														 xmaxlength="2"
-														 xpattern="\d*"
-														 xdisabled
-														 >
-									<!--- ->
-									<div prefix>USD$</div>
-									<!---->
-									<div suffix>%</div>
-									<!---->
-								</paper-input>
-							</div>
-							<div class="layout vertical wide">
-								<paper-input id="title"
-														 name="title"
-													   xclass="align-right"
-													   label="Title"
-													   value="{{item.title}}"
-												  	 type="text"
-														 char-counter
-														 maxlength="25"
-												  	 required
-												  	 >
-									<!--- ->
-									<div prefix>USD$</div>
-									<!--- ->
-									<div suffix>%</div>
-									<!---->
-								</paper-input>
-								<paper-dialog-scrollable id="scrollable" class="flex">
-									<paper-textarea id="description"
-																	name="description"
-																	label="Description"
-																	value="{{item.description}}"
+							</vaadin-date-picker>
+							<vaadin-date-picker id="create-maturity"
+																	name="maturity"
+																	label="Target Maturity"
+																	value="{{item.maturity}}"
+																	disabled$="[[!isNew]]"
+																	xrequired
 																	>
-									</paper-textarea>
-								</paper-dialog-scrollable>
+							</vaadin-date-picker>
+							<div class="layout horizontal">
+								<span class="light">Tenor&nbsp;</span>[[tenor]]
 							</div>
+							<number-string id="number-string-amount"
+														 string="{{amount}}"
+														 number="{{item.amount}}"
+														 format="0,0"
+														 abbreviation="{{amtAbbr}}"
+														 direction="[[direction]]"
+														 >
+							</number-string>
+							<paper-input id="create-amount"
+													 name="amount"
+													 xis="iron-input"
+													 xprevent-invalid-input
+													 xallowed-pattern="[0-9]"
+													 class="align-right"
+													 label="Original Principal"
+													 value="{{amount}}"
+													 xtype="number"
+													 type="string"
+													 xmin="1000"
+													 xmax="99"
+													 step="1000"
+													 xlength="55"
+													 required
+													 xmaxlength="2"
+													 xtype="text"
+													 xpattern="\d*"
+													 disabled$="[[!isNew]]"
+													 >
+								<!---->
+								<div prefix>$</div>
+								<!---->
+								<div suffix>USD</div>
+								<!---->
+							</paper-input>
+							<span class="light">[[amtAbbr]]</span>
+							<number-string id="number-string-collateral"
+														 string="{{collateral}}"
+														 number="{{item.collateral}}"
+														 format="0,0"
+														 direction="[[direction]]"
+														 >
+							</number-string>
+							<paper-input id="create-collateral"
+													 name="collateral"
+													 xis="iron-input"
+													 xprevent-invalid-input
+													 xallowed-pattern="[0-9]"
+													 class="align-right"
+													 label="Collateral Value"
+													 value="{{collateral}}"
+													 xtype="number"
+													 type="string"
+													 xmin="1000"
+													 xmax="99"
+													 step="1000"
+													 xlength="55"
+													 xrequired
+													 xmaxlength="2"
+													 xtype="text"
+													 xpattern="\d*"
+													 disabled$="[[!isNew]]"
+													 >
+								<!---->
+								<div prefix>$</div>
+								<!---->
+								<div suffix>USD</div>
+								<!---->
+							</paper-input>
+							<div class="layout horizontal">
+								<span class="light">LTV&nbsp;</span>[[ltv]]
+							</div>
+							<paper-input id="create-rate"
+													 name="rate"
+													 xis="iron-input"
+													 xprevent-invalid-input
+													 xallowed-pattern="[0-9.]"
+													 class="align-right"
+													 label="Interest Rate"
+													 value="{{item.rate}}"
+													 xtype="text"
+													 type="number"
+													 min="0"
+													 xmax="99"
+													 step="any"
+													 xlength="55"
+													 xrequired
+													 xmaxlength="2"
+													 xpattern="\d*"
+													 disabled$="[[!isNew]]"
+													 >
+								<!--- ->
+								<div prefix>USD$</div>
+								<!---->
+								<div suffix>%</div>
+								<!---->
+							</paper-input>
 						</div>
-					</form>
-				</div>
-			</template>
-		  <div class="buttons">
-        <paper-button id="delete"
+						<div class="layout vertical wide">
+							<paper-input id="create-title"
+													 name="title"
+													 xclass="align-right"
+													 label="Title"
+													 value="{{item.title}}"
+													 type="text"
+													 char-counter
+													 maxlength="25"
+													 required
+													 disabled$="[[!isNew]]"
+													 >
+								<!--- ->
+								<div prefix>USD$</div>
+								<!--- ->
+								<div suffix>%</div>
+								<!---->
+							</paper-input>
+							<paper-dialog-scrollable id="scrollable" class="flex">
+								<paper-textarea id="create-description"
+																name="description"
+																label="Description"
+																value="{{item.description}}"
+																disabled$="[[!isNew]]"
+																>
+								</paper-textarea>
+							</paper-dialog-scrollable>
+						</div>
+					</div>
+				</form>
+			</div>
+
+		  <div class="buttons" hidden$="[[!isNew]]">
+        <paper-button id="button-delete"
 											on-tap="_delete"
 											class="delete-button"
 											xdialog-dismiss
+											hidden
 											>Delete</paper-button>
-        <paper-button on-tap="close"
+        <paper-button id="button-cancel"
+											on-tap="close"
 											class="cancel-button"
 											xdialog-dismiss
+											xhidden
 											>Cancel</paper-button>
-        <paper-button raised
+        <paper-button id="button-save"
+											raised
 											on-tap="_save"
 											class="save-button"
 											xdialog-confirm
+											xhidden
 											>Save</paper-button>
+        <paper-button id="button-offer"
+											raised
+											on-tap="_offer"
+											class="offer-button"
+											xdialog-confirm
+											hidden
+											>I&rsquo;m Interested</paper-button>
       </div>
       <span id="error" hidden$="[[!errorMessage]]">{{errorText}}</span>
     </paper-dialog>
@@ -707,7 +321,7 @@
             notify: true,
             value: function() {
               return {};
-            }
+            },
           },
           caption: {
             type: String,
@@ -723,6 +337,10 @@
           route: Object,
           routeData: Object,
 					// Edit
+					direction: {
+						type: String,
+						computed: '_computeDirection(isNew)',
+					},
 					rulesText: {
 						type: String,
 						value: function() {
@@ -771,7 +389,7 @@
         _getCaption: function(item) {
 					//console.log('isNew', this.isNew);
           if (item.$key/*_id*/) {//(!this.isNew) {// Creates async issue?
-            return 'Edit your deal'//'Edit Item';
+            return 'Add to cart'//'Edit Item';
           } else {
             return 'Create new deal'//'Add Item';
           }
@@ -809,6 +427,7 @@
           'iron-form-invalid': '_formInvalid',
         },
 
+				/** /
         // Read canvas content and returns a Blob.
         // For browsers not supporting canvas.toBlob
         _canvasToBlob: function(canvas) {
@@ -824,7 +443,9 @@
             type: arr[1]
           });
         },
+				/**/
 
+				/** /
         // Read a file and return a Blob. If it's an image it converts and
         // resizes using a canvas.
         // TODO: move this to vaadin-upload as a utility method
@@ -862,6 +483,7 @@
           }.bind(this);
           reader.readAsDataURL(file);
         },
+				/**/
 
 				/** /
         _handleUpload: function(e) {
@@ -881,7 +503,8 @@
 
         _save: function() {
           this.$.error.innerText = '';
-          var form = this.isNew ? this.$$('#form-create') : this.$$('#form-update') ; //this.$.form
+          //var form = this.isNew ? this.$$('#form-create') : this.$$('#form-update') ; // Only necessary for dom-if
+					var form = this.$.form;
           if (form.validate()) {
             //this.item.total = parseFloat(this.item.total);
 						//console.log('item', this.item);
@@ -894,9 +517,9 @@
         },
 
         open: function(item) {
-					
 					// Edit
-					this.set('longDate', moment(item.date).format('dddd, MMMM Do, YYYY'));
+					this._clearAll();
+					//this.set('longDate', moment(item.date).format('dddd, MMMM Do, YYYY'));
 					// endEdit
 					
 					// Create a copy of the item to be edited so we don't automatically flush changes to db
@@ -920,15 +543,20 @@
           }
 					/**/
 
-          this.$.delete.hidden = this.isNew;//!(this.item.$key/*_id && this.item.status === 'new'*/);
-
+					/** /
+					// Disable buttons incompatible with context
+          this.$['button-delete'].hidden =  this.isNew;//!(this.item.$key/*_id && this.item.status === 'new'* /);
+          this.$['button-save'  ].hidden = !this.isNew;
+					/**/
+					
           // Ensure that the scroll is returned to top on mobile
           this.async(function() {
             this.$.dialog.scrollTop = 0;
           });
 
           this.set('route.path', '/edit');
-        },
+					
+        },				
 
         close: function() {
           var _this = this;
@@ -938,6 +566,14 @@
             _this.set('item', {});//_this.item = {};
           }, 100);
 					//console.log('item', this.item);
+					// Edit
+					if(this.isNew) {
+						this._clearAll();
+					}
+					if(this.offerOpened) {
+						this.$['offer-editor'].toggle();
+					}
+					// endEdit
         },
 
         _delete: function() {
@@ -959,9 +595,8 @@
 						this.$.scrollable.dialogElement = this.$.dialog;
 					}
 					/**/
-					// Do not use $.rules-text-wager; .innerHTML does not render;
-					// Because dynamically created; http://stackoverflow.com/a/24589493
 					if(this.$$('#rules-text-wager')) {
+					  // Do not use $.rules-text-wager; Syntax does not recognize dynamic nodes // http://stackoverflow.com/a/24589493
 					  this.$$('#rules-text-wager').innerHTML = this.rulesText;
 					}
 				},
@@ -985,31 +620,59 @@
 							}
 							// Tenor
 							if (this.item.maturity && this.item.origination) {
-								var start = moment(this.item.origination);//moment('2016-10-15');
-								var end   = moment(this.item.maturity   );//moment('2018-10-15');
-								var dif   = end.from(start, true  ); // http://momentjs.com/docs/#/displaying/from/
-								var days  = end.diff(start, 'days'); // http://momentjs.com/docs/#/displaying/difference/
+								let start = moment(this.item.origination);//moment('2016-10-15');
+								let end   = moment(this.item.maturity   );//moment('2018-10-15');
+								let dif   = end.from(start, true  ); // http://momentjs.com/docs/#/displaying/from/
+								let days  = end.diff(start, 'days'); // http://momentjs.com/docs/#/displaying/difference/
 								this.set( 'tenor'      , dif   );
 								this.set( 'item.tenor' , days  ); // To save (and sort) by days
 							} else {
 								this.set( 'tenor'      , '...' );
 								this.set( 'item.tenor' , null  ); // To save to database
 							}
+							// Filter Index // http://stackoverflow.com/a/28036032/1640892
+							this.set('item.filterindex',
+											   Math.floor ( Math.pow(10, 12) * this.item.rate   )
+											 + Math.floor ( Math.pow(10,  9) * this.item.ltv    )
+											 + Math.floor ( Math.pow(10,  3) * this.item.amount )
+											 + Math.floor ( Math.pow(10,  0) * this.item.tenor  )
+											);
 						}
 						this.set('itemSubBeingChanged', false);
 					}
         },
 				
-				/** /
-				get ltv() {
-					return (this.item.amount / this.item.collateral);
-				}
-				resetItem: function() {
-					this.set('item', {});
+				_computeDirection: function(isNew) {
+					return isNew ? 'string-to-number' : 'number-to-string' ;
 				},
+														 
+				_clearAll: function() {
+					/** /
+					var a = Polymer.dom(this.root).querySelectorAll('.form-field');
+					for (each in a) {
+						each.value = null;
+					}
+					/** /
+					var i = a.length;
+					while (i--) {
+						a[i].value = null;
+					}
+					/** /
+					console.log('a', a);
+					/**/
+					this.set('item', {});
+					this.set('amount', '');
+					this.set('collateral', '');
+					/**/
+				},	
 				
+				/** /
 				show: function() {
+					console.log('collateral', this.collateral);
+					console.log('amount', this.amount);
 					console.log('item', this.item);
+					console.log('isNew', this.isNew);
+					console.log('direction', this.direction);
 				},
 				/**/
 				

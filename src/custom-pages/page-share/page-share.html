@@ -1,15 +1,18 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation.html">
+
+<link rel="import" href="../../custom-elements/email-listbox.html">
 
 <dom-module id="page-share">
 	<template>
 		<style>
 			:host {
 				height: 100vh;
-				color:white;
+				color: white;
 				background-color: red;
 			}
 		</style>
-		Share
+    <email-listbox emails="{{emails}}"></email-listbox>
 	</template>
 
   <script>
@@ -20,6 +23,9 @@
 				behaviors: [
 					Polymer.NeonAnimationRunnerBehavior,
 				],
+        properties: {
+					emails: Array,
+        },
 			});
 		})();
   </script>

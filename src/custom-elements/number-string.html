@@ -19,7 +19,8 @@
 					number: {
 						type: Number,
 						notify: true,
-						reflectToAttribute: true,
+						//reflectToAttribute: true,
+						//observer: '_argChanged',
 						observer: '_numberChanged',
 						value: function() {
 							return null;
@@ -29,26 +30,9 @@
 					string: {
 						type: String,
 						notify: true,
-						reflectToAttribute: true,
+						//reflectToAttribute: true,
+						//observer: '_argChanged',
 						observer: '_stringChanged',
-						value: function() {
-							return '';
-						},
-					},
-					
-					format: {
-						type: String,
-						notify: true,
-						reflectToAttribute: true,
-						value: function() {
-							return '0,0'; //'0.0a' // http://numeraljs.com/
-						},
-					},
-					
-					abbreviation: {
-						type: String,
-						notify: true,
-						reflectToAttribute: true,
 						value: function() {
 							return '';
 						},
@@ -57,9 +41,29 @@
 					direction: { // 'number-to-string' | 'number-to-x' | 'string-to-number' | 'string-to-string' | 'string-to-x' // Defines conversion direction
 						type: String,
 						notify: true,
-						reflectToAttribute: true,
+						//reflectToAttribute: true,
+						//observer: '_argChanged',
+						observer: '_directionChanged',
 						value: function() {
 							return 'number-to-string';
+						},
+					},
+					
+					format: {
+						type: String,
+						notify: true,
+						//reflectToAttribute: true,
+						value: function() {
+							return '0,0'; //'0.0a' // http://numeraljs.com/
+						},
+					},
+					
+					abbreviation: {
+						type: String,
+						notify: true,
+						//reflectToAttribute: true,
+						value: function() {
+							return '';
 						},
 					},
 					
@@ -67,10 +71,23 @@
 				
 				observers: [
 					//'_paramChanged(number, string, direction)',
+					//'_argChanged(number, string, direction)',
 				],
 				
         attached: function() {
+					//console.log('_directionStart', this._directionStart);
 					this.set('_paramsBeingChanged' , false);
+					//this._argChanged();
+					/**/
+					switch (this._directionStart) {
+						case 'string':
+							this._stringChanged();
+							break;
+						case 'number':
+							this._numberChanged();
+							break;
+					}
+					/**/
 		    },
 					
 				getWords: function(n) {
@@ -85,7 +102,7 @@
 					return out;					
 				},
 				
-				get directionRange() {
+				get _directionRange() {
 					return [
 						'string-to-x'      ,
 						'number-to-x'      ,
@@ -95,26 +112,45 @@
 					];
 				},
 				
+				get _directionStart() {
+					return this.direction.split('-')[0];
+				},
+				
 				_validateDirection: function() {
-					if(this.directionRange.indexOf(this.direction) > -1) {
+					if(this._directionRange.indexOf(this.direction) > -1) {
 						return true;
 					} else {
-						console.error('"direction" property undefined: ' , this.direction);
+						//console.error('"direction" property undefined: ' , this.direction);
 						return false;
 					}
 				},
 				
+				/** /
+				_argChanged: function() {
+					if(this._validateDirection() && this._directionStart) {
+						this._paramChanged(this._directionStart === 'string');
+					}
+				},
+				
+				/**/
 				_stringChanged: function() {
-					if(this._validateDirection() && this.direction.split('-')[0] === 'string') {
-						this._paramChanged(true);
+					if(this._validateDirection() && this._directionStart === 'string') {
+						this._paramChanged(this._directionStart === 'string'); // true
 					}
 				},
 	
 				_numberChanged: function() {
-					if(this._validateDirection() && this.direction.split('-')[0] === 'number') {
-						this._paramChanged(false);
+					if(this._validateDirection() && this._directionStart === 'number') {
+						this._paramChanged(this._directionStart === 'string'); // false
 					}
 				},
+	
+				_directionChanged: function() {
+					if(this._validateDirection() && this._directionStart) {
+						this._paramChanged(this._directionStart === 'string'); // variable
+					}
+				},
+				/**/
 	
 				_paramChanged: function(bool) {
 					if (!this._paramsBeingChanged) {

@@ -133,9 +133,29 @@
 				@apply(--layout-center);
 			}
 		</style>
+		<style>
+			.row-header {
+				font-size: 80%;
+				opacity: 0.3;
+			}
+			div[prefix], div[suffix] {
+				font-weight: 100;
+				opacity: 0.4;
+				xcolor: red;
+				--paper-input-container: {
+					font-size: 15%; /* not working */
+				}
+				--paper-input-prefix {
+					font-size: 15%; /* not working */
+				}
+				--paper-input-suffix {
+					font-size: 1%; /* not working */
+				}
+			}
+		</style>
 		<!-- endEdit -->
 
-    <div id="content"
+		<div id="content"
 				 class$="media-width-[[mediaWidth]]"
 				 >
       <div class="filters">
@@ -156,6 +176,7 @@
 				</div>
 				<!---->
 				
+				<!--- ->
         <div class="row">
           <div class="col date">
             <vaadin-date-picker id="from"
@@ -173,6 +194,7 @@
 						</vaadin-date-picker>
           </div>
         </div>
+				<!--- ->
 
         <div class="row">
           <div class="col total">
@@ -196,7 +218,7 @@
         </div>
 
         <div class="row">
-          <div class="merchants col">
+          <div class="col merchants">
             <vaadin-combo-box label="Merchant"
 															items="{{merchants}}"
 															value="{{filters.merchant}}"
@@ -207,7 +229,7 @@
         </div>
 
         <div class="row">
-          <div class="status col">
+          <div class="col status">
             <span class="caption">Status</span>
             <div class="checkboxes">
               <template is="dom-repeat" items="[[statusOptions]]">
@@ -219,6 +241,123 @@
             </div>
           </div>
         </div>
+				<!---->
+				
+				<!-- Edit -->
+				
+				<div class="row-header">Rate</div>
+				<div class="row">
+          <div class="col total">
+            <paper-input label="Min"
+												 value="{{filters.min_rate}}"
+												 type="number"
+												 required
+												 step="any"
+												 >
+							<!--- ->
+              <div prefix>%</div>
+							<!---->
+            </paper-input>
+            <span>–</span>
+            <paper-input label="Max"
+												 value="{{filters.max_rate}}"
+												 type="number"
+												 required
+												 step="any"
+												 >
+							<!---->
+              <div suffix>%</div>
+							<!---->
+						</paper-input>
+          </div>
+        </div>
+				<!---->
+				
+				<div class="row-header">LTV</div>
+				<div class="row">
+          <div class="col total">
+            <paper-input label="Min"
+												 value="{{filters.min_ltv}}"
+												 type="number"
+												 required
+												 step="any"
+												 >
+							<!--- ->
+              <div prefix>$</div>
+							<!---->
+            </paper-input>
+            <span>–</span>
+            <paper-input label="Max"
+												 value="{{filters.max_ltv}}"
+												 type="number"
+												 required
+												 step="any"
+												 >
+							<!---->
+              <div suffix>%</div>
+							<!---->
+						</paper-input>
+          </div>
+        </div>
+				<!---->
+				
+				<div class="row-header">Amount</div>
+				<div class="row">
+          <div class="col total">
+            <paper-input label="Min"
+												 value="{{filters.min_amt}}"
+												 type="number"
+												 required
+												 step="any"
+												 >
+							<!---->
+              <div prefix>$</div>
+							<!---->
+            </paper-input>
+            <span>–</span>
+            <paper-input label="Max"
+												 value="{{filters.max_amt}}"
+												 type="number"
+												 required
+												 step="any"
+												 >
+							<!--- ->
+              <div suffix>%</div>
+							<!---->
+						</paper-input>
+          </div>
+        </div>
+				<!---->
+				
+				<div class="row-header">Tenor</div>
+				<div class="row">
+          <div class="col total">
+            <paper-input label="Min"
+												 value="{{filters.min_tenor}}"
+												 type="number"
+												 required
+												 step="any"
+												 >
+							<!--- ->
+              <div prefix>$</div>
+							<!---->
+            </paper-input>
+            <span>–</span>
+            <paper-input label="Max"
+												 value="{{filters.max_tenor}}"
+												 type="number"
+												 required
+												 step="any"
+												 >
+							<!---->
+              <div suffix>yrs</div>
+							<!---->
+						</paper-input>
+          </div>
+        </div>
+				<!---->
+				
+				<!-- endEdit -->
 
       </div>
     </div>
@@ -237,23 +376,24 @@
         properties: {
           filters: {
             type: Object,
-            notify: true
+            notify: true,
           },
           merchants: {
             type: Array,
-            observer: '_merchantsChanged'
+            //observer: '_merchantsChanged',
           },
           statusOptions: Array,
 					// Edit
 					mediaWidth: { // xsmall, small, medium, large
 						type: String,
-						update: true,
+						notify: true,
 						reflectToAttribute: true,
-						observer: '_mediaWidthChanged'
+						observer: '_mediaWidthChanged',
 					},
 					// endEdit
         },
 
+				/** /
         ready: function() {
           this._registerValidators();
 
@@ -296,9 +436,10 @@
         _merchantsChanged: function(merchants) {
           this.$.merchantsSelect.items = merchants;
         },
+				/**/
 
-        _updateStatus: function(evt) {
-          var checkbox = evt.target;
+        _updateStatus: function(e) {
+          var checkbox = e.target;
 
           if (checkbox.checked) {
             this._addStatus(checkbox.name);

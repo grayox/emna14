@@ -282,21 +282,21 @@
 				animationConfig: {
 					value: function() {
 						return {
-							'entry': {
+							entry: {
 								name: 'scale-up-animation',
 								node: this.$.badge,
 								timing: {
 									duration: 750,
 								},
 							},
-							'exit': {
+							exit: {
 								name: 'scale-down-animation',//'fade-out-animation',
 								node: this.$.badge,
 								timing: {
 									duration: 750,
 								},
 							},
-							'rotateUp': {
+							rotateUp: {
 								name: 'transform-animation',
 								node: this.$.badge,
 								transformTo: 'rotate(360deg)',
@@ -304,7 +304,7 @@
 									duration: 750,
 								},
 							},
-							'rotateDown': {
+							rotateDown: {
 								name: 'transform-animation',
 								node: this.$.badge,
 								transformTo: 'rotate(-360deg)',

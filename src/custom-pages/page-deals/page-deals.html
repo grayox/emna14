@@ -16,10 +16,6 @@
 <link rel="import" href="../../custom-libraries/moment-js.html">
 
 <!-- Edit -->
-<!---->
-<link rel="import" href="../../custom-elements/my-drawer-panel.html">
-<link rel="import" href="../../custom-elements/toolbar-panel.html">
-<!---->
 <link rel="import" href="items-list.html">
 <link rel="import" href="history-panel.html">
 
@@ -46,7 +42,6 @@
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation.html">
 
-<link rel="import" href="../../custom-styles/shared-styles.html">
 
 <dom-module id="page-deals">
 	<template>
@@ -133,6 +128,9 @@
 										app-name="app"
 									  path="users/[[user.uid]]/items"
 									  data="{{items}}"
+										xorder-by-child="filterindex"
+										xstart-at="g"
+										xend-at="j"
 										>
     </firebase-query>
     
@@ -161,7 +159,7 @@
 													 total-owed="[[totalOwed]]"
 													 merchants="[[merchants]]"
 													 filters="{{filters}}"
-													 items="[[itemsRef]]"
+													 items="[[items]]"
 													 >
 					</filters-toolbar>
 					<!---->
@@ -172,7 +170,7 @@
 					<!---->
 					<items-list id="list"
 											media-width="[[mediaWidth]]"
-											items="[[itemsRef]]"
+											items="[[items]]"
 											filters="[[filters]]"
 											>
 					</items-list>
@@ -336,14 +334,11 @@
 						reflectToAttribute: true,
           },
 					editableItem: Object,
-					/*
-					itemsRef: {
-					  type: Object,
-            notify: true,
-						reflectToAttribute: true,
-          	computed: '_computeItemsRef(items)',	
-					}
-					*/
+					/** /
+					filteredItems: {
+						computed: '_computeFilteredItems(items, filters.*)'
+					},
+					/**/
         	// endEdit
 				},
 				
@@ -373,22 +368,13 @@
 					/**/
 				},
 				
-				/*
-				_computeItemsRef: function(items) {
-					var out = JSON.parse(JSON.stringify(items));
-					var i = out.length;
-					while(i--) {
-						out[i] = this._formatItems(out[i]);
-					}
-					this.set('itemsRef', out);
-					return out;
+				/** /
+				_computeFilteredItems: function(items, filters) {
+					console.log('items', items);
+					console.log('length', items.length);
+					//return array.filter(x => x % 2 == 0);
 				},
-				
-				_formatItems: function(item) {
-					item.amountString = 1;
-					return item;
-				},
-				*/
+				/**/
 
         _calculateTotal: function() {
           if (this.items) {
@@ -559,10 +545,12 @@
 					//console.log('user', this.user);
 					this.toEditableItem(item);
 					var doc = this.$.document;
-					if(this.editableItemId) {
-					  doc.save(this.itemsPath, this.editableItemId);
+					var id = this.editableItemId;
+					var path = this.itemsPath;
+					if(id) {
+					  doc.save(path, id);
 					} else {
-					  doc.save(this.itemsPath);
+					  doc.save(path);
 					}
 					doc.reset();
 					/**/
