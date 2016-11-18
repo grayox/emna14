@@ -1,67 +1,42 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-<script src="../bower_components/qr-js/qr.min.js"></script>
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="toolbar-dialog-behavior.html">
+<!--- ->
+<script src="../../bower_components/qr-js/qr.min.js"></script>
+<!---->
 
-<dom-module id="info-dialog">
+<dom-module id="toolbar-dialog">
   <template>
-    <style>
-      :host {
-        display: block;
-      }
+		<style include="toolbar-dialog-styles"></style>
+    <paper-dialog id="dialog"
+								  modal xautofocus
+								  xalways-on-top
+								  xno-cancel-on-esc-key
+									xopened="{{_showDialog(route.path)}}"
+									entry-animation="scale-up-animation"
+									xexit-animation="fade-out-animation"
+									exit-animation="scale-down-animation"
+									>	
 
-      paper-dialog {
-        overflow: auto;
-      }
-
-      paper-button {
-        background: var(--primary-color);
-        color: var(--text-primary-color);
-      }
-
-      #dialog {
-        max-width: 600px;
-      }
-
-      code {
-        font-weight: 600;
-        color: var(--paper-pink-a400);
-        background: #eee;
-        padding: 5px;
-      }
-
-      .highlight {
-        font-weight: 600;
-      }
-
-      .instructions {
-        display: flex;
-      }
-
-      #close-button {
-        margin: 0 16px 16px 0;
-      }
-
-      #qr {
-        align-self: center;
-        margin-left: 32px;
-        height: 150px;
-        width: 150px;
-      }
-
-      a {
-        text-decoration: none;
-        color: var(--primary-color);
-      }
-
-      @media (max-width: 600px) {
-        #qr {
-          display: none;
-        }
-      }
-    </style>
-
-    <paper-dialog id="dialog" modal>
+      <div class="main-layout layout horizontal">
+				<h2>Welcome to MasterBlaster</h2>
+				<paper-tooltip id="rulesTextHeader"
+											 for="header"
+											 xposition="right"
+											 xfit-to-visible-bounds
+											 >
+				</paper-tooltip>
+        <span class="flex"></span>
+        <paper-icon-button icon="close"
+													 on-tap="close"
+													 class="close-button self-start"
+													 >
+				</paper-icon-button>
+      </div>
+			
+			<content></content>
+			<!--- ->
       <h2>Welcome to MasterBlaster</h2>
 
       <div class="dialog-body">
@@ -88,6 +63,7 @@
           </p>
         </div>
       </div>
+			<!---->
       <div class="buttons">
         <paper-button id="close-button" raised on-tap="close">Got it!</paper-button>
       </div>
@@ -99,28 +75,36 @@
       'use strict';
 
       Polymer({
-        is: 'info-dialog',
+        is: 'toolbar-dialog',
+				
+				behaviors: [
+					MyBehaviors.ToolbarDialogBehavior,
+				],
+				
         properties: {
-          url: String
+          //url: String,
         },
         open: function() {
-          this.url = window.location.href;
-          this._updateQR();
+          //this.url = window.location.href;
+          //this._updateQR();
           this.$.dialog.open();
         },
         close: function() {
+					this.fire('toolbar-dialog-close');
           var _this = this;
           this.async(function() {
             _this.$.dialog.close();
           }, 10);
         },
+				/** /
         _updateQR: function() {
           qr.canvas({
             canvas: this.$.qr,
             value: this.url,
             size: 6
           });
-        }
+        },
+				/**/
       });
     })();
   </script>

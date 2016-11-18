@@ -1,0 +1,20 @@
+{							
+	"breakpoints": "575 700 840 900 1125",
+	"firebase": {
+		"authDomain": "green-comet.firebaseapp.com",
+		"databaseUrl": "https://green-comet.firebaseio.com/",
+		"apiKey": "AIzaSyBOqawzjd994lNbsCTb6hzDZ7wI7yFNw5o"
+	},
+	"pages": [
+		{ "name": "Dashboard" , "icon": "notification:network-check" } ,
+		{ "name": "Deals"     , "icon": "social:public"              } ,
+		{ "name": "Share"     , "icon": "social:share"               } ,
+		{ "name": "Trade"     , "icon": "vaadin-icons:paperplane-o"  } ,
+		{ "name": "Settle"    , "icon": "account-balance"            }
+	],
+	"entities": {
+		"deal"    : { "page": "page-deals", "path": [ "users" , "this.user.uid" , "deals"   ] },
+		"offer"   : { "page": "page-deals", "path": [ "users" , "this.user.uid" , "offers"  ] },
+		"network" : { "page": "page-share", "path": [ "users" , "this.user.uid" , "network" ] }
+	}
+}

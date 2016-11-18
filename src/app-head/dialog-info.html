@@ -1,0 +1,70 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="toolbar-dialog.html">
+<link rel="import" href="toolbar-dialog-styles.html">
+<link rel="import" href="toolbar-dialog-behavior.html">
+
+<link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
+
+<dom-module id="dialog-info">
+  <template>
+		<style include="toolbar-dialog-styles"></style>
+		<toolbar-dialog>
+			
+      <div class="dialog-body">
+        <div class="instructions">
+
+          <div class="text">
+            <p>
+              We use the science of Six Degrees of Separation to network finance deals.
+						</p>
+						<h3>Instructions</h3>
+            <ul>
+							<!---->
+							<!---->
+							<li>
+								On the &ldquo;Share&rdquo; page, add the email addresses of people in your network
+								who might know someone who can participate in these finance deals.
+							</li>
+							<li>
+								For every deal that is done, every link in the chain will earn a commission.
+								The more deals your network does, the more you can earn.
+								So add as many contacts as you can!
+							</li>
+						</ul>
+							Watch the below video to learn more about the science of Six Degrees of Separation...
+						</p>
+            <google-youtube id="video"
+														video-id="TcxZSmzPw8k"
+														height="270px"
+														width="480px"
+														rel="0"
+														>
+						</google-youtube>
+          </div>
+        </div>
+      </div>
+    </toolbar-dialog>
+
+  </template>
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'dialog-info',
+				
+				behaviors: [
+					MyBehaviors.ToolbarDialogBehavior,
+				],
+				
+				listeners: {
+					'toolbar-dialog-close': 'close',
+				},
+				
+				close: function() {
+					this.$.video.pause();
+				},
+				
+      });
+    })();
+  </script>
+</dom-module>

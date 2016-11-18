@@ -1,0 +1,152 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../../bower_components/polymerfire/polymerfire.html">
+
+<dom-module id="item-methods">
+	<template>
+		<style></style>
+		<paper-toast id="toast"></paper-toast>
+    <firebase-document id="document"
+											 app-name="app"
+											 xpath="[[editableItemId]]"
+											 data="{{editableItem}}"
+											 >
+    </firebase-document>
+	</template>
+
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'item-methods',
+				
+				properties: {
+					appData: Object,
+					editableItem: Object,
+				},
+
+				listeners: {
+					'item-update': '_itemUpdate',
+				},
+				
+				itemsPath: function(s) {
+					var a = this.appData.items[s].path;
+					var out = a.join('/');
+					out = out.replace('this.user.uid', this.user.uid);
+					return out;
+					//return [ 'users' , this.user.uid , 'items' ].join('/');
+					/** /
+					return {
+						deal    : [ 'users' , this.user.uid , 'deals'   ].join('/') ,
+						offer   : [ 'users' , this.user.uid , 'offers'  ].join('/') ,
+						network : [ 'users' , this.user.uid , 'network' ].join('/') ,
+					};
+					/**/
+				},
+
+				toEditableItem: function(e) {
+					// Eliminates keys with string characters unacceptable to Firebase
+					var editableItem = JSON.parse(JSON.stringify(e));
+					if(editableItem.$H) {
+						editableItem.H = editableItem.$H;
+						delete editableItem.$H;
+					}
+					if(editableItem.$key) {
+						editableItem._id = editableItem.$key;
+						delete editableItem.$key;
+					}
+					this.set('editableItem', editableItem);
+					if(editableItem._id/*_rev*/) {
+						this.set('editableItemId', editableItem._id/*_rev*/);
+					} else {
+						this.set('editableItemId', null);
+					}
+				},
+
+				toastSuccessful: function(method) {
+					var toast = this.$.toast;
+					toast.text = [ 'Item was ' , method , 'd' ].join('');
+					toast.show();
+				},
+				
+				save: function(e) {
+					//var item = e.detail;
+					// Edit
+					var object = e.object; //'deal'|'offer'|'network'
+					var method = e.method; //'save'|'delete'
+					var item = e.data;
+					/**/
+					//console.log('item', item);
+					//console.log('user', this.user);
+					this.toEditableItem(item);
+					var doc = this.$.document;
+					var id = this.editableItemId;
+					var path = this.itemsPath(object);
+					//console.log('path', path);
+					if(id) {
+						doc.save(path, id);
+					} else {
+						doc.save(path);
+					}
+					doc.reset();
+					this.toastSuccessful(method);
+					/**/
+					// endEdit
+					/** /
+					//this._db.save(item);
+					this.fire('item-update', {
+						reason: 'save',
+					});
+					/**/
+				},
+
+				delete: function(e) {
+					//var item = e.detail;
+					// Edit
+					var object = e.object; //'deal'|'offer'|'network'
+					var method = e.method; //'save'|'delete'
+					var item = e.data;
+					/**/
+					//console.log('item', item);
+					//console.log('user', this.user);
+					this.toEditableItem(item);
+					var doc = this.$.document;
+					//this.set('editableItemId', '-KQRZpTjrQg4MSTDYdPo');
+					doc.path = [ this.itemsPath(object) , this.editableItemId ].join('/');
+					//console.log('doc.path', doc.path);
+					//console.dir(doc);
+					doc.destroy();
+					this.toastSuccessful(method);
+					/**/
+					// endEdit
+					//this._db.remove(item);
+					/** /
+					this.fire('item-update', {
+						reason: 'delete',
+					});
+					/**/
+				},
+
+				/** /
+				_itemUpdate: function(e) {
+					this.$.itemEditor.close();
+					if (e.detail.reason === 'deleted') {
+						this.$.saveNotification.text = 'Item was deleted';
+					} else {
+						this.$.saveNotification.text = 'Item was saved';
+					}
+					this.$.saveNotification.show();
+				},
+				_itemUpdate: function(e) {
+					//this.$.itemEditor.close();
+					this.fire('close-item-editor');
+					var toast = this.$.toast;
+					toast.text = [ 'Item was ' , e.detail.reason , 'd' ].join('');
+					toast.show();
+				},
+				/**/
+				
+      });
+		})();
+  </script>
+</dom-module>

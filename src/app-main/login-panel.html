@@ -5,7 +5,7 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 
-<link rel="import" href="custom-icons.html">
+<link rel="import" href="../custom-elements/custom-icons.html">
 
 <dom-module id="login-panel">
 	<style is="custom-style">
@@ -21,6 +21,10 @@
 			  0% { right: 200px; opacity: 0;         transform: rotateY( 90deg); }
 			100% { right:   0  ; opacity: 1;         transform: rotateY(  0deg); }
 		}
+		/** /
+		These animation delays are no longer the preferred pattern.
+		Use neon-animation/cascaded-animation instead.
+		/**/
 		#b01 { animation-delay: 1.24s; }
 		#b02 { animation-delay: 1.20s; }
 		#b03 { animation-delay: 1.12s; }

@@ -1,0 +1,29 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="toolbar-dialog.html">
+<link rel="import" href="toolbar-dialog-styles.html">
+<link rel="import" href="toolbar-dialog-behavior.html">
+
+
+<dom-module id="dialog-settings">
+  <template>
+		<style include="toolbar-dialog-styles"></style>
+		<toolbar-dialog>
+			
+			Settings Dialog
+	
+    </toolbar-dialog>
+
+  </template>
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'dialog-settings',
+				behaviors: [
+					MyBehaviors.ToolbarDialogBehavior,
+				],
+      });
+    })();
+  </script>
+</dom-module>
+

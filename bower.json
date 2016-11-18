@@ -39,7 +39,9 @@
     "paper-card": "PolymerElements/paper-card#^1.1.4",
     "font-awesome": "fontawesome#^4.6.3",
     "chart-elements": "robdodson/chart-elements#^3.1.2",
-    "paper-chip": "bendavis78/paper-chip#^1.1.1"
+    "paper-chip": "bendavis78/paper-chip#^1.1.1",
+    "google-youtube": "GoogleWebComponents/google-youtube#^1.2.1",
+    "vaadin-icons": "^1.0.2"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

@@ -1,0 +1,117 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-media-query/iron-media-query.html">
+
+<dom-module id="media-query">
+  <template>
+    <style></style>
+		<!--- ->
+		Common breakpoints: 480, 600(xs/s), 840, 960(s/m), 1280(m/l), 1440, and 1600dp
+		https://material.google.com/layout/responsive-ui.html#responsive-ui-breakpoints
+    https://developer.android.com/guide/practices/screens_support.html
+		http://stackoverflow.com/a/16727073/1640892
+		<!--- ->
+		<iron-media-query query=                        "(max-width:  699px)" query-matches="{{queryMatches.xsmall}}"     ></iron-media-query>
+		<iron-media-query query="(min-width:  700px) AND (max-width:  899px)" query-matches="{{queryMatches.small}}"  full></iron-media-query>
+		<iron-media-query query="(min-width:  900px) AND (max-width: 1124px)" query-matches="{{queryMatches.medium}}" full></iron-media-query>
+		<iron-media-query query="(min-width: 1125px)"                         query-matches="{{queryMatches.large}}"      ></iron-media-query>
+		<!---->
+		<!--- ->
+		Common breakpoints: 480, 600(xs/s), 840, 960(s/m), 1280(m/l), 1440, and 1600dp
+		https://material.google.com/layout/responsive-ui.html#responsive-ui-breakpoints
+    https://developer.android.com/guide/practices/screens_support.html
+		http://stackoverflow.com/a/16727073/1640892
+		<iron-media-query query=                       "(max-width: 599px)" query-matches="{{queryMatches.xsmall}}"     ></iron-media-query>
+		<iron-media-query query="(min-width: 600px) AND (max-width: 839px)" query-matches="{{queryMatches.small}}"  full></iron-media-query>
+		<iron-media-query query="(min-width: 840px) AND (max-width: 959px)" query-matches="{{queryMatches.medium}}" full></iron-media-query>
+		<iron-media-query query="(min-width: 960px)"                        query-matches="{{queryMatches.large}}"      ></iron-media-query>
+		<!--- ->
+		<iron-media-query query=                       "(max-width: 574px)" query-matches="{{queryMatches.xsmall}}"     ></iron-media-query>
+		<iron-media-query query="(min-width: 575px) AND (max-width: 699px)" query-matches="{{queryMatches.small}}"  full></iron-media-query>
+		<iron-media-query query="(min-width: 700px) AND (max-width: 839px)" query-matches="{{queryMatches.medium}}" full></iron-media-query>
+		<iron-media-query query="(min-width: 840px)"                        query-matches="{{queryMatches.large}}"      ></iron-media-query>
+		<!--- ->
+		mediaWidth  0     1     2     3     4      5
+    pixels        575   700   840   900   1125
+		<!---->	
+		<template is="dom-repeat"
+							items="[[queries]]"
+							>
+			<iron-media-query full
+												query="[[item.query]]"
+												query-matches="{{item.queryMatches}}"
+												>
+				<span hidden>{{queryResult(index, item.queryMatches)}}</span>
+			</iron-media-query>
+		</template>
+		
+	</template>
+
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'media-query',
+				properties: {
+					mediaWidth: {
+						type: Number,
+						notify: true,
+					},
+					breakpoints: String, // space delimited
+					breakpointArray: {
+						type: Array,
+						computed: '_computeBreakpointArray(breakpoints)',
+					},
+					queries: {
+						type: Array,
+						computed: '_computeQueries(breakpointArray)',
+						/** /
+						value: function() {
+							return [
+								{ query: '(max-width:  699px)'                         } ,
+								{ query: '(min-width:  700px) AND (max-width:  899px)' } ,
+								{ query: '(min-width:  900px) AND (max-width: 1124px)' } ,
+								{ query: '(min-width: 1125px)'                         } ,
+							];
+						},
+						/**/
+					},
+				},
+				/** /
+				attached: function() {
+					//console.log('breakpointArray', this.breakpointArray);
+					//console.log('media-width', this.mediaWidth);
+				},
+				/**/
+				_computeBreakpointArray: function(s) {
+					return s.split(' ').sort(function(a, b){return b-a}); // descending numerical
+				},
+				_getStringsArray: function(a) { // http://jsbin.com/mavenipawa/1/edit?html,console,output
+					var out = [];
+					var i = a.sort(function(a, b){return b-a}).length; // repeats sort // descending numerical
+					out.push('(max-width: ' + (a[(i-1)]-1) + 'px)'); // first element
+					while(i---1) { // interior elements
+						out.push('(min-width: ' + a[i] + 'px) AND (max-width: ' 
+											 + (a[(i-1)]-1) + 'px)');
+					}
+					out.push('(min-width: ' + a[0] + 'px)'); // last element
+					return out;
+				},
+				_computeQueries: function(a) {
+					var s = this._getStringsArray(a);
+					var out = [];
+					var i = s.reverse().length;
+					while(i--) {
+						out.push({query: s[i]});
+					}
+					return out;
+				},
+				queryResult: function(index, queryMatches) {
+					if(queryMatches) {
+						this.set('mediaWidth', index);
+						//console.log('media-width', this.mediaWidth);
+					}
+				},
+      });
+    })();
+  </script>
+</dom-module>

@@ -28,7 +28,7 @@
 <link rel="import" href="../../custom-elements/number-string.html">
 <link rel="import" href="../../custom-libraries/moment-js.html">
 <link rel="import" href="../../custom-styles/editor-styles.html">
-<link rel="import" href="offer-editor.html">
+<link rel="import" href="sub-editor.html">
 <!---->
 <!---->
 
@@ -44,17 +44,19 @@
 				}
 			}
 		</style>
+
+		<!--- ->
+    <iron-media-query query="(min-height: 900px)"
+											query-matches="{{tallWindow}}"
+											>
+		</iron-media-query>
+		<!---->
 		
     <app-route route="{{route}}"
 							 pattern="/:action"
 							 data="{{routeData}}"
 							 >
 		</app-route>
-
-    <iron-media-query query="(min-height: 900px)"
-											query-matches="{{tallWindow}}"
-											>
-		</iron-media-query>
     <paper-dialog id="dialog"
 								  modal xautofocus
 								  xalways-on-top
@@ -118,7 +120,7 @@
 			<button on-tap="show">Show</button>
 			<!---->
 			<div hidden$="[[isNew]]">
-				<offer-editor id="offer-editor" opened="{{offerOpened}}"></offer-editor>
+				<sub-editor id="sub-editor" opened="{{subEditorOpened}}"></sub-editor>
 			</div>
 			<!---->
 			<div class="form">
@@ -500,21 +502,27 @@
           e.preventDefault();
         },
 				/**/
-
-        _save: function() {
-          this.$.error.innerText = '';
-          //var form = this.isNew ? this.$$('#form-create') : this.$$('#form-update') ; // Only necessary for dom-if
+		
+				_save: function() {
+					this.$.error.innerText = '';
+					//var form = this.isNew ? this.$$('#form-create') : this.$$('#form-update') ; // Only necessary for dom-if
 					var form = this.$.form;
-          if (form.validate()) {
-            //this.item.total = parseFloat(this.item.total);
+					if (form.validate()) {
+						//this.item.total = parseFloat(this.item.total);
 						//console.log('item', this.item);
-            this.fire('item-save', this.item);
-          } else {
-            console.log('Form validation failed');
-            this.$.dialog.scrollTop = 0;
-            this.errorText = 'Please fill all required fields';
-          }
-        },
+						//this.fire('item-save', this.item);
+						//this.fire('item-save', {
+						this.fire('item-method', {
+							method: 'save',
+							object: 'deal',
+							data: this.item,
+						});
+					} else {
+						console.log('Form validation failed');
+						this.$.dialog.scrollTop = 0;
+						this.errorText = 'Please fill all required fields';
+					}
+				},
 
         open: function(item) {
 					// Edit
@@ -570,14 +578,20 @@
 					if(this.isNew) {
 						this._clearAll();
 					}
-					if(this.offerOpened) {
-						this.$['offer-editor'].toggle();
+					if(this.subEditorOpened) {
+						this.$['sub-editor'].toggle();
 					}
 					// endEdit
         },
 
         _delete: function() {
-          this.fire('item-delete', this.item);
+          //this.fire('item-delete', this.item);
+					//this.fire('item-delete', {
+					this.fire('item-method', {
+						method: 'delete',
+						object: 'deal',
+						data: this.item,
+					});
         },
 				
 				// Edit

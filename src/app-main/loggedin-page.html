@@ -1,17 +1,22 @@
-<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
-<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
-<link rel="import" href="../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">	
+<link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../../bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">	
 
-<link rel="import" href="custom-pages/page-dashboard/page-dashboard.html">
-<link rel="import" href="custom-pages/page-deals/page-deals.html">
-<link rel="import" href="custom-pages/page-share/page-share.html">
-<link rel="import" href="custom-pages/page-trade/page-trade.html">
-<link rel="import" href="custom-pages/page-settle/page-settle.html">
+<link rel="import" href="../custom-pages/page-dashboard/page-dashboard.html">
+<link rel="import" href="../custom-pages/page-deals/page-deals.html">
+<link rel="import" href="../custom-pages/page-share/page-share.html">
+<link rel="import" href="../custom-pages/page-trade/page-trade.html">
+<link rel="import" href="../custom-pages/page-settle/page-settle.html">
 
-<link rel="import" href="custom-elements/toolbar-panel.html">
-<link rel="import" href="custom-elements/my-drawer-panel.html">
+<link rel="import" href="../custom-styles/shared-styles.html">
 
-<link rel="import" href="custom-styles/shared-styles.html">
+<link rel="import" href="../app-head/toolbar-panel.html">
+<link rel="import" href="../app-head/dialog-info.html">
+<link rel="import" href="../app-head/dialog-settings.html">
+<link rel="import" href="../app-head/dialog-account.html">
+
+<link rel="import" href="my-drawer-panel.html">
+<link rel="import" href="item-methods.html">
 
 <dom-module id="loggedin-page">
 	<template>
@@ -43,16 +48,22 @@
 				transition:         .5s;
 			}
 			
-			app-toolbar div[main-title] {
-			  font-size: 24px;
+			app-toolbar > div[main-title] > .text {
 				/** /
 				xcursor: pointer;
 				color: var(--primary-color);
 				-webkit-text-stroke-width: 0;
-				/**/
-				font-family: 'Impact', 'Roboto', sans-serif;/**/
+				font-family: 'Impact', 'Roboto', sans-serif;/** /
+			  font-size: 24px;
 				font-style: italic;
+				-moz-transition:    1s;
+				-webkit-transition: 1s;
+				-o-transition:      1s;
+				transition:         1s;
+				/**/
+				opacity: 0.43;
         font-weight: 100;
+				margin-left: 1em;
 			}
 			
 			app-toolbar img {
@@ -104,20 +115,18 @@
 			}
 		</style>
 		
-		<!-- Edit -->
-		<!--- ->
-		Common breakpoints: 480, 600(xs/s), 840, 960(s/m), 1280(m/l), 1440, and 1600dp
-		https://material.google.com/layout/responsive-ui.html#responsive-ui-breakpoints
-    https://developer.android.com/guide/practices/screens_support.html
-		http://stackoverflow.com/a/16727073/1640892
-		<!---->
-		<iron-media-query query=                        "(max-width:  699px)" query-matches="{{queryMatches.xsmall}}"     ></iron-media-query>
-		<iron-media-query query="(min-width:  700px) AND (max-width:  899px)" query-matches="{{queryMatches.small}}"  full></iron-media-query>
-		<iron-media-query query="(min-width:  900px) AND (max-width: 1124px)" query-matches="{{queryMatches.medium}}" full></iron-media-query>
-		<iron-media-query query="(min-width: 1125px)"                         query-matches="{{queryMatches.large}}"      ></iron-media-query>
-    <!-- endEdit -->
-
-		<info-dialog id="info"></info-dialog>
+    <item-methods id="item-methods"
+									app-name="app"
+									xpath="[[editableItemId]]"
+									data="{{editableItem}}"
+									user="[[user]]"
+									app-data="[[appData]]"
+									>
+    </item-methods>
+	
+		<dialog-info     id="info"     ></dialog-info>
+		<dialog-settings id="settings" ></dialog-settings>
+		<dialog-account  id="account"  ></dialog-account>
 		
 		<app-drawer-layout fullbleed force-narrow>
 			<app-drawer id="drawer"
@@ -126,7 +135,9 @@
 				<!--- ->
 				drawer content
 				<!---->
-				<my-drawer-panel route="{{page}}"
+				<my-drawer-panel id="drawer"
+												 pages="{{pages}}"
+												 route="{{page}}"
 												 on-select-item="_onSelectItem"
 												 >
 				</my-drawer-panel>
@@ -143,16 +154,18 @@
 					</paper-icon-button>
 					<div id="main-title"
 							 main-title
-							 xspacer$="[[!queryMatches.xsmall]]"
-							 xspacer$="[[!_computedSmall]]"
-							 spacer$="[[queryMatches.large]]"
+							 spacer$="[[_computeSpacer(mediaWidth)]]"
 							 class="drawer-menu-button"
 							 >
 						<!---- >
 						MasterBlaster
 						<img src="../images/app-icon-32.png" />
 						<!---->
-						<img src="../images/MasterBlasterLogo.png" />
+						<img src="../../images/MasterBlasterLogo.png" />
+						<span class="text">
+							<span hidden$="[[!mediaWidth]]">[[pageName]]</span>
+							<iron-icon icon="[[pageIcon]]"></iron-icon>
+						</span>
 					</div>
 					<!--- ->
 					<iron-icon id="sync" icon="notification:sync" hidden$="[[_hideSyncIcon(status)]]" title="Syncing…"></iron-icon>
@@ -166,8 +179,9 @@
 					<toolbar-panel user="[[user]]"
 												 on-logout="_logout"
 												 on-info="_openInfoWindow"
-												 on-account="_openInfoWindow"
-												 on-settings="_openInfoWindow"
+												 on-settings="_openSettingsWindow"
+												 on-account="_openAccountWindow"
+												 media-width="[[mediaWidth]]"
 												 >
 					</toolbar-panel>
 					<!-- endEdit -->
@@ -182,35 +196,39 @@
 													 >
 				<page-dashboard xentry-animation="slide-from-right-animation"
 									      exit-animation="slide-left-animation"
-												query-matches="[[queryMatches]]"
+									  		media-width="[[mediaWidth]]"
 												user="[[user]]"
 												>
 				</page-dashboard>
 				<!---->
-				<page-deals entry-animation="slide-from-right-animation"
+				<page-deals id="page-deals"
+										entry-animation="slide-from-right-animation"
 									  exit-animation="slide-left-animation"
-									  query-matches="[[queryMatches]]"
+									  media-width="[[mediaWidth]]"
 									  user="[[user]]"
 									  >
 				</page-deals>
 				<!---->
-				<page-share entry-animation="slide-from-right-animation"
+				<page-share id="page-share"
+										entry-animation="slide-from-right-animation"
 									  exit-animation="slide-left-animation"
-									  query-matches="[[queryMatches]]"
+									  media-width="[[mediaWidth]]"
 										user="[[user]]"
 									  >
 				</page-share>
 				<!---->
-				<page-trade entry-animation="slide-from-right-animation"
+				<page-trade id="page-trade"
+										entry-animation="slide-from-right-animation"
 										exit-animation="slide-left-animation"
-										query-matches="[[queryMatches]]"
+										media-width="[[mediaWidth]]"
 										user="[[user]]"
 										>
 				</page-trade>
 				<!---->
-				<page-settle entry-animation="slide-from-right-animation"
+				<page-settle id="page-settle"
+										 entry-animation="slide-from-right-animation"
 										 exit-animation="slide-left-animation"
-										 query-matches="[[queryMatches]]"
+										 media-width="[[mediaWidth]]"
 										 user="[[user]]"
 										 >
 				</page-settle>
@@ -223,7 +241,7 @@
 
 	</template>
 
-  <script>
+ <script>
     (function() {
       'use strict';
       Polymer({
@@ -236,33 +254,74 @@
 
         properties: {
 					// Edit
-					mediaWidth: String,
-					queryMatches: {
-						type: Object,
+					appData: Object,
+					mediaWidth: {
+						type: Number,
 						notify: true,
-						reflectToAttribute: true,
-						value: function() {
-							return {}
-						},
 					},
 					user: {
             type: Object,
             notify: true,
-						reflectToAttribute: true,
           },
+					pages: {
+						type: Object,
+						computed: '_computePages(appData)',
+						observer: '_pageChanged',
+					},
         	// endEdit
 					
 					// Edit: Imported from Shop Demo App /shop-app.html
 					page: {
 						type: String,
-						reflectToAttribute: true,
-						//observer: '_pageChanged',
+						observer: '_pageChanged',
 					},
 					// endEdit: Imported from Shop Demo App /shop-app.html
 					
         },
 
         // Edit
+				
+				attached: function() {
+					this._pageChanged();
+				},
+				
+				listeners: {
+					'item-method': '_itemMethod',
+				},
+				
+				_itemMethod: function(e) {
+					var detail = e.detail; // {method: 'save'|'delete', object: 'deal'|'offer'|'network', data: foo}
+					var object = detail.object; // 'deal'|'offer'|'network'
+					var method = detail.method; // 'save'|'delete'
+					this.$['item-methods'][method](detail);
+					this._closeEditor(object);
+				},
+				
+				_closeEditor: function(s) {
+					var id = this._pageEditor(s); // 'page-deals'
+					this.$[id].closeEditor();
+				},
+				
+				_pageEditor(s) {
+					return this.appData.items[s].page;
+					/** /
+					return {
+						deal    : 'page-deals' ,
+						offer   : 'page-deals' ,
+						network : 'page-share' ,
+					};
+					/**/
+				},
+				
+				_computePages: function(appData) {
+					return appData.pages;
+				},
+				
+				_pageChanged: function() {
+					var pages = this.get('pages');
+					this.set('pageName', pages ? pages[this.page].name : null);
+					this.set('pageIcon', pages ? pages[this.page].icon : null);
+				},
 				
 				/**/
 				_onSelectItem: function(e) {
@@ -271,10 +330,26 @@
 				},
 				/**/
 				
+        _openInfoWindow: function() {
+          this.$.info.open();
+        },
+				
+        _openSettingsWindow: function() {
+          this.$.settings.open();
+        },
+				
+        _openAccountWindow: function() {
+          this.$.account.open();
+        },
+				
+				_computeSpacer: function(n) {
+					return n > 3;
+				},
+				
 				// endEdit
 				
         _logout: function() {
-          this.loggedIn = false;
+          this.set('loggedIn', false); //this.loggedIn = false;
         },
 
         _loginStateChanged: function() {

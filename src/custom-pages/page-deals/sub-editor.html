@@ -34,7 +34,7 @@
 <!---->
 
 
-<dom-module id="offer-editor">
+<dom-module id="sub-editor">
   <template>
 		<style include="editor-styles">
 			paper-fab {
@@ -123,9 +123,13 @@
 								</paper-input>
 								<span class="light">[[offerAbbr]]</span>
 							</div>
-							<paper-input value="[[item.rate]]"
+							<paper-input id="rate"
+													 name="rate"
+													 value="[[item.rate]]"
 													 label="Rate"
 													 class="align-right"
+													 type="number"
+													 step=".1"
 													 >
 								<!--- ->
 								<div prefix>$</div>
@@ -168,7 +172,7 @@
       'use strict';
 
       Polymer({
-        is: 'offer-editor',
+        is: 'sub-editor',
 
 				behaviors: [
 					Polymer.NeonAnimationRunnerBehavior ,
@@ -248,7 +252,6 @@
 					// Edit
 					opened: {
 						type: Boolean,
-						//reflectToAttribute: true,
             notify: true,
 						value: function() {
 							return false;
@@ -317,7 +320,18 @@
           if (form.validate()) {
             //this.item.total = parseFloat(this.item.total);
 						//console.log('item', this.item);
-            this.fire('item-save', this.item);
+            //this.fire('item-save', this.item);
+						/** /
+            this.fire('item-save', {
+							name: 'offer',
+							data: this.item,
+						});
+						/**/
+						this.fire('item-method', {
+							method: 'save',
+							object: 'offer',
+							data: this.item,
+						});
           } else {
             console.log('Form validation failed');
             this.$.dialog.scrollTop = 0;
@@ -382,7 +396,18 @@
         },
 
         _delete: function() {
-          this.fire('item-delete', this.item);
+          //this.fire('item-delete', this.item);
+					/** /
+					this.fire('item-delete', {
+						name: 'offer',
+						data: this.item,
+					});
+					/**/
+					this.fire('item-method', {
+						method: 'delete',
+						object: 'offer',
+						data: this.item,
+					});
         },
 				
 				// Edit

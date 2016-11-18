@@ -1,0 +1,54 @@
+{
+	"emails": { // Quick check for new entries
+			"user1@yahoo.com": "<user-fbkey>",
+			"user2@gmail.com": "<user-fbkey>"
+		},
+	"users": {
+		"<user-fbkey>": {
+			"deals": {
+				"<deal-fbkey>": {
+					"title": "My Title",
+					"amount": 123454,
+					"rate": 12.5,
+					"total_offered": 9987,
+					"avg_rate": 12.99,
+					"status": "completed" // "active", "suspended", "withdrawn"
+				}
+			},
+			"offers": {
+				"<deal-fbkey>": {
+					"amount": "Number",
+					"rate": "Number",
+					"accepted": false
+				}
+			},
+			"downline": {
+				"<user-fbkey>": {
+					"email": "user1@yahoo.com",
+					"level": 2 // Number represents degrees of separation // 1 | 2 | 3 | 4 | 5 | 6 ...
+				}
+			},
+			"upline": [ // Created once. Static. Extends 
+				"<user-fbkey>", "<user-fbkey>", "<user-fbkey>" // Use push to add new
+			]
+		}
+	},
+	"deals": { // index owner
+		"<deal-fbkey>": {
+			"owner": "<user-fbkey>",
+			"title": "Title Goes Here",
+			"amount": 123456,
+			"tenor": 300,
+			"all_other_fields": {}
+		}
+	},
+	"offers": {
+		"<offer-fbkey>": {
+			"parent_deal":  "<deal-fbkey>",
+			"amount": 123453,
+			"rate": 12.5,
+			"maker": "<user-fbkey>",
+			"accepted": false
+		}
+	}
+}
