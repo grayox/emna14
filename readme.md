@@ -1,36 +1,51 @@
-VERSION HISTORY
+## VERSION HISTORY
 Note: Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBackup.sh
 
-v09
+### v10
+1. Implemented data architecture and denormalized data structure for object store optimization
+1. Installed networking module and logic including multiple path storage / denormalized data structure
+2. Installed tabbed sub panels into main deal editor, complete with CRud functionality
+   a. CRud = Create and Read only were tested
+3. Implemented denormalized data structure and CRud functionality for deal sub-editor (i.e., partial bid entity)
+4. v11 TODO:
+   a. Launch demo version
+	 b. Incrementally add automation to creation/hosting new client-facing features of future versions
+	 c. Make the process easier to update/upgrade the app by running parallel test-lab version offline from live app
+	 d. Explore upgrading to Polymer 2.0
+
+### v09
 1. Installed dashboard with animated control panels
 2. Control panels are their own elements
 3. Moved main table to sub-element
 4. Discovered bug with iron-data-table // http://stackoverflow.com/q/39951146/1640892
+5. Refactored to setup for automation and use of common modules for CRUD: app-main.html, app-data.html
+6. v10 TODO:
+   a. Implement data architecture and denormalize data structure for object store optimization
 
-v08
-1. MasterBlaster - rapid network assembler for doing deals
-2. Added MasterBlaster branding and logo to login-page and app-header
+### v08
+1. Blast - rapid network assembler for doing deals
+2. Added Blast branding and logo to login-page and app-header
 3. [?] Added app-theme.html for themed colors and styles
 4. Added neon-animated-pages animated page transitions
 5. Replaced single overview-page with multiple app pages
 6. Added page routing controlled by neon-animated-pages via app-drawer-panel menu
 7. v09 TODO:
-   a. Switchover content from SportsBall to MasterBlaster
-   b. Continue buildout of MasterBlaster logic and feature set
+   a. Switchover content from SportsBall to Blast
+   b. Continue buildout of Blast logic and feature set
 
-v07
+### v07
 1. SportsBall - futures marketplace for sporting events
 2. Installed app-drawer-layout
 3. Installed major component pieces including responsive styling, layout and animation
 4. Reinstalled data connection
 5. v08 TODO:
    a. Begin cleaning up some cruft in files and directories
-	 b. Begin building toward a "MasterBlaster" (rapid network assembly app)
+	 b. Begin building toward a "Blast" (rapid network assembly app)
 	 c. Increment styling improvements. Especially on app-drawer-panel and paper-dialog action buttons
 	 d. Install app routing in app-drawer panel to navigate between pages to make full-featured app
 Note: Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBackup.sh
 
-v06
+### v06
 1. Improved on basic CRUD.
 2. Improved item-editor by switching views based on Create or Update mode.
 3. Added basic app-drawer-layout but reverted to paper-toolbar in favor of implementing
@@ -40,7 +55,7 @@ v06
 	 b. Rename views and variables
 	 c. Refactor file structure; move 'specific/' to 'custom/specific/'
 
-v05
+### v05
 1. Checkout (`git clone` + `bower install`) Vaadin/expense-manager-demo.
 2. Incrementally & surgically add polymerfire elements to achieve minimum threshhold functionality.
 3. Iterate improvements incrementally.
@@ -64,15 +79,15 @@ v05
 	 c. Add multiple views: main (shared, collective) lists, private (individual) lists
 	 d. Reflect those lists in object store data structure models/nodes
 
-v04
+### v04
 1. Cloned v02.
 2. Attempts to incrementally improve v02.
 
-v03
+### v03
 1. Cloned v01.
 2. Attempts to incrementally improve v01.
 
-v02
+### v02
 1. Cloned Note App Demo.
    a. $ git clone https://github.com/firebase/polymerfire.git
    b. $ cd polymerfire
@@ -81,7 +96,7 @@ v02
    e. $ open http://localhost:8080/components/polymerfire/demo/
 2. Integrates (wholesale) Vaadin Expense Manager Demo into Polymerfire Note App Demo shell
 
-v01
+### v01
 1. Cloned Expense Manager.
    a. $ git clone https://github.com/vaadin/expense-manager-demo.git
    b. $ cd expense-manager-demo

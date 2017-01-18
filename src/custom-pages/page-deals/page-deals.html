@@ -87,10 +87,11 @@
 		</style>
 		<!---->
 		
+		<!--- ->
+		<button on-tap="show">Show item</button>
     <!--- ->
     <vaadin-pouchdb id="db" dbname="{{dbLocal}}" remote="{{dbRemote}}" data="{{items}}" status="{{status}}"></vaadin-pouchdb>
     <!---->
-		
     <app-location route="{{route}}"
 									use-hash-as-path
 									>
@@ -121,7 +122,10 @@
     <firebase-query id="query"
 										app-name="app"
 									  xpath="users/[[user.uid]]/items"
-									  path="users/[[user.uid]]/deals"
+									  xpath="users/[[user.uid]]/deals"
+									  xpath="user-deals/[[user.uid]]"
+									  path="deals"
+									  xpath="[[path]]"
 									  data="{{items}}"
 										xorder-by-child="filterindex"
 										xstart-at="g"
@@ -135,6 +139,7 @@
 		</iron-localstorage>
     <item-editor id="itemEditor"
 								 route="{{subroute}}"
+								 user="[[user]]"
 								 xitem="{{editableItem}}"
 								 xmerchants="[[merchants]]"
 								 xdb="[[_db]]"
@@ -300,10 +305,18 @@
             notify: true,
             observer: '_loginStateChanged',
           },
-          items: Array,
-          totalOwed: Number,
+          //items: Array,
+          items: {
+						type: Array,
+						notify: true,
+						value: function() {
+							return [];
+						},
+					},
+					totalOwed: Number,
           filters: {
             type: Object,
+            notify: true,
             value: function() {
               return {
                 start: '',
@@ -311,7 +324,6 @@
                 merchant: '',
               };
             },
-            notify: true
           },
 					// Edit
 					mediaWidth: {
@@ -321,8 +333,18 @@
 					user: {
             type: Object,
             notify: true,
+						observer: '_userChanged',
           },
 					editableItem: Object,
+					path: {
+						type: String,
+            notify: true,
+						/** /
+						value: function() {
+							return 'deals';
+						},
+						/**/
+					},
 					/** /
 					filteredItems: {
 						computed: '_computeFilteredItems(items, filters.*)'
@@ -472,7 +494,6 @@
 				},
 				
         /**/
-
         _itemEdit: function(e) {
           if (e && e.detail) {
             var item = e.detail;
@@ -486,6 +507,10 @@
 				},
 
 			  // Edit
+				
+				_userChanged: function() {
+					this.set('path', 'deals');
+				},
 
 				showSmall: function(n) {
 					return n < 4;
@@ -498,7 +523,7 @@
 				},
 				
 				// endEdit
-				
+
       });
 		})();
   </script>

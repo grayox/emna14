@@ -4,7 +4,7 @@
 
 <link rel="import" href="../custom-pages/page-dashboard/page-dashboard.html">
 <link rel="import" href="../custom-pages/page-deals/page-deals.html">
-<link rel="import" href="../custom-pages/page-share/page-share.html">
+<link rel="import" href="../custom-pages/page-network/page-network.html">
 <link rel="import" href="../custom-pages/page-trade/page-trade.html">
 <link rel="import" href="../custom-pages/page-settle/page-settle.html">
 
@@ -15,8 +15,8 @@
 <link rel="import" href="../app-head/dialog-settings.html">
 <link rel="import" href="../app-head/dialog-account.html">
 
-<link rel="import" href="my-drawer-panel.html">
-<link rel="import" href="item-methods.html">
+<link rel="import" href="../app-main/my-drawer-panel.html">
+<link rel="import" href="../app-main/item-methods.html">
 
 <dom-module id="loggedin-page">
 	<template>
@@ -123,6 +123,12 @@
 									app-data="[[appData]]"
 									>
     </item-methods>
+
+		<firebase-document id="doc-user"
+										   app-name="app"
+											 data="{{userDoc}}"
+										   >
+		</firebase-document>
 	
 		<dialog-info     id="info"     ></dialog-info>
 		<dialog-settings id="settings" ></dialog-settings>
@@ -158,10 +164,10 @@
 							 class="drawer-menu-button"
 							 >
 						<!---- >
-						MasterBlaster
+						Blast
 						<img src="../images/app-icon-32.png" />
 						<!---->
-						<img src="../../images/MasterBlasterLogo.png" />
+						<img src="../../images/Blast5.png" />
 						<span class="text">
 							<span hidden$="[[!mediaWidth]]">[[pageName]]</span>
 							<iron-icon icon="[[pageIcon]]"></iron-icon>
@@ -201,6 +207,14 @@
 												>
 				</page-dashboard>
 				<!---->
+				<page-network id="page-network"
+											entry-animation="slide-from-right-animation"
+											exit-animation="slide-left-animation"
+											media-width="[[mediaWidth]]"
+											user="[[user]]"
+											>
+				</page-network>
+				<!---->
 				<page-deals id="page-deals"
 										entry-animation="slide-from-right-animation"
 									  exit-animation="slide-left-animation"
@@ -208,14 +222,6 @@
 									  user="[[user]]"
 									  >
 				</page-deals>
-				<!---->
-				<page-share id="page-share"
-										entry-animation="slide-from-right-animation"
-									  exit-animation="slide-left-animation"
-									  media-width="[[mediaWidth]]"
-										user="[[user]]"
-									  >
-				</page-share>
 				<!---->
 				<page-trade id="page-trade"
 										entry-animation="slide-from-right-animation"
@@ -255,6 +261,8 @@
         properties: {
 					// Edit
 					appData: Object,
+					loggedIn: Boolean,
+					loginData: Object,
 					mediaWidth: {
 						type: Number,
 						notify: true,
@@ -262,12 +270,18 @@
 					user: {
             type: Object,
             notify: true,
+						observer: '_userChanged'
+          },
+					userDoc: {
+            type: Object,
+						observer: '_userDocChanged',
           },
 					pages: {
 						type: Object,
 						computed: '_computePages(appData)',
 						observer: '_pageChanged',
 					},
+					userInitialized: Boolean,
         	// endEdit
 					
 					// Edit: Imported from Shop Demo App /shop-app.html
@@ -287,28 +301,35 @@
 				
 				listeners: {
 					'item-method': '_itemMethod',
+					//'method-success': '_methodSuccess',
 				},
 				
 				_itemMethod: function(e) {
-					var detail = e.detail; // {method: 'save'|'delete', object: 'deal'|'offer'|'network', data: foo}
-					var object = detail.object; // 'deal'|'offer'|'network'
+					var detail = e.detail; // {method: 'save'|'delete', entity: 'deal'|'bid'|'network', data: {new:'data'}}
+					var entity = detail.entity; // 'deal'|'bid'|'network'
+					/** /
 					var method = detail.method; // 'save'|'delete'
-					this.$['item-methods'][method](detail);
-					this._closeEditor(object);
+					//this.$['item-methods'][method](detail);
+					/**/
+					this.$['item-methods'].method(detail); // detail == {method: 'save'|'delete', entity: 'deal'|'bid'|'network', data: foo}
+					this._closeEditor(entity);
 				},
 				
-				_closeEditor: function(s) {
-					var id = this._pageEditor(s); // 'page-deals'
-					this.$[id].closeEditor();
+				_closeEditor: function(s) { // s = 'network' | 'deal' | 'bid' | 'user'
+					var id = this._pageEditor(s); // id = 'page-deals' | 'page-network'
+					if(!!id) {
+						this.$[id].closeEditor();
+					}
 				},
 				
 				_pageEditor(s) {
-					return this.appData.items[s].page;
+					return this.appData.entities[s].page ? // .page property is optional
+						     this.appData.entities[s].page : null;
 					/** /
 					return {
-						deal    : 'page-deals' ,
-						offer   : 'page-deals' ,
-						network : 'page-share' ,
+						deal    : 'page-deals'   ,
+						bid   : 'page-deals'   ,
+						network : 'page-network' ,
 					};
 					/**/
 				},
@@ -344,6 +365,34 @@
 				
 				_computeSpacer: function(n) {
 					return n > 3;
+				},
+				
+				_userChanged: function() {
+					if(this.user) {
+						var doc = this.$['doc-user'];
+						var path = [ 'users' , this.user.uid ].join('/');
+						doc.path = path;
+					}					
+				},
+				
+				_userDocChanged: function(user) {
+					if( this.loggedIn
+						  && (!this.userInitialized)
+						  && (!Object.keys(user).length)
+						  && (user.constructor === Object)
+						){
+						//console.log('userDoc', user);
+						var detail = {
+							method: 'save',
+							entity: 'user',
+							data: {
+								user: this.user,
+								signup: this.loginData,
+							}
+						};
+						//console.log('detail', detail);
+						this.$['item-methods'].method(detail); //this.fire('item-method', detail);
+					}
 				},
 				
 				// endEdit

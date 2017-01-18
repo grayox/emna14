@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="login-page.html">
-<link rel="import" href="loggedin-page.html">
+<link rel="import" href="../login-pages/login-page.html">
+<link rel="import" href="../login-pages/loggedin-page.html">
 
 <!-- Edit -->
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
@@ -16,6 +16,7 @@
 
 <dom-module id="app-main">
   <template>
+		<!---->
     <style>
       :host {
         display: block;
@@ -56,7 +57,10 @@
         --vaadin-upload-button-add: {
           background: transparent;
           color: var(--primary-color);
-          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+          box-shadow:
+						0 2px 2px 0 rgba(0, 0, 0, 0.14),
+						0 1px 5px 0 rgba(0, 0, 0, 0.12),
+						0 3px 1px -2px rgba(0, 0, 0, 0.2);
         }
         --vaadin-upload-buttons-primary: {
           flex-direction: column;
@@ -136,7 +140,7 @@
 		<!---->
 		<firebase-app name="app"
 									auth-domain="green-comet.firebaseapp.com"
-									database-url="https://green-comet.firebaseio.com/"
+									database-url="green-comet.firebaseio.com"
 									api-key="AIzaSyBOqawzjd994lNbsCTb6hzDZ7wI7yFNw5o"
 									>
 		</firebase-app>
@@ -158,6 +162,8 @@
 								>
       <login-page id="login"
 									logged-in="{{loggedIn}}"
+									item="{{loginData}}"
+									user-initialized="{{userInitialized}}"
 									>
 			</login-page>
       <loggedin-page id="loggedin"
@@ -165,6 +171,8 @@
 										 user="{{user}}"
 										 media-width="[[mediaWidth]]"
 										 app-data="[[appData]]"
+										 loginData="[[loginData]]"
+										 user-initialized="[[userInitialized]]"
 										 >
 			</loggedin-page>
     </iron-pages>
@@ -194,6 +202,11 @@
 						type: Object,
 						notify: true,
 					},
+					loginData: Object,
+					userInitialized: {
+            type: Boolean,
+            notify: true,
+          },
 					user: {
             type: Object,
             notify: true,
@@ -235,13 +248,14 @@
         ready: function() {
           // Start downloading and initializing the loggedin-page once the login page has rendered
           Polymer.RenderStatus.afterNextRender(this.$.login, function() {
-            this.importHref(this.resolveUrl('loggedin-page.html'),
+            this.importHref(this.resolveUrl('../login-pages/loggedin-page.html'),
               null, null, true);
           }.bind(this));
         },
 
         _selectPage: function() {
-          this.selected = this.loggedIn ? 1 : 0;
+          //this.selected = this.loggedIn ? 1 : 0;
+          this.set( 'selected' , this.loggedIn ? 1 : 0 );
         },
         
 				// Edit
@@ -273,16 +287,16 @@
 					var auth = this.$.auth;
 					var _this = this;
 					auth.signInWithPopup(provider)
-		          .then(function(response) {
-						    //console.log('response', response);
-						    //console.log('loggedIn', auth.signedIn);
-					      //_this.set('loggedIn', auth.signedIn);
-					      //console.log('user', auth.user);
-					      //console.log('user', _this.user);
-					    })
-              .catch(function(error) {
-						    console.log('error', error);
-					    });
+						.then(function(response) {
+							//console.log('response', response);
+							//console.log('loggedIn', auth.signedIn);
+							//_this.set('loggedIn', auth.signedIn);
+							//console.log('user', auth.user);
+							//console.log('user', _this.user);
+						  //this.fire('logged-in', response);
+					}).catch(function(error) {
+						console.log('error', error);
+					});
 				},
 				
 				_logout: function(e) {

@@ -11,8 +11,10 @@
                     >
 			<paper-tooltip>Enter list of email addresses separated by commas or spaces</paper-tooltip>
     </paper-textarea>
+		<!--- ->
     <hr />
     [[emails]]
+		<!---->
 	</template>
 
   <script>
@@ -34,14 +36,17 @@
 							return {
 								split  : /[\s,;\|\n\r\t\0\b]+/gm , // Split list into individual email addresses
 								filter : /(\S+?@{1}\S+?\.\S*)/gm , // Filter strings not matching email pattern
-							}
+							};
 						},
           },
           emailsString: {
             type: String,
             observer: '_emailsStringChanged',
           },
-					emails: Array,
+					emails: {						
+						type: Array,
+						notify: true,
+					},
         },
         _emailsStringChanged: function(s) {
 					var r_split = this.patterns.split;

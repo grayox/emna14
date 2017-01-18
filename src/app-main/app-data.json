@@ -1,20 +1,108 @@
 {							
 	"breakpoints": "575 700 840 900 1125",
+	"comment": "emailServerUrl is link to Google Apps Script Web App",
+	"emailServerUrl": "https://script.google.com/macros/s/AKfycbxvOmt0M-OACnHJWZvfvaUEBLRdbl6TlEMutQ8MH0DbALamxNU/exec",
 	"firebase": {
 		"authDomain": "green-comet.firebaseapp.com",
 		"databaseUrl": "https://green-comet.firebaseio.com/",
 		"apiKey": "AIzaSyBOqawzjd994lNbsCTb6hzDZ7wI7yFNw5o"
 	},
+	"comment": "Reminder: After editing pages, manually edit loggedin-page to match pages order sequence",
 	"pages": [
 		{ "name": "Dashboard" , "icon": "notification:network-check" } ,
+		{ "name": "Network"   , "icon": "social:share"               } ,
 		{ "name": "Deals"     , "icon": "social:public"              } ,
-		{ "name": "Share"     , "icon": "social:share"               } ,
 		{ "name": "Trade"     , "icon": "vaadin-icons:paperplane-o"  } ,
 		{ "name": "Settle"    , "icon": "account-balance"            }
 	],
 	"entities": {
-		"deal"    : { "page": "page-deals", "path": [ "users" , "this.user.uid" , "deals"   ] },
-		"offer"   : { "page": "page-deals", "path": [ "users" , "this.user.uid" , "offers"  ] },
-		"network" : { "page": "page-share", "path": [ "users" , "this.user.uid" , "network" ] }
+		"deal": {
+			"page": "page-deals",
+			"key": "deals",
+			"paths": [
+				{
+					"path": ["deals", "~@newPostKey@~"]
+				}, {
+					"path": ["deal-bids", "~@newPostKey@~"]
+				}, {
+					"path": ["user-deals", "~@this.user.uid@~", "~@newPostKey@~"]
+				}, {
+					"comment": "Intentionally omit paths below this line"
+				}, {
+					"xpath": ["users", "~@this.user.uid@~", "deals", "stats"]
+				}, {
+					"xpath": ["users", "~@this.user.uid@~", "deals", "~@newPostKey@~"]
+				}
+			]
+		},
+		"bid": {
+			"page": "page-deals",
+			"key": "bids",
+			"paths": [
+				{ 
+					"path": ["bids", "~@newPostKey@~"]
+				}, {
+					"path": ["user-bids", "~@this.user.uid@~", "~@newPostKey@~"]
+				}, {
+					"path": ["deal-bids", "~@data.parent@~", "~@newPostKey@~"]
+				}, {
+					"comment": "Incrementally testing paths above this line"
+				}, {
+					"comment": "Intentionally omit paths below this line"
+				}, {
+					"xpath": ["users", "~@this.user.uid@~", "bids", "stats"]
+				}, {
+					"xpath": ["users", "~@this.user.uid@~", "bids", "~@newPostKey@~"]
+				}
+			]
+		},
+		"network": {
+			"page": "page-network",
+			"init": "_initNetwork(e)", "comment": "init is a special function that replaces itemPaths as a means of generating node paths for storage"
+		},		
+		"invitation": {
+			"page": "page-network",
+			"key": "invitations",
+			"config": "_configInvitation(newPostKey, data)",
+			"paths": [
+				{
+					"path": ["invitations", "~@newPostKey@~"],
+					"comment": "Lookup email link url parameter to identify parties (inviter and invitee)"
+				}, {
+					"path": ["emails", "~@data.invitee@~", "invitations", "~@this.emailKey@~", "~@newPostKey@~"]
+				}, {
+					"path": ["user-invitations", "~@this.user.uid@~", "~@newPostKey@~"]
+				}, {
+					"path": ["user-emails-invitations", "~@this.user.uid@~", "~@data.invitee@~", "~@newPostKey@~"]
+				}
+			]
+		},
+		"user": {
+			"init": "_initUser(e)",
+			"paths": [
+				{
+					"comment": "Details | Record user details",
+					"path": ["users", "~@this.user.uid@~", "details", "~@this.user@~"]
+				}, {
+					"comment": "Entities above this line have been tested",
+					"comment": "Lineage | Memorialize and record network ancestry (descent from root node) of current user",
+					"xpath": ["users", "~@this.user.uid@~", "lineage", "~@parent.user.uid.lineage.push(inviter)@~"]
+				}, {
+					"comment": "Children | Add current user to list of child nodes of the parent",
+					"xpath": ["users-children", "~@parent.user.uid@~", "~@this.user.uid@~"]
+				}, {
+					"comment": "Need to check flag upon login and initialize user iff no flag",
+					"comment": "Add flag to initial data (inviter/invitee combo) if user has already been 'initialized'",
+					"path": ["emails", "~@this.user.uid@~", "user-initialized"]
+				}, {
+					"comment": "Add flag to initial data (invitation key) if user has already been 'initialized'",
+					"path": ["invitations", "~@this.key@~", "user-initialized"]
+				}, {
+					"comment": "Paths above this line have been thought through"
+				}, {
+					"xpath": ["user-email-keys", "~@this.user.uid@~", "~@newPostKey@~"]
+				}
+			]
+		}
 	}
 }

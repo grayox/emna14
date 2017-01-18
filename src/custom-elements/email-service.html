@@ -1,0 +1,59 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="email-service">
+	<template>
+		<style></style>
+		<iron-ajax id="ajax"
+							 auto$="[[auto]]"
+							 xurl="https://www.googleapis.com/youtube/v3/search"
+							 url="[[url]]"
+							 xparams='{"part":"snippet", "q":"polymer", "key": "YOUTUBE_API_KEY", "type": "video"}'
+							 params="data"
+							 handle-as="json"
+							 on-response="handleResponse"
+							 debounce-duration="300"
+							 >
+		</iron-ajax>
+	</template>
+
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'email-service',
+				properties: {
+					auto: {
+						type: Boolean,
+						notify: true,
+						value: function() {
+							return false;
+						},
+					},
+					url: {
+						type: String, // web app service endpoint
+						notify: true,
+					},
+          recipientEmail: {
+						type: String, // email address
+						notify: true,
+					},
+          title: {
+						type: String, // header section
+						notify: true,
+					},
+          content: {
+						type: String, // body of email
+						notify: true,
+					},
+        },
+        generateRequest: function() {
+					this.$.ajax.generateRequest();
+				},
+				handleResponse: function() {
+					// handle 'response' event
+				},
+			});
+		})();
+  </script>
+</dom-module>

@@ -53,7 +53,10 @@
 					xfont-style: italic;
 					font-size: 18px;
 				}
+				/** /
 				--paper-card-background-color: var(--paper-grey-100);
+				/**/
+				--paper-card-background-color: #fefefe;
 			}
 		</style>
 
@@ -73,11 +76,10 @@
 									 xno-animation
 									 xhorizontal
 									 >
-
 			<paper-card id="card"
 									animated
 									animatedShadow
-									heading="Non-binding indicative offer"
+									heading="Make a non-binding indicative bid"
 									>
 				<div class="card-content">
 					<form is="iron-form"
@@ -89,7 +91,7 @@
 								<number-string id="number-string"
 															 string="{{amount}}"
 															 number="{{item.amount}}"
-															 abbreviation="{{offerAbbr}}"
+															 abbreviation="{{abbr}}"
 															 format="0,0"
 															 xdirection="[[direction]]"
 															 direction="string-to-number"
@@ -121,11 +123,11 @@
 									<div suffix>USD</div>
 									<!---->
 								</paper-input>
-								<span class="light">[[offerAbbr]]</span>
+								<span class="light">[[abbr]]</span>
 							</div>
 							<paper-input id="rate"
 													 name="rate"
-													 value="[[item.rate]]"
+													 value="{{item.rate}}"
 													 label="Rate"
 													 class="align-right"
 													 type="number"
@@ -250,6 +252,7 @@
           route: Object,
           routeData: Object,
 					// Edit
+					superKey: String,
 					opened: {
 						type: Boolean,
             notify: true,
@@ -316,21 +319,24 @@
         _save: function() {
           //this.$.error.innerText = '';
           //var form = this.isNew ? this.$$('#form-create') : this.$$('#form-update') ; // Only necessary for dom-if
-					var form = this.$.form;
+					var data, form = this.$.form;
           if (form.validate()) {
             //this.item.total = parseFloat(this.item.total);
 						//console.log('item', this.item);
             //this.fire('item-save', this.item);
 						/** /
             this.fire('item-save', {
-							name: 'offer',
+							name: 'bid',
 							data: this.item,
 						});
 						/**/
+						data = this.item;
+						data.parent = this.superKey;
+						//console.log('data', data);//return;
 						this.fire('item-method', {
 							method: 'save',
-							object: 'offer',
-							data: this.item,
+							entity: 'bid',
+							data: data,
 						});
           } else {
             console.log('Form validation failed');
@@ -399,13 +405,13 @@
           //this.fire('item-delete', this.item);
 					/** /
 					this.fire('item-delete', {
-						name: 'offer',
+						name: 'bid',
 						data: this.item,
 					});
 					/**/
 					this.fire('item-method', {
 						method: 'delete',
-						object: 'offer',
+						entity: 'bid',
 						data: this.item,
 					});
         },
@@ -429,6 +435,7 @@
 							if (this.item.rate) {
 								this.set( 'item.rate' , Math.round(parseFloat(this.item.rate*10000))/10000 ); // covert to number and round
 							}
+							/** /
 							// LTV
 							if (this.item.amount && this.item.collateral) {
 								this.set( 'item.ltv' , Math.round(parseFloat(this.item.amount/this.item.collateral*10000))/10000 ); // To save to database
@@ -437,6 +444,7 @@
 								this.set( 'ltv' , '...' );
 								this.set( 'item.ltv' , null     ); // To save to database
 							}
+							/** /
 							// Tenor
 							if (this.item.maturity && this.item.origination) {
 								var start = moment(this.item.origination);//moment('2016-10-15');
@@ -449,6 +457,7 @@
 								this.set( 'tenor'      , '...' );
 								this.set( 'item.tenor' , null  ); // To save to database
 							}
+							/** /
 							// Filter Index // http://stackoverflow.com/a/28036032/1640892
 							this.set('item.filterindex',
 											   Math.floor ( Math.pow(10, 12) * this.item.rate   )
@@ -456,6 +465,7 @@
 											 + Math.floor ( Math.pow(10,  3) * this.item.amount )
 											 + Math.floor ( Math.pow(10,  0) * this.item.tenor  )
 											);
+							/**/
 						}
 						this.set('itemSubBeingChanged', false);
 					}
@@ -466,10 +476,10 @@
 				},
 				
 				_clearAll: function() {
-					this.set('offer', null);
+					this.set('bid', null);
 					this.set('rate', null);
 					this.set('item', {
-						offer: null,
+						bid: null,
 						rate: null,
 					});
 				},	

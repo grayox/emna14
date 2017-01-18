@@ -30,6 +30,7 @@
 				--app-grid-expandible-item-columns: 4;
 				--paper-icon-button-ink-color: white;
 				/* Edit */
+				height: 100vh;
 				background-color: white;
 				/* endEdit */
 			}
@@ -210,6 +211,7 @@
 				},
 										
 				attached: function() {
+					const DELAY = 1500;
 					this.async(function() {
 						//var nodeList = Polymer.dom(this.root).querySelectorAll('li.item');
 						//var nodeList = Polymer.dom(this.root).querySelectorAll('li > paper-card');
@@ -217,7 +219,7 @@
 						this.animationConfig['entry'][1].nodes = Array.prototype.slice.call(nodeList);
 						//console.log(this.animationConfig['entry'][1].nodes);
 						this.playAnimation('entry');
-					}.bind(this), 500); // https://github.com/Polymer/polymer/issues/2500
+					}.bind(this), DELAY); // https://github.com/Polymer/polymer/issues/2500
 				},
 				
 				/** /
