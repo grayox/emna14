@@ -139,4 +139,4 @@ Note: Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBac
 2. Integrates (piecemeal) PolymerFire Note App Demo components into Vaadin Expense Manager shell
 
 #### Additional info
-See v10 and lower.
+See v09 and lower.
