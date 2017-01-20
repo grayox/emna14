@@ -114,12 +114,12 @@ Note: Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBac
 	 d. Reflect those lists in object store data structure models/nodes
 
 ### v04
-1. Cloned v02.
-2. Attempts to incrementally improve v02.
+1. Cloned v02
+2. Attempts to incrementally improve v02
 
 ### v03
-1. Cloned v01.
-2. Attempts to incrementally improve v01.
+1. Cloned v01
+2. Attempts to incrementally improve v01
 
 ### v02
 1. Cloned Note App Demo.
