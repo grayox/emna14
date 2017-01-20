@@ -16,14 +16,8 @@ Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBackup.sh
 ## Version History
 
 ### v11
-1. Prepped for deployment
-   a. https://youtu.be/ByV3MWTa1fw | https://www.youtube.com/watch?v=ByV3MWTa1fw&list=PLOU2XLYxmsII5c3Mgw6fNYCzaWrsM3sMN&index=1
-   b. https://github.com/Polymer/polycasts/tree/master/ep60-firebase-build
-	 c. gulpfile.js
-	 d. package.json
-	 e. polymer.json
-2. Deploying demo to Firebase
-3. v12 TODO:
+1. Cloned v10 to prevent overwrite by automated deployment tools (e.g., polymer-cli, gulp, etc.)
+2. v12 TODO:
    a. Incrementally add automation to creation/hosting new client-facing features of future versions
 	 b. Make the process easier to update/upgrade the app by running parallel test-lab version offline from live app
 	 c. Explore upgrading to Polymer 2.0
@@ -37,7 +31,14 @@ Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBackup.sh
 3. Installed tabbed sub panels into main deal editor, complete with CRud functionality
    a. CRud = Create and Read (capitalized) only were tested / ud = lowercase... features not tested
 4. Implemented denormalized data structure and CRud functionality for deal sub-editor (i.e., partial bid entity)
-5. v11 TODO:
+5. Prepped for deployment
+   a. https://youtu.be/ByV3MWTa1fw | https://www.youtube.com/watch?v=ByV3MWTa1fw&list=PLOU2XLYxmsII5c3Mgw6fNYCzaWrsM3sMN&index=1
+   b. https://github.com/Polymer/polycasts/tree/master/ep60-firebase-build
+	 c. gulpfile.js
+	 d. package.json
+	 e. polymer.json
+6. Deploying demo to Firebase
+7. v11 TODO:
    a. Launch demo version
 	 b. Incrementally add automation to creation/hosting new client-facing features of future versions
 	 c. Make the process easier to update/upgrade the app by running parallel test-lab version offline from live app
