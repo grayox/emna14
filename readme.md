@@ -1,17 +1,50 @@
-## VERSION HISTORY
-Note: Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBackup.sh
+#### Deployment instructions
+https://www.polymer-project.org/1.0/start/toolbox/deploy
+https://youtu.be/ByV3MWTa1fw | https://www.youtube.com/watch?v=ByV3MWTa1fw&list=PLOU2XLYxmsII5c3Mgw6fNYCzaWrsM3sMN&index=1
+- polymer.json
+- package.json
+- gulpfile.js
+- `npm run build`
 
+#### Licence source
+http://softwareengineering.stackexchange.com/a/68150
+
+#### Backup instructions
+Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBackup.sh
+(at bottom of page — currently labeled ITEM 4)
+
+## Version History
+
+### v11
+1. Prepped for deployment
+   a. https://youtu.be/ByV3MWTa1fw | https://www.youtube.com/watch?v=ByV3MWTa1fw&list=PLOU2XLYxmsII5c3Mgw6fNYCzaWrsM3sMN&index=1
+   b. https://github.com/Polymer/polycasts/tree/master/ep60-firebase-build
+	 c. gulpfile.js
+	 d. package.json
+	 e. polymer.json
+2. Deploying demo to Firebase
+3. v12 TODO:
+   a. Incrementally add automation to creation/hosting new client-facing features of future versions
+	 b. Make the process easier to update/upgrade the app by running parallel test-lab version offline from live app
+	 c. Explore upgrading to Polymer 2.0
+	 d. Upgrade Firebase security rules
+	 e. Explore implementing unidirectional data flow
+	 f. Clean up dashboard
+	 
 ### v10
 1. Implemented data architecture and denormalized data structure for object store optimization
-1. Installed networking module and logic including multiple path storage / denormalized data structure
-2. Installed tabbed sub panels into main deal editor, complete with CRud functionality
-   a. CRud = Create and Read only were tested
-3. Implemented denormalized data structure and CRud functionality for deal sub-editor (i.e., partial bid entity)
-4. v11 TODO:
+2. Installed networking module and logic including multiple path storage / denormalized data structure
+3. Installed tabbed sub panels into main deal editor, complete with CRud functionality
+   a. CRud = Create and Read (capitalized) only were tested / ud = lowercase... features not tested
+4. Implemented denormalized data structure and CRud functionality for deal sub-editor (i.e., partial bid entity)
+5. v11 TODO:
    a. Launch demo version
 	 b. Incrementally add automation to creation/hosting new client-facing features of future versions
 	 c. Make the process easier to update/upgrade the app by running parallel test-lab version offline from live app
 	 d. Explore upgrading to Polymer 2.0
+	 e. Deploy proper Firebase security rules
+	 f. Explore implementing unidirectional data flow
+	 g. Clean up dashboard
 
 ### v09
 1. Installed dashboard with animated control panels
@@ -105,38 +138,5 @@ Note: Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBac
    e. $ open http://localhost:8080/
 2. Integrates (piecemeal) PolymerFire Note App Demo components into Vaadin Expense Manager shell
 
-
-
-# Progressive Web App with full offline capabilities
-
-This is an example project for how you can build a [Progressive Web Application](https://infrequently.org/2015/06/progressive-apps-escaping-tabs-without-losing-our-soul/) with [Polymer](https://www.polymer-project.org/1.0/), [PouchDB](https://pouchdb.com/) and [Vaadin Elements](https://vaadin.com/elements).
-
-![Progressive Business App on mobile and desktop](https://vaadin.com/documents/10187/11914215/demo-expense_manager/f254d03f-368c-4793-baa9-a46ad1ad6ea1?t=1452512389930)
-
-
-The application uses a [ServiceWorker](https://github.com/slightlyoff/ServiceWorker/blob/master/explainer.md) to cache the [Application Shell](https://developers.google.com/web/updates/2015/11/app-shell?hl=en). A [WebApp Manifest file](https://developer.mozilla.org/en-US/docs/Web/Manifest) ensures that the browser identifies our app as a Progressive Web Application and offers the user to install the application through an install banner.
-
-Data is maintained in a local PouchDB database on the client, which can be synchronized to a [CouchDB](http://couchdb.apache.org/) server. The app remains fully functional regardless of connection status.
-
-## Live Demo
-[Try the live demo of the Progressive Web Application](http://demo.vaadin.com/expense-manager).
-
-## Running locally
-
-### Install local CouchDB (optional)
-If you want to work on the same data in several browsers, you can install a local CouchDB. Just follow the instructions [here](https://pouchdb.com/guides/setup-couchdb.html).
-
-Once installed, make sure that the `location` attribute is correct on the `<pouch-db>` element in `overview-page.html`. **Note** If you do not use a database to sync with, omit the `location` attribute.
-
-## Install dependencies
-You need polymer-cli installed to build the app `npm install -g polymer-cli`
-
-## Run development server
-`polymer serve` will run the application locally
-
-## Other build targets
-You can build the app with `polymer build`. Other options are listed in the [Polymer CLI](https://www.polymer-project.org/1.0/docs/tools/polymer-cli) documentation.
-
-
-## Note
-The demo uses [Vaadin Charts](https://vaadin.com/charts), which will ask for a license. You can close the window to try out the app without a license.
+#### Additional info
+See v10 and lower.

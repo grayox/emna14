@@ -1,7 +1,8 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/x-app.html",
-  "fragments": [
-    "src/overview-page.html"
+  "shell": "src/app-main/app-main.html",
+  "extraDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
   ]
 }
