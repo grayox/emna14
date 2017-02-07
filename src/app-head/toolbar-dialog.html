@@ -1,8 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="toolbar-dialog-behavior.html">
 <!--- ->
+<link rel="import" href="toolbar-dialog-behavior.html">
 <script src="../../bower_components/qr-js/qr.min.js"></script>
 <!---->
 
@@ -13,7 +13,7 @@
 								  modal xautofocus
 								  xalways-on-top
 								  xno-cancel-on-esc-key
-									xopened="{{_showDialog(route.path)}}"
+									xopened="{_showDialog(route.path)}"
 									entry-animation="scale-up-animation"
 									xexit-animation="fade-out-animation"
 									exit-animation="scale-down-animation"
@@ -77,9 +77,11 @@
       Polymer({
         is: 'toolbar-dialog',
 				
+				/** /
 				behaviors: [
 					MyBehaviors.ToolbarDialogBehavior,
 				],
+				/**/
 				
         properties: {
           //url: String,

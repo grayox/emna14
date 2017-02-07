@@ -2,9 +2,11 @@
 <link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
+<link rel="import" href="shared-styles.html">
+
 <dom-module id="login-styles">
   <template>
-		<style>
+		<style include="shared-styles">
 			:host {}
 
 			.login {
@@ -38,6 +40,7 @@
 			.error-message {
 				color: red;
 			}
+			
 		</style>
   </template>
 </dom-module>

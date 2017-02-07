@@ -39,20 +39,20 @@ function build() {
       .then(_ => {
         // Okay, now lets get your source files
         let sourcesStream = polymerProject.sources()
-          // Oh, well do you want to minify stuff? Go for it! 
+          // Oh, well do you want to minify stuff? Go for it!
           // Here's how splitHtml & gulpif work
           .pipe(polymerProject.splitHtml())
-            .pipe(gulpif(/\.js$/, uglify()))
-            .pipe(gulpif(/\.css$/, cssSlam()))
-            .pipe(gulpif(/\.html$/, htmlMinifier()))
+              .pipe(gulpif(/\.js$/, uglify()))
+              .pipe(gulpif(/\.css$/, cssSlam()))
+              .pipe(gulpif(/\.html$/, htmlMinifier()))
           .pipe(polymerProject.rejoinHtml());
 
         // Okay now lets do the same to your dependencies
         let depsStream = polymerProject.dependencies()
           .pipe(polymerProject.splitHtml())
-            .pipe(gulpif(/\.js$/, uglify()))
-            .pipe(gulpif(/\.css$/, cssSlam()))
-            .pipe(gulpif(/\.html$/, htmlMinifier()))
+              .pipe(gulpif(/\.js$/, uglify()))
+              .pipe(gulpif(/\.css$/, cssSlam()))
+              .pipe(gulpif(/\.html$/, htmlMinifier()))
           .pipe(polymerProject.rejoinHtml());
 
         // Okay, now lets merge them into a single build stream.
@@ -69,6 +69,11 @@ function build() {
 
         // Okay, time to pipe to the build directory
         buildStream = buildStream.pipe(gulp.dest(buildDirectory));
+			
+			  // Edit
+			  // Per http://stackoverflow.com/a/41784995/1640892 
+			  buildStream.on('error', (err) => console.log(err));
+			  // endEdit
 
         // waitFor the buildStream to complete
         return waitFor(buildStream);

@@ -1,10 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="toolbar-dialog.html">
 <link rel="import" href="toolbar-dialog-styles.html">
-<link rel="import" href="toolbar-dialog-behavior.html">
 
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <!--- ->
+<link rel="import" href="toolbar-dialog-behavior.html">
 <link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
 <!---->
 
@@ -106,9 +106,11 @@
       Polymer({
         is: 'dialog-terms',
 				
+				/** /
 				behaviors: [
 					MyBehaviors.ToolbarDialogBehavior,
 				],
+				/**/
 				
 				listeners: {
 					'toolbar-dialog-close': 'close',

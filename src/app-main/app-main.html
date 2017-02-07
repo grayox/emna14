@@ -4,8 +4,8 @@ Read full copyright notice and disclaimer contained in file labeled copyright-no
 <!---->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../login-pages/login-page.html">
-<link rel="import" href="../login-pages/loggedin-page.html">
+<link rel="import" href="../login-views/login-view.html">
+<link rel="import" href="../login-views/loggedin-view.html">
 
 <!-- Edit -->
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
@@ -106,7 +106,7 @@ Read full copyright notice and disclaimer contained in file labeled copyright-no
 		</media-query>
 		<media-query media-width="{{mediaWidthPage}}"
 								 breakpoints="700 900 1125"
-								 ><!-- loggedin-page - ->
+								 ><!-- loggedin-view - ->
 		</media-query>
 		<!--- ->
 		<iron-meta type="media"
@@ -164,13 +164,13 @@ Read full copyright notice and disclaimer contained in file labeled copyright-no
     <iron-pages id="pages"
 								selected="[[selected]]"
 								>
-      <login-page id="login"
+      <login-view id="login"
 									logged-in="{{loggedIn}}"
 									item="{{loginData}}"
 									user-initialized="{{userInitialized}}"
 									>
-			</login-page>
-      <loggedin-page id="loggedin"
+			</login-view>
+      <loggedin-view id="loggedin"
 										 logged-in="{{loggedIn}}"
 										 user="{{user}}"
 										 media-width="[[mediaWidth]]"
@@ -178,7 +178,7 @@ Read full copyright notice and disclaimer contained in file labeled copyright-no
 										 loginData="[[loginData]]"
 										 user-initialized="[[userInitialized]]"
 										 >
-			</loggedin-page>
+			</loggedin-view>
     </iron-pages>
 		<!---->
 
@@ -216,6 +216,7 @@ Read full copyright notice and disclaimer contained in file labeled copyright-no
             notify: true,
           },
 					/**/
+					provider: String,
 					mediaWidth: {
 						type: Number,
 						notify: true,
@@ -250,9 +251,9 @@ Read full copyright notice and disclaimer contained in file labeled copyright-no
 				/**/
 				
         ready: function() {
-          // Start downloading and initializing the loggedin-page once the login page has rendered
+          // Start downloading and initializing the loggedin-view once the login page has rendered
           Polymer.RenderStatus.afterNextRender(this.$.login, function() {
-            this.importHref(this.resolveUrl('../login-pages/loggedin-page.html'),
+            this.importHref(this.resolveUrl('../login-views/loggedin-view.html'),
               null, null, true);
           }.bind(this));
         },
@@ -299,7 +300,8 @@ Read full copyright notice and disclaimer contained in file labeled copyright-no
 							//console.log('user', _this.user);
 						  //this.fire('logged-in', response);
 					}).catch(function(error) {
-						console.log('error', error);
+						//console.log('error', error);
+						console.error(error.code, error.message);
 					});
 				},
 				
@@ -314,7 +316,8 @@ Read full copyright notice and disclaimer contained in file labeled copyright-no
 						    //_this.set('loggedIn', false);
 					    })
               .catch(function(error) {
-						    console.log('error', error);
+						    //console.log('error', error);
+						    console.error(error.code, error.message);
 					    });
 				},
 				// endEdit

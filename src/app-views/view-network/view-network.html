@@ -1,0 +1,345 @@
+<!---- >
+Copyright (c) 2015-2017 Atlas Laboratories (atlaslive@gmail.com) - All rights reserved.
+Read full copyright notice and disclaimer contained in file labeled copyright-notice.md located in the root directory.
+<!---->
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../../../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../../../bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
+<!--- ->
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<!---->
+<link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../../bower_components/vaadin-pouchdb/vaadin-pouchdb.html">
+<link rel="import" href="../../custom-libraries/moment-js.html">
+<link rel="import" href="network-item-editor.html">
+<link rel="import" href="network-filters-toolbar.html">
+
+<!-- Edit -->
+<link rel="import" href="network-items-list.html">
+<link rel="import" href="network-history-panel.html">
+
+<link rel="import" href="../../../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../bower_components/app-layout/app-box/app-box.html">
+<link rel="import" href="../../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../../bower_components/app-layout/app-layout.html">
+
+<link rel="import" href="../../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">	
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../bower_components/app-layout/app-grid/app-grid-style.html">
+
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation.html">
+
+
+<dom-module id="view-network">
+	<template>
+		<!--- ->
+		<style>
+			:host {
+				height: 100vh;
+				color: yellow;
+				background-color: red;
+			}
+		</style>
+		<!---->
+		<style is="custom-style">
+			.flex-vertical {
+				@apply(--layout-vertical);
+        height: calc(100vh - 64px);
+  		}
+			.flex-horizontal {
+				@apply(--layout-horizontal);
+			}
+			.flexchild {
+				@apply(--layout-flex);
+			}
+			.item {
+				/** /
+				border-style: solid;
+				border-width: 1px;
+				border-color: #dddddd;
+				/** /
+				background-size: cover;
+				background-position: center center;
+				/**/
+				position: relative;
+				background-color: white;
+				margin: 0;
+				padding: 0;
+			}
+			.item-horizontal {
+				height: 100vh;
+			}
+			.item-vertical {
+				width: 100%;
+			}
+		</style>
+		<!---->
+		<app-location route="{{route}}"
+									use-hash-as-path
+									>
+		</app-location>
+    <app-route route="{{route}}"
+							 pattern="/:dbId"
+               data="{{routeData}}"
+							 tail="{{subroute}}"
+							 >
+		</app-route>		
+		<!---->
+    <firebase-query id="query"
+										app-name="app"
+									  xpath="users/[[user.uid]]/emails"
+									  xpath="emails"
+									  path="user-emails/[[user.uid]]"
+									  data="{{items}}"
+										xorder-by-child="filterindex"
+										xstart-at="g"
+										xend-at="j"
+										>
+    </firebase-query>
+    
+		<iron-localstorage name="item-manager-db-id"
+											 value="{{dbId}}"
+											 >
+		</iron-localstorage>
+    <network-item-editor id="itemEditor"
+												 route="{{subroute}}"
+												 user="[[user]]"
+												 xitem="{{editableItem}}"
+												 xmerchants="[merchants]"
+												 xdb="[_db]"
+												 >
+		</network-item-editor>
+		
+		<template is="dom-if" if="[[showSmall(mediaWidth)]]">
+			<div class="container flex-vertical">
+				<div class="item item-vertical">
+					<!--- ->
+					one
+					<!---->
+					<network-filters-toolbar id="filters-toolbar"
+																	 media-width="[[mediaWidth]]"
+																	 total-owed="[[totalOwed]]"
+																	 xmerchants="[merchants]"
+																	 filters="{{filters}}"
+																	 items="[[items]]"
+																	 >
+					</network-filters-toolbar>
+					<!---->
+				</div>
+				<div class="item item-vertical flexchild">
+					<!--- ->
+					two
+					<!---->
+					<network-items-list id="list"
+															media-width="[[mediaWidth]]"
+															items="[[items]]"
+															filters="[[filters]]"
+															>
+					</network-items-list>
+					<!---->
+				</div>
+				<div class="item">
+					<!--- ->
+					three
+					<!---->
+					<network-history-panel id="history-panel"
+																 media-width="[[mediaWidth]]"
+																 total-owed="[[totalOwed]]"
+																 items="[[items]]"
+																 >
+					</network-history-panel>
+					<!---->
+				</div>
+			</div>
+		</template>
+		<template is="dom-if" if="[[showMedium(mediaWidth)]]">
+			<div class="container flex-horizontal">
+				<div class="item item-horizontal">
+					<!--- ->
+					one
+					<!---->
+					<network-filters-toolbar id="filters-toolbar"
+																	 media-width="[[mediaWidth]]"
+																	 total-owed="[[totalOwed]]"
+																	 xmerchants="[merchants]"
+																	 filters="{{filters}}"
+																	 items="[[items]]"
+																	 >
+					</network-filters-toolbar>
+					<!---->
+				</div>
+				<div class="flexchild container flex-vertical">
+					<div class="item flexchild">
+						<!--- ->
+						two
+						<!---->
+						<network-items-list id="list"
+																media-width="[[mediaWidth]]"
+																items="[[items]]"
+																filters="[[filters]]"
+																>
+						</network-items-list>
+						<!---->
+					</div>
+					<div class="item">
+						<!--- ->
+						three
+						<!---->
+						<network-history-panel id="history-panel"
+																	 media-width="[[mediaWidth]]"
+																	 total-owed="[[totalOwed]]"
+																	 items="[[items]]"
+																	 >
+						</network-history-panel>
+						<!---->
+					</div>
+				</div>
+			</div>
+		</template>
+		<template is="dom-if" if="[[showLarge(mediaWidth)]]">
+			<div class="container flex-horizontal">
+				<div class="item item-horizontal">
+					<!--- ->
+					one
+					<!---->
+					<network-filters-toolbar id="filters-toolbar"
+																	 media-width="[[mediaWidth]]"
+																	 total-owed="[[totalOwed]]"
+																	 xmerchants="[merchants]"
+																	 filters="{{filters}}"
+																	 items="[[items]]"
+																	 >
+					</network-filters-toolbar>
+					<!---->
+				</div>
+				<div class="item flexchild">
+					<!--- ->
+					two
+					<!---->
+					<network-items-list id="list"
+															media-width="[[mediaWidth]]"
+															items="[[items]]"
+															filters="[[filters]]"
+															>
+					</network-items-list>
+					<!---->
+				</div>
+				<div class="item item-horizontal">
+					<!--- ->
+					three
+					<!---->
+					<network-history-panel id="history-panel"
+																 media-width="[[mediaWidth]]"
+																 total-owed="[[totalOwed]]"
+																 items="[[items]]"
+																 >
+					</network-history-panel>
+					<!---->
+				</div>
+			</div>
+		</template>
+		<!---->
+		
+	</template>
+
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'view-network',
+				behaviors: [
+					Polymer.NeonAnimationRunnerBehavior,
+					Polymer.IronResizableBehavior,
+				],
+				properties: {
+          route: Object,
+          routeData: Object,
+          dbId: String,
+          loggedIn: {
+            type: Boolean,
+            notify: true,
+            //observer: '_loginStateChanged',
+          },
+          items: Array,
+          totalOwed: Number,
+          filters: {
+            type: Object,
+            value: function() {
+              return {
+                start: '',
+                end: '',
+                merchant: '',
+              };
+            },
+            notify: true
+          },
+					// Edit
+					mediaWidth: {
+						type: Number,
+						notify: true,
+					},
+					user: {
+            type: Object,
+            notify: true,
+          },
+					editableItem: Object,
+					/** /
+					filteredItems: {
+						computed: '_computeFilteredItems(items, filters.*)'
+					},
+					/**/
+        	// endEdit
+				},
+				
+				listeners: {
+          'item-edit': '_itemEdit',
+        },
+				
+				/**/
+
+        _itemEdit: function(e) {
+          if (e && e.detail) {
+            var item = e.detail;
+						//console.log('item', item);
+						this.$.itemEditor.open(item);
+          }
+        },
+				
+				closeEditor: function() {
+					this.$.itemEditor.close();
+				},
+
+			  // Edit
+
+				showSmall: function(n) {
+					return n < 4;
+				},
+				showMedium: function(n) {
+					return n == 4;
+				},
+				showLarge: function(n) {
+					return n > 4;
+				},
+				
+				// endEdit
+				
+      });
+		})();
+  </script>
+</dom-module>

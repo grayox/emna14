@@ -1,0 +1,247 @@
+<!---- >
+Copyright (c) 2015-2017 Atlas Laboratories (atlaslive@gmail.com) - All rights reserved.
+Read full copyright notice and disclaimer contained in file labeled copyright-notice.md located in the root directory.
+<!---->
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-styles/shadow.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/iron-icons/image-icons.html">
+
+<!--- ->
+<link rel="import" href="../../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
+<link rel="import" href="../../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<!---->
+<link rel="import" href="../../../bower_components/app-layout/app-grid/app-grid-style.html">
+
+<!-- Edit -->
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="dashboard-item.html">
+<!-- endEdit -->
+
+<dom-module id="view-dashboard">
+	<template>
+		
+		<style include="app-grid-style">
+
+			:host {
+				display: block;
+				--app-grid-columns: 4;
+				--app-grid-gutter: 10px;
+				--app-grid-expandible-item-columns: 4;
+				--paper-icon-button-ink-color: white;
+				/* Edit */
+				height: 100vh;
+				background-color: white;
+				/* endEdit */
+			}
+
+			/** /
+			app-header {
+				background-color: #0b8043;
+				color: white;
+			}
+			/**/
+
+			ul {
+				padding: 0;
+				list-style: none;
+			}
+
+			.centered-container {
+				/** /
+				margin-top: 40px;
+				max-width: 1000px;
+				margin: 40px auto;
+				padding-top: 40px;
+				padding: 20px auto;
+				/**/
+				/* Edit */
+				background-color: white;
+				/* endEdit */
+			}
+
+			.item {
+				height: 250px;
+				position: relative;
+				background-color: white;
+				background-size: cover;
+				background-position: center center;
+				/* Edit */
+				cursor: pointer;
+				/* endEdit */
+			}
+			
+			.item:nth-child(5n + 1) {
+				height: 30vmax;
+				@apply(--app-grid-expandible-item);
+			}
+
+			.item-title {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background-color: rgba(0, 0, 0, 0.2);
+				color: white;
+				font-weight: 400;
+				padding: 16px;
+			}
+			
+			@media(max-width: 799px) {
+
+				.centered-container {
+					/**/
+				  margin: 10px 5px;
+					padding: 10px 5px;
+					/**/
+				}
+
+				:host {
+					--app-grid-columns: 2;
+					--app-grid-gutter: 5px;
+					--app-grid-item-height: 200px;
+				}
+
+			}
+
+		</style>
+		
+		<div class="centered-container">
+			<ul class="app-grid">
+				<template is="dom-repeat"
+									id="items"
+									xitems="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]"
+									items="[[items]]"
+									>
+					<li>
+						<dashboard-item label="[[item.label]]"
+														icon="[[item.icon]]"
+														value="[[item.value]]"
+														>
+						</dashboard-item>
+					</li>
+				</template>
+			</ul>
+		</div>
+		
+	</template>
+
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'view-dashboard',
+				
+				behaviors: [
+					Polymer.NeonAnimationRunnerBehavior,
+				],
+		
+				properties: {
+					/**/
+					animationConfig: {
+						type: Object,
+						value: function() {
+							return {
+								'entry': [
+									{
+										name: 'slide-from-right-animation',
+										node: this,
+										/** /
+										transformOrigin: <transform-origin>,
+										timing: <animation-timing>,
+										/**/
+									}, {
+										name: 'cascaded-animation',
+										animation: 'scale-up-animation',
+										/** /
+										animation: 'transform-animation',
+										transformFrom: 'translateY(100%)',
+										transformTo: 'none',
+										/**/
+										timing: {
+											delay: 500, // default: 50,
+										},
+									},
+								],
+							};
+						},
+					},
+					/**/
+					items: {
+						type: Object,
+						value: function() {
+							return [
+								{
+									label: 'extension',
+									icon: 'extension',
+									value: '1,234',
+								}, {
+									label: 'add-alert',
+									icon: 'add-alert',
+									value: '5,308',
+								}, {
+									label: 'add',
+									icon: 'image:flash-on',
+									value: '8,804',
+								}, {
+									label: 'build',
+									icon: 'build',
+									value: '12,804',
+								}, {
+									label: 'settings',
+									icon: 'settings',
+									value: '9,837',
+								}, {
+									label: 'announcements',
+									icon: 'record-voice-over',
+									value: '12,804',
+								}, {
+									label: 'explore',
+									icon: 'explore',
+									value: '17,842',
+								}, {
+									label: 'dashboard',
+									icon: 'dashboard',
+									value: '6,557',
+								},
+							];
+						},
+					},
+					
+				},
+										
+				attached: function() {
+					const DELAY = 1500;
+					this.async(function() {
+						//var nodeList = Polymer.dom(this.root).querySelectorAll('li.item');
+						//var nodeList = Polymer.dom(this.root).querySelectorAll('li > paper-card');
+						var nodeList = Polymer.dom(this.root).querySelectorAll('dashboard-item');
+						this.animationConfig['entry'][1].nodes = Array.prototype.slice.call(nodeList);
+						//console.log(this.animationConfig['entry'][1].nodes);
+						this.playAnimation('entry');
+					}.bind(this), DELAY); // https://github.com/Polymer/polymer/issues/2500
+				},
+				
+				/** /
+				play: function() {
+					this.playAnimation('entry');
+				},
+				
+				alert: function() {
+					alert('You tapped me.');
+				},
+				/**/
+				
+				show: function() {
+					var doc = this.$.doc;
+					console.log('dinosaurs', this.dinosaurs);
+				}
+				
+			});
+		})();
+  </script>
+</dom-module>

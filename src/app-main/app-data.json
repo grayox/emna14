@@ -7,7 +7,7 @@
 		"databaseUrl": "https://green-comet.firebaseio.com/",
 		"apiKey": "AIzaSyBOqawzjd994lNbsCTb6hzDZ7wI7yFNw5o"
 	},
-	"comment": "Reminder: After editing pages, manually edit loggedin-page to match pages order sequence",
+	"comment": "Reminder: After editing pages, manually edit loggedin-view to match pages order sequence",
 	"pages": [
 		{ "name": "Dashboard" , "icon": "notification:network-check" } ,
 		{ "name": "Network"   , "icon": "social:share"               } ,
@@ -17,7 +17,7 @@
 	],
 	"entities": {
 		"deal": {
-			"page": "page-deals",
+			"page": "view-deals",
 			"key": "deals",
 			"paths": [
 				{
@@ -36,7 +36,7 @@
 			]
 		},
 		"bid": {
-			"page": "page-deals",
+			"page": "view-deals",
 			"key": "bids",
 			"paths": [
 				{ 
@@ -57,11 +57,11 @@
 			]
 		},
 		"network": {
-			"page": "page-network",
+			"page": "view-network",
 			"init": "_initNetwork(e)", "comment": "init is a special function that replaces itemPaths as a means of generating node paths for storage"
 		},		
 		"invitation": {
-			"page": "page-network",
+			"page": "view-network",
 			"key": "invitations",
 			"config": "_configInvitation(newPostKey, data)",
 			"paths": [

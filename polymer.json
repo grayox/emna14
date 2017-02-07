@@ -1,6 +1,10 @@
 {
   "entrypoint": "index.html",
   "shell": "src/app-main/app-main.html",
+  "includeDependencies": [
+		"favicon.ico",
+    "images/**/*"
+  ],
   "extraDependencies": [
     "manifest.json",
     "bower_components/webcomponentsjs/webcomponents-lite.min.js"

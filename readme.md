@@ -4,7 +4,9 @@ https://youtu.be/ByV3MWTa1fw | https://www.youtube.com/watch?v=ByV3MWTa1fw&list=
 - polymer.json
 - package.json
 - gulpfile.js
-- `npm run build`
+- `npm install gulp` then `npm run build` or `gulp`
+- For error debugging, run `polymer build -v`
+https://github.com/PolymerElements/generator-polymer-init-custom-build
 
 #### Licence source
 http://softwareengineering.stackexchange.com/a/68150
@@ -15,15 +17,41 @@ Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBackup.sh
 
 ## Version History
 
+### v13
+1. Decided not to fix: Fix console error by updating `iron-flex-layout.html` to implement `iron-flex-layout-classes.html`
+2. Updated dependencies using `bower update` or `bower-update-all`
+3. Attempted to fix logic bugs in `login-vew.html`.
+   a. View could not refresh state if errors were made when user input wrong key, email, parent, etc.
+	 b. Hack-solved the problem by reloading page with `location.reload();`
+	 c. Will implement more robust solution by managing state with Redux (tur-nr/polymer-redux)
+4. v14 TODO:
+   a. Install Redux, attempt to fix bug by managing state
+   b. Incrementally add automation to creation/hosting new client-facing features of future versions
+	 c. Make the process easier to update/upgrade the app by running parallel test-lab version offline from live app
+	 d. Explore upgrading to Polymer 2.0
+	 e. Upgrade Firebase security rules
+	 f. Explore implementing unidirectional data flow
+	 g. Clean up dashboard
+
+### v12
+1. Renamed *-page.html to *-view.html to refelct the parlance of our times
+   a. `view` is Redux term per https://www.youtube.com/watch?v=PahsgJn0sgU&feature=youtu.be&t=1m5s
+2. Ran `polymer lint` and fixed lint errors except the following:
+   a. Those in `bower_components/` directory
+	 b. Those that implement a behavior. (e.g., `MyBehaviors.EmailCodingBehavior`)
+3. Cloning this version to archive save in case `bower update` installs breaking changes from dependencies
+4. v13 TODO:
+   a. Fix console error by updating `iron-flex-layout.html` to implement `iron-flex-layout-classes.html`
+   b. Update dependencies using `bower update` or `bower-update-all`
+   c. Incrementally add automation to creation/hosting new client-facing features of future versions
+	 d. Make the process easier to update/upgrade the app by running parallel test-lab version offline from live app
+	 e. Explore upgrading to Polymer 2.0
+	 f. Upgrade Firebase security rules
+	 g. Explore implementing unidirectional data flow
+	 h. Clean up dashboard
+
 ### v11
 1. Cloned v10 to prevent overwrite by automated deployment tools (e.g., polymer-cli, gulp, etc.)
-2. v12 TODO:
-   a. Incrementally add automation to creation/hosting new client-facing features of future versions
-	 b. Make the process easier to update/upgrade the app by running parallel test-lab version offline from live app
-	 c. Explore upgrading to Polymer 2.0
-	 d. Upgrade Firebase security rules
-	 e. Explore implementing unidirectional data flow
-	 f. Clean up dashboard
 	 
 ### v10
 1. Implemented data architecture and denormalized data structure for object store optimization

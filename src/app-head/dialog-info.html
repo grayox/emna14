@@ -2,6 +2,8 @@
 <link rel="import" href="toolbar-dialog.html">
 <link rel="import" href="toolbar-dialog-styles.html">
 <link rel="import" href="toolbar-dialog-behavior.html">
+<!---->
+<!---->
 
 <link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
 
@@ -40,6 +42,7 @@
 						</ol>
 							Watch the below video to learn more about the science behind our network.
 						</p>
+					  <!---->
             <google-youtube id="video"
 														video-id="TcxZSmzPw8k"
 														height="270px"
@@ -47,6 +50,7 @@
 														rel="0"
 														>
 						</google-youtube>
+					  <!---->
           </div>
         </div>
       </div>
@@ -59,9 +63,11 @@
       Polymer({
         is: 'dialog-info',
 				
+				/**/
 				behaviors: [
 					MyBehaviors.ToolbarDialogBehavior,
 				],
+				/**/
 				
 				listeners: {
 					'toolbar-dialog-close': 'close',

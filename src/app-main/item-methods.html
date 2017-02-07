@@ -1,6 +1,6 @@
-<link rel="import" href="../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../bower_components/paper-toast/paper-toast.html">
-<link rel="import" href="../../../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="../custom-elements/email-coding-behavior.html">
 
@@ -34,7 +34,7 @@ Use databinding (from app-main.html) to save calls from iron-ajax
 											 app-name="app"
 											 xpath="/emails/[[emailKey]]"
 											 xpath="/[[emailKey]]"
-											 xdata="{{emailData}}"
+											 xdata="{emailData}"
 											 xlog
 											 >
 		</firebase-document>
@@ -67,9 +67,11 @@ Use databinding (from app-main.html) to save calls from iron-ajax
       Polymer({
         is: 'item-methods',
 				
+				/**/
 				behaviors: [
 					MyBehaviors.EmailCodingBehavior,
 				],
+				/**/
 									
 				properties: {
 					appData: Object,
