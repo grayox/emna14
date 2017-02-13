@@ -7,7 +7,7 @@
 <!-- Edit -->
 <link rel="import" href="../../bower_components/gold-email-input/gold-email-input.html">
 <link rel="import" href="../custom-styles/login-styles.html">
-<!---- >
+<!---->
 <link rel="import" href="../custom-elements/email-coding-behavior.html">
 <!---->
 <!-- endEdit -->
@@ -17,7 +17,8 @@
 
   <template>
 		
-    <iron-a11y-keys keys="enter" on-keys-pressed="_login"></iron-a11y-keys>
+    <iron-a11y-keys xkeys="pageup pagedown left right down up shift+a alt+a home end space enter tab"
+										keys="enter tab" on-keys-pressed="_primary"></iron-a11y-keys>
 		
 		<div class="login">
       <gold-email-input id="email"
@@ -47,7 +48,7 @@
       'use strict';
       Polymer({
         is: 'parent-panel',
-				/** /
+				/**/
 				behaviors: [
 					MyBehaviors.EmailCodingBehavior,
 				],
@@ -61,17 +62,29 @@
 						computed: '_computeEmail(emailRaw)',
 					}
 				},
-				_primary: function() {
+				_primary: function(e) {
+					var s = this.email;
 					//console.log('email', this.email);
-					this.fire('fetch-parent', 'primary');
+					//console.log('e', e);
+					//console.log('s', s);
+					this.fire('fetch-parent', {
+						type: 'primary',
+						payload: s,
+					});
+					this._clear();
 				},
 				_secondary: function() {
-					this.fire('fetch-parent', 'secondary');
+					this.fire('fetch-parent', {type: 'secondary'});
+					this._clear();
 				},
 				_computeEmail: function(s) {
 					if(!!s) {
 						return this._emailEncode(s);
 					}
+				},
+				_clear: function() {
+					this.set('emailRaw', '');
+					//console.log('email', this.email);
 				},
 		  });
     })();

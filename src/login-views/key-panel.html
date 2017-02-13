@@ -14,7 +14,8 @@
 
   <template>
 		
-    <iron-a11y-keys keys="enter" on-keys-pressed="_login"></iron-a11y-keys>
+    <iron-a11y-keys xkeys="pageup pagedown left right down up shift+a alt+a home end space enter tab"
+										keys="enter tab" on-keys-pressed="_primary"></iron-a11y-keys>
 		
 		<div class="login">
       <paper-input id="key"
@@ -51,11 +52,20 @@
 						notify: true,
 					}
 				},
-				_primary: function() {
-					this.fire('fetch-key', 'primary');
+				_primary: function(e) {
+					var s = this.key;
+					this.fire('fetch-key', {
+						type: 'primary',
+						payload: s,
+					});
+					this._clear();
 				},
-				_secondary: function() {
-					this.fire('fetch-key', 'secondary');
+				_secondary: function(e) {
+					this.fire('fetch-key', {type: 'secondary'});
+					this._clear();
+				},
+				_clear: function() {
+					this.set('key', '');
 				},
       });
     })();

@@ -17,6 +17,23 @@ Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBackup.sh
 
 ## Version History
 
+### v14
+1. Installed Redux
+   a. `bower install --save tur-nr/polymer-redux`
+	 b. `npm install --save redux`
+2. Ostensibly fixed (front-end) bug on `login-view.html`
+   a. Implementing unidirectional data flow in sub views: `user-panel.html`, `user-panel.html`, `user-panel.html`
+	 b. Dispatch (action) events containing `type` and `payload` properties per Redux paradigm
+	 c. Cleared `input.value` locally in sub-element
+	 d. Implemented state management tools per Redux without yet implementing `redux-store.html` proper
+3. v15 TODO:
+   a. Incrementally add automation to creation/hosting new client-facing features of future versions
+	 b. Make the process easier to update/upgrade the app by running parallel test-lab version offline from live app
+	 c. Explore upgrading to Polymer 2.0
+	 d. Upgrade Firebase security rules
+	 e. Explore implementing unidirectional data flow
+	 f. Clean up dashboard
+
 ### v13
 1. Decided not to fix: Fix console error by updating `iron-flex-layout.html` to implement `iron-flex-layout-classes.html`
 2. Updated dependencies using `bower update` or `bower-update-all`
@@ -34,7 +51,7 @@ Github backup instructions are at Dropbox/CodeBase/Automation/Shell/GitBackup.sh
 	 g. Clean up dashboard
 
 ### v12
-1. Renamed *-page.html to *-view.html to refelct the parlance of our times
+1. Renamed `*-page.html` to `*-view.html` to refelct the parlance of our times
    a. `view` is Redux term per https://www.youtube.com/watch?v=PahsgJn0sgU&feature=youtu.be&t=1m5s
 2. Ran `polymer lint` and fixed lint errors except the following:
    a. Those in `bower_components/` directory

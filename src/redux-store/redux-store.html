@@ -1,0 +1,78 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer-redux/polymer-redux.html">
+<link rel="import" href="redux-js.html">
+
+<script>
+  const initialState = {
+    login: {
+			hasKey: false,
+			hasUserEmail: false,
+			hasUserInit: false,
+			hasParentEmail: false,
+			showPanelKey: false,
+			showPanelUserEmail: false,
+			showPanelParentEmail: false,
+			showPanelLogin: false,
+			loggedIn: false,
+		},
+		deals: {},
+		network: {},
+		settle: {},
+		trade: {},
+  };
+  const reducer = (state, action) => {
+		// handle exceptions
+    if ( !state          ) { console.error( 'No state'   ); return initialState; }
+    if ( !action         ) { console.error( 'No action'  ); return initialState; }
+    if ( !action.type    ) { console.error( 'No type'    ); return initialState; }
+    if ( !action.payload ) { console.error( 'No payload' ); return initialState; }
+		const payload = action.payload;
+		const type    = action.type;
+		// handle action types
+    switch (type) {
+			// login view
+			case 'TRY_KEY':
+        friends.push(action.friend);
+        return Object.assign({}, state,
+					{ friends: friends }
+				);
+				break;
+			case 'TRY_EMAIL_USER':
+        friends.push(action.friend);
+        return Object.assign({}, state,
+					{ friends: friends }
+				);
+				break;
+			case 'TRY_EMAIL_PARENT':
+        friends.push(action.friend);
+        return Object.assign({}, state,
+					{ friends: friends }
+				);
+				break;
+			case 'GET_PANEL_KEY':
+        friends.push(action.friend);
+        return Object.assign({}, state,
+					{ friends: friends }
+				);
+				break;
+			case 'GET_PANEL_EMAIL_USER':
+        friends.push(action.friend);
+        return Object.assign({}, state,
+					{ friends: friends }
+				);
+				break;
+			case 'GET_PANEL_EMAIL_PARENT':
+        friends.push(action.friend);
+        return Object.assign({}, state,
+					{ friends: friends }
+				);
+				break;
+			// end login view
+			default:
+				console.error('Unrecognized action type', type);
+				return initialState;
+    }
+  }
+  const store = Redux.createStore(reducer);
+  const ReduxBehavior = PolymerRedux(store);
+</script>

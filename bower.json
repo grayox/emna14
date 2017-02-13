@@ -44,7 +44,8 @@
     "vaadin-icons": "^1.0.2",
     "gold-email-input": "PolymerElements/gold-email-input#^1.0.8",
     "paper-tabs": "PolymerElements/paper-tabs#^1.7.0",
-    "paper-toggle-button": "PolymerElements/paper-toggle-button#^1.2.1"
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#^1.2.1",
+    "polymer-redux": "tur-nr/polymer-redux#^0.3.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

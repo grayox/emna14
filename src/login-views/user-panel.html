@@ -19,7 +19,8 @@
 
   <template>
 		
-    <iron-a11y-keys keys="enter" on-keys-pressed="_login"></iron-a11y-keys>
+    <iron-a11y-keys xkeys="pageup pagedown left right down up shift+a alt+a home end space enter tab"
+										keys="enter tab" on-keys-pressed="_primary"></iron-a11y-keys>
 		
 		<paper-tooltip id="tooltip"
 									 for="email"
@@ -42,15 +43,27 @@
 		</paper-toast>
 		
 		<div class="login">
+			<!---->
       <gold-email-input id="email"
 											  label="Your email address"
 											  value={{emailRaw}}
 											  name="email"
 											  >
 			</gold-email-input>
+			<!---- >
+			<paper-input id="email"
+									 label="Your email address"
+								   value={{emailRaw}}
+								   name="email"
+									 >
+			</paper-input>
+			<!---->
       <span class="error-message">[[errorMessage]]</span>
       <paper-button class="primary" on-tap="_primary"    raised>Next</paper-button>
       <paper-button                 on-tap="_secondary" xraised>Go back</paper-button>
+			<!---- >
+			<button on-tap="_clear">Clear</button>
+			<!---->
     </div>
 		
 		<!--- ->
@@ -75,8 +88,11 @@
 				],
 				/**/
 				properties: {
-					emailRaw: String,
 					errorMessage: String,
+					emailRaw: {
+						type: String,
+						notify: true,
+					},
 					email: {
 						type: String,
 						notify: true,
@@ -87,17 +103,31 @@
 					//this.$.tooltip.show();
 					//this.$.toast.open();
 				},
-				_primary: function() {
+				_primary: function(e) {
+					var s = this.email;
 					//console.log('email', this.email);
-					this.fire('fetch-user', 'primary');
+					//console.log('e', e);
+					//console.log('s', s);
+					this.fire('fetch-user', {
+						type: 'primary',
+						payload: s,
+					});
+					this._clear();
 				},
-				_secondary: function() {
-					this.fire('fetch-user', 'secondary');
+				_secondary: function(e) {
+					this.fire('fetch-user', {type: 'secondary'});
+					this._clear();
 				},
 				_computeEmail: function(s) {
 					if(!!s) {
-						return this._emailEncode(s);
+						var out = this._emailEncode(s);
+						//console.log('email', out);
+						return out;
 					}
+				},
+				_clear: function() {
+					this.set('emailRaw', '');
+					//console.log('email', this.email);
 				},
       });
     })();
